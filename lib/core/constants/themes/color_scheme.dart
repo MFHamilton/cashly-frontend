@@ -8,6 +8,8 @@ class AppColorScheme {
       onPrimary: AppColors.background,
       secondary: AppColors.secondary,
       onSecondary: AppColors.background,
+      tertiary: AppColors.accent,
+      onTertiary: AppColors.background,
       error: AppColors.danger,
       onError: AppColors.background,
       surface: AppColors.background,
