@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import '../app_color.dart';
+import 'package:cashly/core/constants/app_color.dart';
 
 class AppColorScheme {
   static const light = ColorScheme(
