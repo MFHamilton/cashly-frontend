@@ -77,12 +77,36 @@ class _LoginPageState extends State<LoginPage> {
                     obscureText: true,
                   ),
 
+                  SizedBox(height: 7),
+
+                  Align(
+                    alignment: Alignment.bottomRight,
+                    child: Text(
+                      '¿Olvidaste tu contraseña?',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.surface
+                      ),
+
+
+                    ),
+                  ),
+
                   SizedBox(height: 30),
+
+
                   CustomButton(
                     text: 'Iniciar sesión',
                     onPressed: () {
                       print('Botón presionado');
                     },
+                  ),
+
+                  SizedBox(height: 30),
+                  Text(
+                    '¿No tienes cuenta aún? Regístrate Aquí',
+                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                        color: Theme.of(context).colorScheme.surface
+                    ),
                   ),
                 ],
               ),

@@ -11,12 +11,12 @@ class MyTextTheme {
     ),
     bodyMedium: GoogleFonts.robotoCondensed(
       fontSize: 14,
-      fontWeight: FontWeight.w400, // Regular
+      fontWeight: FontWeight.w500, // Regular
       color: AppColorScheme.light.onSurface,
     ),
     bodySmall: GoogleFonts.robotoCondensed(
       fontSize: 12,
-      fontWeight: FontWeight.w300, // Light
+      fontWeight: FontWeight.w400, // Light
 
     )
   );
