@@ -51,7 +51,9 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Text(
                     'Correo Electrónico',
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.surface
+                    ),
                   ),
                   SizedBox(height: 8),
                   CustomInputField(
@@ -63,7 +65,10 @@ class _LoginPageState extends State<LoginPage> {
 
                   Text(
                     'Contraseña',
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
+                        color: Theme.of(context).colorScheme.surface
+                    ),
+
                   ),
                   SizedBox(height: 8),
                   CustomInputField(

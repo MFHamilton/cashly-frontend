@@ -6,7 +6,8 @@ class AppButtonTheme {
     style: ElevatedButton.styleFrom(
       backgroundColor: AppColorScheme.light.tertiary,
       foregroundColor: AppColorScheme.light.onTertiary,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(5)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
+        minimumSize: Size(double.infinity, 50),
     ),
   );
 }

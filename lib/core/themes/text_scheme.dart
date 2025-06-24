@@ -7,7 +7,7 @@ class MyTextTheme {
     bodyLarge: GoogleFonts.robotoCondensed(
       fontSize: 16,
       fontWeight: FontWeight.w400, // Regular
-      color: Colors.white,
+      //color: Colors.white,
     ),
     bodyMedium: GoogleFonts.robotoCondensed(
       fontSize: 14,
