@@ -37,24 +37,53 @@ class _LoginPageState extends State<LoginPage> {
           children: [
             SvgPicture.asset('assets/logotype/whiteLogo.svg'),
             SizedBox(height: 40), // Espacio entre logo y botón
-            Column(
-              children: [
-                CustomInputField(
-                  controller: emailController,
-                  hintText: "Email",), // Input de email
-                SizedBox(height: 40),
-                CustomInputField(
-                  controller: passwordController,
-                  hintText: "Contraseña",
-                  obscureText: true,), // Input de contrasenia
-              ],
+
+            Container(
+
+              width: double.infinity,
+              padding: EdgeInsets.symmetric(horizontal: 32), // Padding Interno del Container
+
+              child: Column(
+
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+
+                children: [
+                  Text(
+                    'Correo Electrónico',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  SizedBox(height: 8),
+                  CustomInputField(
+                    controller: emailController,
+                    hintText: "Email",
+                  ),
+
+                  SizedBox(height: 30),
+
+                  Text(
+                    'Contraseña',
+                    style: Theme.of(context).textTheme.bodyLarge,
+                  ),
+                  SizedBox(height: 8),
+                  CustomInputField(
+                    controller: passwordController,
+                    hintText: "Contraseña",
+                    obscureText: true,
+                  ),
+
+                  SizedBox(height: 30),
+                  CustomButton(
+                    text: 'Iniciar sesión',
+                    onPressed: () {
+                      print('Botón presionado');
+                    },
+                  ),
+                ],
+              ),
             ),
-            CustomButton(
-              text: 'Iniciar sesión',
-              onPressed: () {
-                print('Botón presionado');
-              },
-            ),
+
+
           ],
         ),
       ),
