@@ -27,7 +27,7 @@ class CustomInputField extends StatelessWidget {
           borderSide: BorderSide.none, // Sin borde visible
         ),
       ),
-      style: Theme.of(context).textTheme.bodyMedium,
+      style: Theme.of(context).textTheme.bodySmall,
     );
   }
 }
