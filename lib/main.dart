@@ -1,4 +1,5 @@
-import 'package:cashly/core/constants/themes/text_scheme.dart';
+import 'package:cashly/core/themes/app_themes.dart';
+import 'package:cashly/core/themes/text_scheme.dart';
 import 'package:cashly/feautures/auth/presentation/login.dart';
 import 'package:flutter/material.dart';
 
@@ -10,9 +11,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Material App',
-      theme: ThemeData(
-        textTheme: MyTextTheme.lightTextTheme,
-      ),
+      theme: AppTheme.lightTheme,
       home: LoginPage(),
     );
   }
