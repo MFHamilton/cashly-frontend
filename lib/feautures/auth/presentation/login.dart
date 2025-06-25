@@ -1,6 +1,7 @@
 
 import 'package:cashly/core/widgets/input.dart';
 import 'package:flutter/material.dart';
+import 'package:sign_in_button/sign_in_button.dart';
 import '../../../core/widgets/custom_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
@@ -52,7 +53,7 @@ class _LoginPageState extends State<LoginPage> {
                   Text(
                     'Correo Electrónico',
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Theme.of(context).colorScheme.surface
+                        color: Theme.of(context).colorScheme.surface
                     ),
                   ),
                   SizedBox(height: 8),
@@ -101,13 +102,62 @@ class _LoginPageState extends State<LoginPage> {
                     },
                   ),
 
-                  SizedBox(height: 30),
-                  Text(
-                    '¿No tienes cuenta aún? Regístrate Aquí',
-                    style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                        color: Theme.of(context).colorScheme.surface
+                  SizedBox(height: 20),
+                  Align(
+                    alignment: Alignment.bottomCenter,
+                    child: Text(
+                      '¿No tienes cuenta aún? Regístrate Aquí',
+                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                          color: Theme.of(context).colorScheme.surface
+                      ),
                     ),
                   ),
+
+                  SizedBox(height: 15), // Espacio entre texto y divider
+
+                  Container(
+                      width: double.infinity,
+                      child: Column(
+
+
+                        children: [
+                          Row(
+                            children: <Widget>[
+                              Expanded(
+                                child: Divider(
+                                  thickness: 1,
+                                  color: Colors.white, // Cambia si tu fondo no es verde oscuro
+                                  //indent: 10,
+                                  endIndent: 10,
+                                ),
+                              ),
+                              Text(
+                                'ó',
+                                style: TextStyle(color: Colors.white), // O el color que uses para el texto
+                              ),
+                              Expanded(
+                                child: Divider(
+                                  thickness: 1,
+                                  color: Colors.white,
+                                  indent: 10,
+                                  //endIndent: 10,
+                                ),
+                              ),
+                            ],
+                          ),
+
+                          SizedBox(height: 15), // Espacio entre divider y google btn
+                          // with custom text
+                          SignInButton(
+                            Buttons.google,
+                            text: "Ingresa con Google",
+                            onPressed: () {},
+                            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
+                          ),
+                        ],
+                      )
+                  )
+
                 ],
               ),
             ),
