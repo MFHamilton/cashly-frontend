@@ -1,0 +1,1 @@
+//  guardar y recuperar datos en el dispositivo del usuario, como el token de autenticación
