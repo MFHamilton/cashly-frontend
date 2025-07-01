@@ -44,7 +44,7 @@ class IntroPage extends StatelessWidget {
                       text: 'Comenzar',
                     onPressed: (){
                         Navigator.of(context).push(
-                          MaterialPageRoute(builder: (context) => const LoginPage()),
+                          _createRoute(),
                         );
 
                     },
@@ -60,4 +60,19 @@ class IntroPage extends StatelessWidget {
       ),
     );
   }
+}
+
+Route _createRoute() {
+  return PageRouteBuilder(
+    pageBuilder: (context, animation, secondaryAnimation) => const LoginPage(),
+    transitionsBuilder: (context, animation, secondaryAnimation, child) {
+      const begin = Offset(0.0, 1.0);
+      const end = Offset.zero;
+      const curve = Curves.ease;
+
+      var tween = Tween(begin: begin, end: end).chain(CurveTween(curve: curve));
+
+      return SlideTransition(position: animation.drive(tween), child: child);
+    },
+  );
 }
