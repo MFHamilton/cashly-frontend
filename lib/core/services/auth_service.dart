@@ -3,10 +3,6 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-
-
-
-
 class AuthService {
   final _storage = const FlutterSecureStorage();
   final _baseUrl = "https://cashlyservice.onrender.com";
