@@ -34,7 +34,7 @@ class MyTextTheme {
     ),
     titleMedium: GoogleFonts.robotoCondensed(
       fontSize: 16,
-      fontWeight: FontWeight.w600,
+      fontWeight: FontWeight.w500,
     ),
     titleSmall: GoogleFonts.robotoCondensed(
       fontSize: 14,

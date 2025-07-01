@@ -53,7 +53,9 @@ class _LoginPageState extends State<LoginPage> {
                   Text(
                     'Correo Electrónico',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.surface
+                        color: Theme.of(context).colorScheme.surface,
+                      fontWeight: FontWeight.w600
+
                     ),
                   ),
                   SizedBox(height: 8),
@@ -67,7 +69,8 @@ class _LoginPageState extends State<LoginPage> {
                   Text(
                     'Contraseña',
                     style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                        color: Theme.of(context).colorScheme.surface
+                        color: Theme.of(context).colorScheme.surface,
+                        fontWeight: FontWeight.w600
                     ),
 
                   ),

@@ -79,9 +79,9 @@ flutter:
   fonts:
      - family: Logotype
        fonts:
-         - asset: fonts/Logotype.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
-  #         style: italic
+         - asset: assets/fonts/Logotype.ttf
+         - asset: assets/fonts/Logotype.regular.ttf
+           weight: 700
   #   - family: Trajan Pro
   #     fonts:
   #       - asset: fonts/TrajanPro.ttf
