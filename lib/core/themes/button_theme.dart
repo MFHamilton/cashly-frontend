@@ -7,7 +7,7 @@ class AppButtonTheme {
     style: ElevatedButton.styleFrom(
       backgroundColor: AppColorScheme.light.tertiary,
       foregroundColor: AppColorScheme.light.onTertiary,
-      textStyle: MyTextTheme.lightTextTheme.bodyLarge,
+      textStyle: MyTextTheme.lightTextTheme.titleMedium,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
       minimumSize: Size(double.infinity, 50),
     ),
