@@ -1,4 +1,5 @@
 
+import 'package:cashly/core/services/auth_service.dart';
 import 'package:cashly/core/widgets/input.dart';
 import 'package:flutter/material.dart';
 import 'package:sign_in_button/sign_in_button.dart';
@@ -19,6 +20,12 @@ class _LoginPageState extends State<LoginPage> {
   // su vaildacion
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  void login() async {
+    print("${emailController.text}, ${passwordController.text}");
+    await loginService(emailController.text, passwordController.text);
+    print("proceso de login finalizado");
+  }
 
   @override
   void dispose() {
@@ -97,9 +104,7 @@ class _LoginPageState extends State<LoginPage> {
 
                   CustomButton(
                     text: 'Iniciar sesión',
-                    onPressed: () {
-                      print('Botón presionado');
-                    },
+                    onPressed: login,
                   ),
 
                   SizedBox(height: 20),

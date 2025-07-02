@@ -3,7 +3,7 @@ import 'package:cashly/core/models/user_model.dart';
 import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:http/http.dart' as http;
 
-Future<http.Response?> loginService(String email, String pass) async {
+Future<String?> loginService(String email, String pass) async {
   // TODO: usar url correcta y mostrar mensaje adecuado
   try {
     final user = User(
@@ -15,15 +15,21 @@ Future<http.Response?> loginService(String email, String pass) async {
       usuarioFechaNacimiento: DateTime.now(),
     );
 
-    var url = Uri.https('', '');
+    var url = Uri(
+      scheme: 'http',
+      host: "10.0.2.2",
+      port: 3000,
+      path: '/auth/login',
+    );
+
     var response = await http.post(
       url,
-      body: user.toJson(),
+      body: userToJson(user),
       headers: {"Content-Type": "application/json"},
     );
 
     if (response.statusCode == 200) {
-      return jsonDecode(response.body);
+      return response.body;
     }
 
     return null;
