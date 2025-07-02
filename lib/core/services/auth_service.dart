@@ -1,84 +1,81 @@
+
 import 'dart:convert';
-import 'package:cashly/core/models/user_model.dart';
-import 'package:flutter/foundation.dart' show kDebugMode;
 import 'package:http/http.dart' as http;
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 
-Future<String?> loginService(String email, String pass) async {
-  // TODO: usar url correcta y mostrar mensaje adecuado
-  try {
-    final user = User(
-      usuarioNombre: "",
-      usuarioApellido: "",
-      usuarioCorreo: email,
-      usuarioPassword: pass,
-      usuarioPais: "",
-      usuarioFechaNacimiento: DateTime.now(),
+class AuthService {
+  final _storage = const FlutterSecureStorage();
+  final _baseUrl = "https://cashlyservice.onrender.com";
+
+  Future<String> register({
+    required String nombre,
+    required String apellido,
+    required String correo,
+    required String password,
+    required String pais,
+    String? moneda,
+    required DateTime fechaNacimiento,
+  }) async {
+    final uri = Uri.parse('$_baseUrl/auth/register');
+    final resp = await http.post(uri,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'usuario_nombre': nombre,
+        'usuario_apellido': apellido,
+        'usuario_correo': correo,
+        'usuario_password': password,
+        'usuario_pais': pais,
+        'usuario_moneda': moneda,
+        'usuario_fecha_nacimiento': fechaNacimiento.toIso8601String(),
+      }),
     );
-
-    var url = Uri(
-      scheme: 'http',
-      host: "10.0.2.2",
-      port: 3000,
-      path: '/auth/login',
-    );
-
-    var response = await http.post(
-      url,
-      body: userToJson(user),
-      headers: {"Content-Type": "application/json"},
-    );
-
-    if (response.statusCode == 200) {
-      return response.body;
+    if (resp.statusCode == 201) {
+      final token = json.decode(resp.body)['token'] as String;
+      await _storage.write(key: 'jwt', value: token);
+      return token;
+    } else {
+      throw Exception('Register failed: ${resp.body}');
     }
+  }
 
-    return null;
-  } catch (e) {
-    if (kDebugMode) {
-      print("error: $e");
+  Future<String> login({
+    required String correo,
+    required String password,
+  }) async {
+    final uri = Uri.parse('$_baseUrl/auth/login');
+    final resp = await http.post(uri,
+      headers: {'Content-Type': 'application/json'},
+      body: json.encode({
+        'usuario_correo': correo,
+        'usuario_password': password,
+      }),
+    );
+    if (resp.statusCode == 200) {
+      final token = json.decode(resp.body)['token'] as String;
+      await _storage.write(key: 'jwt', value: token);
+      return token;
+    } else {
+      throw Exception('Login failed: ${resp.body}');
     }
-    return null;
+  }
+
+  Future<Map<String, dynamic>> fetchProfile(int id) async {
+    final token = await _storage.read(key: 'jwt');
+    if (token == null) throw Exception('No JWT found');
+    final uri = Uri.parse('$_baseUrl/profile/$id');
+    final resp = await http.get(uri, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body) as Map<String, dynamic>;
+    } else {
+      throw Exception('Profile fetch failed: ${resp.body}');
+    }
+  }
+
+  Future<void> logout() async {
+    await _storage.delete(key: 'jwt');
   }
 }
 
-Future<http.Response?> registerService({
-  required String usuarioNombre,
-  required String usuarioApellido,
-  required String usuarioCorreo,
-  required String usuarioPassword,
-  required String usuarioPais,
-  String? usuarioMoneda,
-  required DateTime usuarioFechaNacimiento,
-}) async {
-  // TODO: usar url correcta y mostrar mensaje adecuado
-  try {
-    final user = User(
-      usuarioNombre: usuarioNombre,
-      usuarioApellido: usuarioApellido,
-      usuarioCorreo: usuarioCorreo,
-      usuarioPassword: usuarioPassword,
-      usuarioPais: usuarioPais,
-      usuarioFechaNacimiento: usuarioFechaNacimiento,
-    );
-
-    var url = Uri.https('', '');
-    var response = await http.post(
-      url,
-      body: user.toJson(),
-      headers: {"Content-Type": "application/json"},
-    );
-
-    if (kDebugMode) print(jsonDecode(response.body));
-
-    if (response.statusCode == 200) {
-      return jsonDecode(response.body);
-    }
-
-    return null;
-  } catch (e) {
-    if (kDebugMode) {
-      print("error: $e");
-    }
-    return null;
-  }
-}
