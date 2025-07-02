@@ -1,10 +1,17 @@
 import 'package:cashly/core/themes/app_themes.dart';
-import 'package:cashly/feautures/auth/presentation/login.dart';
 import 'package:cashly/feautures/intro/presentation/intro_page.dart';
+import 'package:cashly/firebase_options.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 
 
-void main() => runApp(MyApp());
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+
+  runApp(MyApp());
+
+}
 
 class MyApp extends StatelessWidget {
   @override
