@@ -1,4 +1,5 @@
 import 'package:cashly/core/constants/app_color.dart';
+import 'package:cashly/core/themes/text_scheme.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -91,6 +92,10 @@ class HomeScreen extends StatelessWidget {
                 ],
               ),
             ),
+            // TODO: alertas
+            // TODO: grafica de comparativa mensual
+
+            // TODO: fuente de ingresos
           ],
         ),
       ),
@@ -132,7 +137,9 @@ class CustomCard extends StatelessWidget {
                 SizedBox(width: 20),
                 Text(
                   cardTitle,
-                  style: TextStyle(color: AppColors.textPrimary, fontSize: 20),
+                  style: MyTextTheme.lightTextTheme.titleLarge?.copyWith(
+                    color: AppColors.textPrimary,
+                  ),
                 ),
               ],
             ),
@@ -141,7 +148,10 @@ class CustomCard extends StatelessWidget {
               children: [
                 Text(
                   "RD\$ ${amount.toStringAsFixed(2)}",
-                  style: TextStyle(color: AppColors.primary, fontSize: 25),
+                  style: MyTextTheme.lightTextTheme.displaySmall?.copyWith(
+                    color: AppColors.primary,
+                    fontSize: 25,
+                  ),
                 ),
               ],
             ),
@@ -150,7 +160,7 @@ class CustomCard extends StatelessWidget {
               children: [
                 Text(
                   bottomContent,
-                  style: TextStyle(color: AppColors.textPrimary, fontSize: 15),
+                  style: MyTextTheme.lightTextTheme.labelSmall?.copyWith(color: AppColors.textPrimary),
                 ),
               ],
             ),
