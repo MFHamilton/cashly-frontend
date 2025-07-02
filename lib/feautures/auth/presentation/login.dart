@@ -1,12 +1,11 @@
 
-import 'package:cashly/core/services/auth_service.dart';
 import 'package:cashly/core/widgets/input.dart';
 import 'package:flutter/material.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import '../../../core/widgets/custom_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-
-
+import 'package:cashly/core/services/auth_service.dart';
+import 'signin_screen.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -21,11 +20,6 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
 
-  void login() async {
-    /*print("${emailController.text}, ${passwordController.text}");
-    await loginService(emailController.text, passwordController.text);
-    print("proceso de login finalizado");*/
-  }
 
   @override
   void dispose() {
@@ -34,6 +28,7 @@ class _LoginPageState extends State<LoginPage> {
     passwordController.dispose();
     super.dispose();
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -107,19 +102,36 @@ class _LoginPageState extends State<LoginPage> {
 
                   CustomButton(
                     text: 'Iniciar sesión',
-                    onPressed: login,
+                    onPressed: () {
+                      print('Botón presionado');
+                    },
                   ),
 
                   SizedBox(height: 20),
                   Align(
                     alignment: Alignment.bottomCenter,
-                    child: Text(
-                      '¿No tienes cuenta aún? Regístrate Aquí',
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                          color: Theme.of(context).colorScheme.surface
+                    child: TextButton(
+                      style: TextButton.styleFrom(
+                        // quitar el padding por defecto si quieres
+                        padding: EdgeInsets.zero,
+                        // fondo transparente
+                        backgroundColor: Colors.transparent,
+                      ),
+                      onPressed: () {
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const RegisterPage()),
+                        );
+                      },
+                      child: Text(
+                        '¿No tienes cuenta aún? Regístrate Aquí',
+                        style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                          color: Theme.of(context).colorScheme.surface,
+                          decoration: TextDecoration.underline, // opcional
+                        ),
                       ),
                     ),
                   ),
+
 
                   SizedBox(height: 15), // Espacio entre texto y divider
 
