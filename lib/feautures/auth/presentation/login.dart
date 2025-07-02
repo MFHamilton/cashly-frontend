@@ -22,9 +22,9 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController passwordController = TextEditingController();
 
   void login() async {
-    print("${emailController.text}, ${passwordController.text}");
+    /*print("${emailController.text}, ${passwordController.text}");
     await loginService(emailController.text, passwordController.text);
-    print("proceso de login finalizado");
+    print("proceso de login finalizado");*/
   }
 
   @override
