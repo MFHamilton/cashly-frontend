@@ -62,29 +62,29 @@ class HomeScreen extends StatelessWidget {
                 childAspectRatio: 3 / 2,
                 children: [
                   CustomCard(
-                    titleIcon: Icons.account_circle_outlined,
-                    cardTitle: "Lorem ipsum",
+                    titleIcon: Icons.arrow_circle_up_sharp,
+                    cardTitle: "Ingresos",
                     amount: 30000,
                     bottomContent: "+5% al mes anterior",
                   ),
 
                   CustomCard(
                     titleIcon: Icons.account_circle_outlined,
-                    cardTitle: "Lorem ipsum",
+                    cardTitle: "Gastos",
                     amount: 30000,
                     bottomContent: "+5% al mes anterior",
                   ),
 
                   CustomCard(
                     titleIcon: Icons.account_circle_outlined,
-                    cardTitle: "Lorem ipsum",
+                    cardTitle: "Presupuesto",
                     amount: 30000,
                     bottomContent: "+5% al mes anterior",
                   ),
 
                   CustomCard(
                     titleIcon: Icons.account_circle_outlined,
-                    cardTitle: "Lorem ipsum",
+                    cardTitle: "Metas",
                     amount: 30000,
                     bottomContent: "+5% al mes anterior",
                   ),
@@ -116,13 +116,13 @@ class CustomCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16), // Bordes redondeados
+        borderRadius: BorderRadius.circular(8), // Bordes redondeados
       ),
       color: Colors.grey[300],
       elevation: 4,
-      margin: EdgeInsets.all(12),
+      margin: EdgeInsets.all(8),
       child: Padding(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(12),
         child: Column(
           children: [
             // Title row
@@ -141,7 +141,7 @@ class CustomCard extends StatelessWidget {
               children: [
                 Text(
                   "RD\$ ${amount.toStringAsFixed(2)}",
-                  style: TextStyle(color: AppColors.primary, fontSize: 30),
+                  style: TextStyle(color: AppColors.primary, fontSize: 25),
                 ),
               ],
             ),
