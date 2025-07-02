@@ -52,8 +52,10 @@ class _LoginPageState extends State<LoginPage> {
                 children: [
                   Text(
                     'Correo Electrónico',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.surface
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.surface,
+                      fontWeight: FontWeight.w600
+
                     ),
                   ),
                   SizedBox(height: 8),
@@ -66,8 +68,9 @@ class _LoginPageState extends State<LoginPage> {
 
                   Text(
                     'Contraseña',
-                    style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                        color: Theme.of(context).colorScheme.surface
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: Theme.of(context).colorScheme.surface,
+                        fontWeight: FontWeight.w600
                     ),
 
                   ),
@@ -84,7 +87,7 @@ class _LoginPageState extends State<LoginPage> {
                     alignment: Alignment.bottomRight,
                     child: Text(
                       '¿Olvidaste tu contraseña?',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.surface
                       ),
 
@@ -107,7 +110,7 @@ class _LoginPageState extends State<LoginPage> {
                     alignment: Alignment.bottomCenter,
                     child: Text(
                       '¿No tienes cuenta aún? Regístrate Aquí',
-                      style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
                           color: Theme.of(context).colorScheme.surface
                       ),
                     ),
