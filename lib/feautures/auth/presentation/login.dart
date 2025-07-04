@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:sign_in_button/sign_in_button.dart';
 import '../../../core/widgets/custom_button.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import '../../../core/services/auth_service.dart';
 
 
 
@@ -19,6 +20,9 @@ class _LoginPageState extends State<LoginPage> {
   // su vaildacion
   final TextEditingController emailController = TextEditingController();
   final TextEditingController passwordController = TextEditingController();
+
+  final AuthService _auth = AuthService();
+
 
   @override
   void dispose() {
@@ -154,7 +158,19 @@ class _LoginPageState extends State<LoginPage> {
                           SignInButton(
                             Buttons.google,
                             text: "Ingresa con Google",
-                            onPressed: () {},
+                            onPressed: () async{
+                              await _auth.signInWithGoogle();
+
+                              // Verifica si el usuario se autenticó correctamente
+                              final user = _auth.currentUser;
+                              if (user != null) {
+                                // Puedes navegar a otra pantalla, mostrar mensaje, etc.
+                                print('Sesión iniciada como: ${user.displayName}');
+                                // Navigator.pushReplacement(...);
+                              } else {
+                                print('Error o usuario canceló el login');
+                              }
+                            },
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
                           ),
                         ],
