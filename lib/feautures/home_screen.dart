@@ -66,31 +66,31 @@ class HomeScreen extends StatelessWidget {
               physics: NeverScrollableScrollPhysics(),
               children: [
                 CustomCard(
-                  titleIcon: Icons.arrow_circle_up_sharp,
+                  titleIcon: Icons.trending_up,
                   cardTitle: "Ingresos",
-                  amount: 30000,
+                  amount: 50000,
                   bottomContent: "+5% al mes anterior",
                 ),
 
                 CustomCard(
-                  titleIcon: Icons.account_circle_outlined,
+                  titleIcon: Icons.trending_down,
                   cardTitle: "Gastos",
-                  amount: 30000,
-                  bottomContent: "+5% al mes anterior",
+                  amount: 32000,
+                  bottomContent: "-5% al mes anterior",
                 ),
 
                 CustomCard(
-                  titleIcon: Icons.account_circle_outlined,
+                  titleIcon: Icons.wallet,
                   cardTitle: "Presupuesto",
-                  amount: 30000,
-                  bottomContent: "+5% al mes anterior",
+                  amount: 32500,
+                  bottomContent: "de RD\$50,000",
                 ),
 
                 CustomCard(
-                  titleIcon: Icons.account_circle_outlined,
+                  titleIcon: Icons.credit_score,
                   cardTitle: "Metas",
-                  amount: 30000,
-                  bottomContent: "+5% al mes anterior",
+                  amount: 83000,
+                  bottomContent: "de RD\$100,000",
                 ),
               ],
             ),
@@ -357,11 +357,60 @@ class IncomeCard extends StatelessWidget {
         padding: EdgeInsets.all(12),
         child: Row(
           children: [
+            Container(
+              width: 16,
+              height: 16,
+              decoration: BoxDecoration(
+                color: Colors.green,
+                shape: BoxShape.circle,
+              ),
+            ),
+            SizedBox(width: 12),
             // TODO: salario mensual y fecha
-            Column(children: [Text("Salario $frequency"), Text(date)]),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Salario $frequency",
+                  style: MyTextTheme.lightTextTheme.bodyLarge?.copyWith(
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+                Text(
+                  date,
+                  style: MyTextTheme.lightTextTheme.bodySmall?.copyWith(
+                    color: AppColors.textPrimary,
+                  ),
+                ),
+              ],
+            ),
             Spacer(),
-            // TODO: cantidad
-            Column(children: [Text("+RD\$$amount"), Text("Salario")]),
+            // cantidad
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Text(
+                  "+RD\$$amount",
+                  style: MyTextTheme.lightTextTheme.bodyLarge?.copyWith(
+                    color: AppColors.secondary,
+                    fontWeight: FontWeight.w700,
+                  ),
+                ),
+                Container(
+                  padding: EdgeInsets.symmetric(horizontal: 16, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: AppColors.secondary,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Text(
+                    "Salario",
+                    style: MyTextTheme.lightTextTheme.bodyMedium?.copyWith(
+                      color: AppColors.background,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
