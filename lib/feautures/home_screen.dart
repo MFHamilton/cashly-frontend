@@ -1,11 +1,45 @@
 import 'package:cashly/core/constants/app_color.dart';
+import 'package:cashly/core/models/dashboard_model.dart';
 import 'package:cashly/core/themes/text_scheme.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-class HomeScreen extends StatelessWidget {
+import '../core/services/dashboard_service.dart';
+
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  late Future<DashboardModel> dashboardFuture;
+
+  final incomeData = [
+    {"frecuencia": "Mensual", "fecha": "12-06-2025", "amount": 30000},
+    {"frecuencia": "Mensual", "fecha": "12-06-2025", "amount": 30000},
+    {"frecuencia": "Mensual", "fecha": "12-06-2025", "amount": 30000},
+    {"frecuencia": "Mensual", "fecha": "12-06-2025", "amount": 30000},
+    {"frecuencia": "Mensual", "fecha": "12-06-2025", "amount": 30000},
+  ];
+
+  final chartData = [
+    {'day': '21/03', 'amount': 50.0},
+    {'day': '22/03', 'amount': 73.0},
+    {'day': '23/03', 'amount': 35.0},
+    {'day': '24/03', 'amount': 110.0},
+    {'day': '25/03', 'amount': 90.0},
+    {'day': '26/03', 'amount': 90.0},
+    {'day': '27/03', 'amount': 25.0},
+  ];
+
+  @override
+  void initState() {
+    super.initState();
+    dashboardFuture = DashboardService.fetchDashboardData();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -59,40 +93,30 @@ class HomeScreen extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            GridView.count(
-              crossAxisCount: 2,
-              childAspectRatio: 3 / 2,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(),
-              children: [
-                CustomCard(
-                  titleIcon: Icons.trending_up,
-                  cardTitle: "Ingresos",
-                  amount: 50000,
-                  bottomContent: "+5% al mes anterior",
-                ),
-
-                CustomCard(
-                  titleIcon: Icons.trending_down,
-                  cardTitle: "Gastos",
-                  amount: 32000,
-                  bottomContent: "-5% al mes anterior",
-                ),
-
-                CustomCard(
-                  titleIcon: Icons.wallet,
-                  cardTitle: "Presupuesto",
-                  amount: 32500,
-                  bottomContent: "de RD\$50,000",
-                ),
-
-                CustomCard(
-                  titleIcon: Icons.credit_score,
-                  cardTitle: "Metas",
-                  amount: 83000,
-                  bottomContent: "de RD\$100,000",
-                ),
-              ],
+            // TODO: probar el endpoint dashboard
+            FutureBuilder<DashboardModel>(
+              future: dashboardFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text("Error: ${snapshot.error}");
+                } else if (snapshot.hasData) {
+                  final data = snapshot.data!;
+                  return HomeScreenDashBoard(
+                    incomeMonthlyAmount: data.incomeMonthlyAmount,
+                    percentageIncome: data.percentageIncome,
+                    costsMonthlyAmount: data.costsMonthlyAmount,
+                    percentageCosts: data.percentageCosts,
+                    budgetUnused: data.budgetUnused,
+                    budgetAmount: data.budgetAmount,
+                    amountInGoal: data.amountInGoal,
+                    goalAmount: data.goalAmount,
+                  );
+                } else {
+                  return Text("Sin datos");
+                }
+              },
             ),
             // TODO: alertas
             // Gráfica de comparativa mensual
@@ -100,17 +124,81 @@ class HomeScreen extends StatelessWidget {
               "Comparativa Mensual",
               style: MyTextTheme.lightTextTheme.titleLarge,
             ),
-            MonthlyBarChart(),
-            // TODO: fuente de ingresos
+            MonthlyBarChart(data: chartData),
+            // fuente de ingresos
             SizedBox(height: 20),
             Text(
               "Fuentes de Ingresos",
               style: MyTextTheme.lightTextTheme.titleLarge,
             ),
-            IncomeList(),
+            IncomeList(data: incomeData),
           ],
         ),
       ),
+    );
+  }
+}
+
+class HomeScreenDashBoard extends StatelessWidget {
+  const HomeScreenDashBoard({
+    super.key,
+    required this.incomeMonthlyAmount,
+    required this.percentageIncome,
+    required this.costsMonthlyAmount,
+    required this.percentageCosts,
+    required this.budgetUnused,
+    required this.budgetAmount,
+    required this.amountInGoal,
+    required this.goalAmount,
+  });
+
+  final double incomeMonthlyAmount;
+  final double percentageIncome;
+  final double costsMonthlyAmount;
+  final double percentageCosts;
+  final double budgetUnused;
+  final double budgetAmount;
+  final double amountInGoal; // TODO: cambiar el nombre de esta variable
+  final double goalAmount;
+
+  @override
+  Widget build(BuildContext context) {
+    return GridView.count(
+      crossAxisCount: 2,
+      childAspectRatio: 3 / 2,
+      shrinkWrap: true,
+      physics: NeverScrollableScrollPhysics(),
+      children: [
+        CustomCard(
+          titleIcon: Icons.trending_up,
+          cardTitle: "Ingresos",
+          amount: incomeMonthlyAmount,
+          bottomContent:
+              "${percentageIncome * 100 > 0 ? '+${percentageIncome * 100}' : '-${percentageIncome * 100}'}% al mes anterior",
+        ),
+
+        CustomCard(
+          titleIcon: Icons.trending_down,
+          cardTitle: "Gastos",
+          amount: costsMonthlyAmount,
+          bottomContent:
+              "${percentageCosts * 100 > 0 ? "+${percentageCosts * 100}" : "-${percentageCosts * 100}"}% al mes anterior",
+        ),
+
+        CustomCard(
+          titleIcon: Icons.wallet,
+          cardTitle: "Presupuesto",
+          amount: budgetUnused,
+          bottomContent: "de RD\$$budgetAmount",
+        ),
+
+        CustomCard(
+          titleIcon: Icons.credit_score,
+          cardTitle: "Metas",
+          amount: amountInGoal,
+          bottomContent: "de RD\$$goalAmount",
+        ),
+      ],
     );
   }
 }
@@ -195,21 +283,13 @@ class CustomCard extends StatelessWidget {
 }
 
 class MonthlyBarChart extends StatelessWidget {
-  const MonthlyBarChart({super.key});
+  const MonthlyBarChart({super.key, required this.data});
+
+  final List<Map<String, Object>> data;
 
   @override
   Widget build(BuildContext context) {
-    const barColor = AppColors.primary; // Verde oscuro
-
-    final data = [
-      {'day': '21/03', 'amount': 50.0},
-      {'day': '22/03', 'amount': 73.0},
-      {'day': '23/03', 'amount': 35.0},
-      {'day': '24/03', 'amount': 110.0},
-      {'day': '25/03', 'amount': 90.0},
-      {'day': '26/03', 'amount': 90.0},
-      {'day': '27/03', 'amount': 25.0},
-    ];
+    const barColor = AppColors.primary;
 
     return SizedBox(
       height: 250,
@@ -304,15 +384,9 @@ class MonthlyBarChart extends StatelessWidget {
 }
 
 class IncomeList extends StatelessWidget {
-  IncomeList({super.key});
+  const IncomeList({super.key, required this.data});
 
-  final data = [
-    {"frecuencia": "Mensual", "fecha": "12-06-2025", "amount": 30000},
-    {"frecuencia": "Mensual", "fecha": "12-06-2025", "amount": 30000},
-    {"frecuencia": "Mensual", "fecha": "12-06-2025", "amount": 30000},
-    {"frecuencia": "Mensual", "fecha": "12-06-2025", "amount": 30000},
-    {"frecuencia": "Mensual", "fecha": "12-06-2025", "amount": 30000},
-  ];
+  final List<Map<String, Object>> data;
 
   @override
   Widget build(BuildContext context) {
