@@ -7,6 +7,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:cashly/core/services/auth_service.dart';
 import 'signin_screen.dart';
 
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -171,7 +172,19 @@ class _LoginPageState extends State<LoginPage> {
                           SignInButton(
                             Buttons.google,
                             text: "Ingresa con Google",
-                            onPressed: () {},
+                            onPressed: () async{
+                              await _auth.signInWithGoogle();
+
+                              // Verifica si el usuario se autenticó correctamente
+                              final user = _auth.currentUser;
+                              if (user != null) {
+                                // Puedes navegar a otra pantalla, mostrar mensaje, etc.
+                                print('Sesión iniciada como: ${user.displayName}');
+                                // Navigator.pushReplacement(...);
+                              } else {
+                                print('Error o usuario canceló el login');
+                              }
+                            },
                             shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
                           ),
                         ],
