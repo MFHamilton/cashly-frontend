@@ -1,6 +1,5 @@
 import 'package:cashly/core/themes/app_themes.dart';
 import 'package:cashly/feautures/auth/presentation/login.dart';
-import 'package:cashly/feautures/home_screen.dart';
 import 'package:cashly/feautures/intro/presentation/intro_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
@@ -17,7 +16,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
       theme: AppTheme.lightTheme,
-      home: HomeScreen(),
+      home: IntroPage(),
     );
   }
 }
