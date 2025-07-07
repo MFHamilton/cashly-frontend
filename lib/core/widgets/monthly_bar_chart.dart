@@ -1,8 +1,8 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
-import '../constants/app_color.dart';
-import '../models/home_screen_chart.dart';
+import '../constants/app_color.dart' show AppColors;
+import '../models/home_screen_chart.dart' show HomeScreenChartModel;
 
 class MonthlyBarChart extends StatelessWidget {
   const MonthlyBarChart({super.key, required this.data});
