@@ -50,8 +50,10 @@ class DefaultFirebaseOptions {
     }
   }
 
-  static const FirebaseOptions android = FirebaseOptions(
-    apiKey: dotenv.env['API_KEY'],
+  static final String key = dotenv.env['API_KEY'] ?? ' ';
+
+  static FirebaseOptions android = FirebaseOptions(
+    apiKey: key,
     appId: '1:946215975972:android:7e91f3e4cfa599f5f86cb1',
     messagingSenderId: '946215975972',
     projectId: 'cashly-6766a',
