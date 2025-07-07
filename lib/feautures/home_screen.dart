@@ -1,5 +1,7 @@
 import 'package:cashly/core/constants/app_color.dart';
-import 'package:cashly/core/models/dashboard_model.dart';
+import 'package:cashly/core/models/dashboard.dart';
+import 'package:cashly/core/models/home_screen_income.dart';
+import 'package:cashly/core/models/home_screen_chart.dart';
 import 'package:cashly/core/themes/text_scheme.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -16,6 +18,8 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   late Future<DashboardModel> dashboardFuture;
+  late Future<List<HomeScreenChartModel>> chartFuture;
+  late Future<List<HomeScreenIncomeModel>> incomeFuture;
 
   final incomeData = [
     {"frecuencia": "Mensual", "fecha": "12-06-2025", "amount": 30000},
@@ -25,20 +29,11 @@ class _HomeScreenState extends State<HomeScreen> {
     {"frecuencia": "Mensual", "fecha": "12-06-2025", "amount": 30000},
   ];
 
-  final chartData = [
-    {'day': '21/03', 'amount': 50.0},
-    {'day': '22/03', 'amount': 73.0},
-    {'day': '23/03', 'amount': 35.0},
-    {'day': '24/03', 'amount': 110.0},
-    {'day': '25/03', 'amount': 90.0},
-    {'day': '26/03', 'amount': 90.0},
-    {'day': '27/03', 'amount': 25.0},
-  ];
-
   @override
   void initState() {
     super.initState();
     dashboardFuture = DashboardService.fetchDashboardData();
+    chartFuture = DashboardService.fetchChartData();
   }
 
   @override
@@ -124,14 +119,43 @@ class _HomeScreenState extends State<HomeScreen> {
               "Comparativa Mensual",
               style: MyTextTheme.lightTextTheme.titleLarge,
             ),
-            MonthlyBarChart(data: chartData),
+            // TODO: probar endpoint integrado
+            FutureBuilder<List<HomeScreenChartModel>>(
+              future: chartFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text("Error: ${snapshot.error}");
+                } else if (snapshot.hasData) {
+                  final data = snapshot.data!;
+                  return MonthlyBarChart(data: data);
+                } else {
+                  return Text("Sin datos");
+                }
+              },
+            ),
             // fuente de ingresos
             SizedBox(height: 20),
             Text(
               "Fuentes de Ingresos",
               style: MyTextTheme.lightTextTheme.titleLarge,
             ),
-            IncomeList(data: incomeData),
+            FutureBuilder<List<HomeScreenIncomeModel>>(
+              future: incomeFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text("${snapshot.error}");
+                } else if (snapshot.hasData) {
+                  final data = snapshot.data!;
+                  return IncomeList(data: data);
+                } else {
+                  return Text("Sin datos");
+                }
+              },
+            ),
           ],
         ),
       ),
@@ -158,7 +182,7 @@ class HomeScreenDashBoard extends StatelessWidget {
   final double percentageCosts;
   final double budgetUnused;
   final double budgetAmount;
-  final double amountInGoal; // TODO: cambiar el nombre de esta variable
+  final double amountInGoal;
   final double goalAmount;
 
   @override
@@ -285,7 +309,7 @@ class CustomCard extends StatelessWidget {
 class MonthlyBarChart extends StatelessWidget {
   const MonthlyBarChart({super.key, required this.data});
 
-  final List<Map<String, Object>> data;
+  final List<HomeScreenChartModel> data;
 
   @override
   Widget build(BuildContext context) {
@@ -320,7 +344,7 @@ class MonthlyBarChart extends StatelessWidget {
                       return Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(
-                          data[value.toInt()]['day'].toString(),
+                          data[value.toInt()].formattedDay,
                           style: const TextStyle(fontSize: 10),
                         ),
                       );
@@ -331,7 +355,7 @@ class MonthlyBarChart extends StatelessWidget {
               ),
               barGroups: List.generate(data.length, (index) {
                 final item = data[index];
-                final value = item['amount'] as double;
+                final value = item.amount;
                 return BarChartGroupData(
                   x: index,
                   barRods: [
@@ -364,7 +388,7 @@ class MonthlyBarChart extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.topCenter,
                           child: Text(
-                            '\$${item['amount']!.toString()}',
+                            '\$${item.amount.toString()}',
                             style: const TextStyle(
                               fontSize: 12,
                               fontWeight: FontWeight.bold,
@@ -386,7 +410,7 @@ class MonthlyBarChart extends StatelessWidget {
 class IncomeList extends StatelessWidget {
   const IncomeList({super.key, required this.data});
 
-  final List<Map<String, Object>> data;
+  final List<HomeScreenIncomeModel> data;
 
   @override
   Widget build(BuildContext context) {
@@ -397,9 +421,9 @@ class IncomeList extends StatelessWidget {
       itemBuilder: (context, index) {
         final item = data[index];
         return IncomeCard(
-          frequency: item["frecuencia"].toString(),
-          date: item["fecha"].toString(),
-          amount: double.parse(item["amount"].toString()),
+          frequency: item.frequency,
+          date: item.toString(),
+          amount: item.amount,
         );
       },
     );

@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'package:cashly/core/models/home_screen_income.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import '../models/dashboard_model.dart';
+import '../models/dashboard.dart';
+import '../models/home_screen_chart.dart';
 
 class DashboardService {
   static const FlutterSecureStorage _storage = FlutterSecureStorage();
@@ -22,6 +24,45 @@ class DashboardService {
       return DashboardModel.fromJson(data);
     } else {
       throw Exception('Error al cargar datos del dashboard');
+    }
+  }
+
+  static Future<List<HomeScreenChartModel>> fetchChartData() async {
+    final token = await _storage.read(key: "jwt");
+    final response = await http.get(
+      Uri.parse("$baseUrl/dashboard/chart"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      final dataList =
+          data.map((e) => HomeScreenChartModel.fromJson(e)).toList();
+      return dataList;
+    } else {
+      throw Exception("Error al cargar datos de la gráfica");
+    }
+  }
+
+  static Future<List<HomeScreenIncomeModel>> fetchIncomeList() async {
+    final token = await _storage.read(key: "token");
+    final response = await http.get(
+      Uri.parse("$baseUrl/dashboard/income"),
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = jsonDecode(response.body);
+      final dataList = data.map((e) => HomeScreenIncomeModel.fromJson(e)).toList();
+      return dataList;
+    } else {
+      throw Exception("Error al cargar datos de ingresos");
     }
   }
 }
