@@ -1,15 +1,16 @@
 import 'dart:convert';
-import 'package:cashly/core/models/home_screen_income.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-import '../models/dashboard.dart';
-import '../models/home_screen_chart.dart';
 
-class DashboardService {
+import '../models/dashboard.dart' show HomeScreenDashboardModel;
+import '../models/home_screen_chart.dart' show HomeScreenChartModel;
+import '../models/home_screen_income.dart' show HomeScreenIncomeModel;
+
+class HomeScreenService {
   static const FlutterSecureStorage _storage = FlutterSecureStorage();
   static const String baseUrl = 'https://cashlyservice.onrender.com';
 
-  static Future<DashboardModel> fetchDashboardData() async {
+  static Future<HomeScreenDashboardModel> fetchDashboardData() async {
     final token = await _storage.read(key: 'jwt');
     final response = await http.get(
       Uri.parse('$baseUrl/dashboard'),
@@ -21,7 +22,7 @@ class DashboardService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      return DashboardModel.fromJson(data);
+      return HomeScreenDashboardModel.fromJson(data);
     } else {
       throw Exception('Error al cargar datos del dashboard');
     }
@@ -59,7 +60,8 @@ class DashboardService {
 
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
-      final dataList = data.map((e) => HomeScreenIncomeModel.fromJson(e)).toList();
+      final dataList =
+          data.map((e) => HomeScreenIncomeModel.fromJson(e)).toList();
       return dataList;
     } else {
       throw Exception("Error al cargar datos de ingresos");
