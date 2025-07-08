@@ -1,4 +1,4 @@
-class HomeScreenDashboardModel {
+class DashboardModel {
   final double incomeMonthlyAmount;
   final double percentageIncome;
   final double costsMonthlyAmount;
@@ -8,7 +8,7 @@ class HomeScreenDashboardModel {
   final double amountInGoal;
   final double goalAmount;
 
-  HomeScreenDashboardModel({
+  DashboardModel({
     required this.incomeMonthlyAmount,
     required this.percentageIncome,
     required this.costsMonthlyAmount,
@@ -19,8 +19,8 @@ class HomeScreenDashboardModel {
     required this.goalAmount,
   });
 
-  factory HomeScreenDashboardModel.fromJson(Map<String, dynamic> json) {
-    return HomeScreenDashboardModel(
+  factory DashboardModel.fromJson(Map<String, dynamic> json) {
+    return DashboardModel(
       incomeMonthlyAmount: (json['incomeMonthlyAmount'] ?? 0).toDouble(),
       percentageIncome: (json['percentageIncome'] ?? 0).toDouble(),
       costsMonthlyAmount: (json['costsMonthlyAmount'] ?? 0).toDouble(),

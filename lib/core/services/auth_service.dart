@@ -1,11 +1,22 @@
 
+import 'dart:async';
 import 'dart:convert';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:http/http.dart' as http;
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+
 
 class AuthService {
   final _storage = const FlutterSecureStorage();
   final _baseUrl = "https://cashlyservice.onrender.com";
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn.instance;
+  final String _serverClientId = '946215975972-pfrv4m5f1mms7s39chb9ldic6fg5buqv.apps.googleusercontent.com';
+
+  GoogleSignInAccount? _currentUser;
+  GoogleSignInAccount? get currentUser => _currentUser;
+  StreamSubscription<GoogleSignInAuthenticationEvent>? _authSub;
 
   Future<String> register({
     required String nombre,
@@ -77,5 +88,37 @@ class AuthService {
   Future<void> logout() async {
     await _storage.delete(key: 'jwt');
   }
+
+  // Google SignIn
+  Future<void> init() async {
+    await _googleSignIn.initialize(
+      serverClientId: _serverClientId,
+    );
+
+    _authSub = _googleSignIn.authenticationEvents.listen(_handleAuthEvent);
+    _googleSignIn.attemptLightweightAuthentication();
+  }
+
+  void _handleAuthEvent(GoogleSignInAuthenticationEvent event) {
+    switch (event) {
+      case GoogleSignInAuthenticationEventSignIn():
+        _currentUser = event.user;
+        print('Usuario autenticado: ${_currentUser?.displayName}');
+        break;
+      case GoogleSignInAuthenticationEventSignOut():
+        _currentUser = null;
+        print('Sesión cerrada');
+        break;
+    }
+  }
+
+  Future<void> signInWithGoogle() async {
+    try {
+      await _googleSignIn.authenticate();
+    } catch (e) {
+      print('Error al iniciar sesión: $e');
+    }
+  }
+
 }
 
