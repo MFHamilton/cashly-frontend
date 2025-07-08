@@ -8,25 +8,28 @@ import 'package:intl/date_symbol_data_local.dart';
 
 
 Future<void> main() async {
-  
+
   WidgetsFlutterBinding.ensureInitialized();
-  
+
   await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
-  
+
   await dotenv.load(); // Cargando las variables de entorno
-  
+
   await initializeDateFormatting('es', null);
   runApp(MyApp());
 
 }
 
 class MyApp extends StatelessWidget {
+  const MyApp({super.key});
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Material App',
      theme: AppTheme.lightTheme,
       home: IntroPage(),
+
     );
   }
 }
