@@ -40,8 +40,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       drawer: const MenuLateralScreen(),
       appBar: Header(),
-
-
       body: SingleChildScrollView(
         padding: EdgeInsets.all(8.0),
         child: Column(
@@ -119,9 +117,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
-
     );
-
-
   }
 }
