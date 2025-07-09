@@ -6,19 +6,20 @@ class Header extends StatelessWidget  implements PreferredSizeWidget {
 
 
   @override
-  Size get preferredSize => const Size.fromHeight(kToolbarHeight);
+  Size get preferredSize => const Size.fromHeight(kToolbarHeight + 20);
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       automaticallyImplyLeading: false,
+      toolbarHeight: kToolbarHeight + 20,
 
       flexibleSpace: SafeArea(
 
         child: Container(
 
           width: double.infinity,
-          padding: const EdgeInsets.symmetric(horizontal: 25),
+          padding: const EdgeInsets.only(top: 16, left: 25, right: 25),
 
           child: Row(
 
@@ -27,7 +28,7 @@ class Header extends StatelessWidget  implements PreferredSizeWidget {
 
             children: [
               IconButton(
-                icon: const Icon(Icons.menu),
+                icon: const Icon(Icons.menu, size: 28,),
                 onPressed: () {
                   Scaffold.of(context).openDrawer();
                 },
@@ -40,7 +41,7 @@ class Header extends StatelessWidget  implements PreferredSizeWidget {
               ),
 
               IconButton(
-                icon: const Icon(Icons.account_circle_outlined),
+                icon: const Icon(Icons.account_circle_outlined, size: 28,),
                 onPressed: () {
                   ScaffoldMessenger.of(context).showSnackBar(
                     const SnackBar(content: Text("Perfil presionado")),

@@ -12,7 +12,6 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.primary,
-      //backgroundColor: Colors.transparent,
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.zero,
       ),
