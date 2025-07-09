@@ -1,6 +1,7 @@
 import 'package:cashly/core/themes/app_themes.dart';
 import 'package:cashly/feautures/home/presentation/home_screen.dart';
 import 'package:cashly/feautures/intro/presentation/intro_page.dart';
+import 'package:cashly/feautures/test/testingPage.dart';
 import 'package:cashly/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
@@ -29,7 +30,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
      theme: AppTheme.lightTheme,
-      home: HomeScreen(),
+      home: TestingPage(),
 
     );
   }
