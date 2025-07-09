@@ -1,15 +1,9 @@
+import 'package:cashly/core/widgets/menu.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
 class Header extends StatelessWidget  implements PreferredSizeWidget {
-  final VoidCallback onMenuPressed;
-  final VoidCallback onProfilePressed;
 
-  const Header({
-    super.key,
-    required this.onMenuPressed,
-    required this.onProfilePressed,
-  });
 
   @override
   Size get preferredSize => const Size.fromHeight(kToolbarHeight);
@@ -35,9 +29,7 @@ class Header extends StatelessWidget  implements PreferredSizeWidget {
               IconButton(
                 icon: const Icon(Icons.menu),
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Menú presionado")),
-                  );
+                  Scaffold.of(context).openDrawer();
                 },
                 color: Theme.of(context).colorScheme.primary,
               ),

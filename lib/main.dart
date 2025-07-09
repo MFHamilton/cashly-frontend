@@ -1,4 +1,5 @@
 import 'package:cashly/core/themes/app_themes.dart';
+import 'package:cashly/feautures/home/presentation/home_screen.dart';
 import 'package:cashly/feautures/intro/presentation/intro_page.dart';
 import 'package:cashly/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -11,9 +12,9 @@ Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+  //await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
 
-  await dotenv.load(); // Cargando las variables de entorno
+  //await dotenv.load(); // Cargando las variables de entorno
 
   await initializeDateFormatting('es', null);
   runApp(MyApp());
@@ -28,7 +29,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
      theme: AppTheme.lightTheme,
-      home: IntroPage(),
+      home: HomeScreen(),
 
     );
   }

@@ -1,9 +1,11 @@
 import 'package:cashly/core/constants/app_color.dart';
 import 'package:cashly/core/models/dashboard.dart';
 import 'package:cashly/core/themes/text_scheme.dart';
+import 'package:cashly/core/widgets/menu.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 
 import '../../../core/models/home_screen_chart.dart';
 import '../../../core/models/home_screen_income.dart';
@@ -36,18 +38,10 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: Header(
-        onMenuPressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Menú presionado")),
-          );
-        },
-        onProfilePressed: () {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(content: Text("Perfil presionado")),
-          );
-        },
-      ),
+      drawer: const MenuLateralScreen(),
+      appBar: Header(),
+
+
       body: SingleChildScrollView(
         padding: EdgeInsets.all(8.0),
         child: Column(
