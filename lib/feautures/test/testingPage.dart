@@ -16,7 +16,7 @@ class _TestingPageState extends State<TestingPage> {
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Center(
         child: FormInput(
-          title: 'Nombre del Ingreso',
+          title: 'Nombre del Ingreo',
           icon: Icons.sell,
           inputController: inputController,
         )
