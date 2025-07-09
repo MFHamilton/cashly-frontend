@@ -1,5 +1,6 @@
 
   import 'package:cashly/core/widgets/input.dart';
+import 'package:cashly/feautures/home/presentation/home_screen.dart';
   import 'package:flutter/material.dart';
   import 'package:sign_in_button/sign_in_button.dart';
 
@@ -107,6 +108,9 @@
                       text: 'Iniciar sesión',
                       onPressed: () {
                         print('Botón presionado');
+                        Navigator.of(context).push(
+                          MaterialPageRoute(builder: (_) => const HomeScreen()),
+                        );
                       },
                     ),
 
