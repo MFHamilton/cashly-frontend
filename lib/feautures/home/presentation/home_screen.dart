@@ -1,12 +1,8 @@
-import 'package:cashly/core/constants/app_color.dart';
 import 'package:cashly/core/models/dashboard.dart';
 import 'package:cashly/core/themes/text_scheme.dart';
 import 'package:cashly/core/widgets/menu.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
-
-
 import '../../../core/models/home_screen_chart.dart';
 import '../../../core/models/home_screen_income.dart';
 import '../../../core/services/home_screen_service.dart';
@@ -40,11 +36,10 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       drawer: const MenuLateralScreen(),
       appBar: Header(),
-
-
       body: SingleChildScrollView(
         padding: EdgeInsets.all(8.0),
         child: Column(
+
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //Header(),
