@@ -12,14 +12,24 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
   Widget build(BuildContext context) {
     return Drawer(
       backgroundColor: Theme.of(context).colorScheme.primary,
+      //backgroundColor: Colors.transparent,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.zero,
+      ),
       child: ListView(
         padding: const EdgeInsets.only(top: 50),
         children: [
-          const Padding(
-            padding: EdgeInsets.symmetric(horizontal: 2),
-            child: Icon(Icons.menu, color: Colors.white, size: 28),
+          Align(
+              alignment: Alignment.centerLeft,
+              child: Padding(
+                padding: EdgeInsets.symmetric(horizontal: 20),
+                child: Icon(Icons.menu, color: Colors.white, size: 28),
+
+              )
+
           ),
-          const SizedBox(height: 20),
+
+          SizedBox(height: 20),
 
           _buildMenuItem(
             title: "Ingresos",
@@ -40,7 +50,6 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
         ],
       ),
 
-      //body: const Center(child: Text("Contenido principal")),
     );
   }
 
@@ -53,7 +62,7 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
         dividerColor: Colors.transparent,
         unselectedWidgetColor: Colors.white,
         textTheme: Theme.of(context).textTheme.apply(
-          bodyColor: Colors.white,
+          bodyColor: Theme.of(context).colorScheme.surface,
         ),
       ),
       child: ExpansionTile(
@@ -64,8 +73,8 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
             fontWeight: FontWeight.bold,
           ),
         ),
-        iconColor: Colors.white,
-        collapsedIconColor: Colors.white,
+        iconColor: Theme.of(context).colorScheme.surface,
+        collapsedIconColor: Theme.of(context).colorScheme.surface,
         children: subItems.map((item) {
           return ListTile(
             title: Text(
