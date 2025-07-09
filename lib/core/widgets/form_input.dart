@@ -5,6 +5,10 @@ class FormInput extends StatelessWidget {
   final String hintText;
   final String title;
   final IconData? icon;
+  final TextInputType? keyboardType;
+  final String? prefixText;
+  final FormFieldValidator<String>? validator;
+  final int? maxLength;
 
 
   const FormInput({
@@ -12,7 +16,11 @@ class FormInput extends StatelessWidget {
     required this.inputController,
     this.hintText = '',
     this.title = '',
-    this.icon
+    this.icon,
+    this.keyboardType,
+    this.prefixText,
+    this.validator,
+    this.maxLength,
   });
 
   @override
