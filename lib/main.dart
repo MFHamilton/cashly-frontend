@@ -1,5 +1,6 @@
 import 'package:cashly/core/themes/app_themes.dart';
 import 'package:cashly/feautures/gastos/gastos_screen.dart';
+import 'package:cashly/feautures/goals/presentation/add_goal.dart';
 import 'package:cashly/feautures/home/presentation/home_screen.dart';
 import 'package:cashly/feautures/intro/presentation/intro_page.dart';
 import 'package:cashly/feautures/test/testingPage.dart';
@@ -31,7 +32,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
      theme: AppTheme.lightTheme,
-      home: IntroPage(),
+      home: AddGoalScreen(),
     );
   }
 }
