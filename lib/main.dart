@@ -1,5 +1,5 @@
 import 'package:cashly/core/themes/app_themes.dart';
-import 'package:cashly/feautures/goals/goals.dart';
+import 'package:cashly/feautures/goals/presentation/goals.dart';
 import 'package:cashly/feautures/home/presentation/home_screen.dart';
 import 'package:cashly/feautures/intro/presentation/intro_page.dart';
 import 'package:cashly/firebase_options.dart';
@@ -8,9 +8,7 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
-
 Future<void> main() async {
-
   WidgetsFlutterBinding.ensureInitialized();
 
   // await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
@@ -19,7 +17,6 @@ Future<void> main() async {
 
   await initializeDateFormatting('es', null);
   runApp(MyApp());
-
 }
 
 class MyApp extends StatelessWidget {
@@ -29,9 +26,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Material App',
-     theme: AppTheme.lightTheme,
+      theme: AppTheme.lightTheme,
       home: GoalsScreen(),
-
     );
   }
 }
