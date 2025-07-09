@@ -6,6 +6,7 @@ class AppColorScheme {
       brightness: Brightness.light,
       primary: AppColors.primary,
       onPrimary: AppColors.background,
+      primaryContainer: AppColors.primaryContainer,
       secondary: AppColors.secondary,
       onSecondary: AppColors.background,
       tertiary: AppColors.accent,
