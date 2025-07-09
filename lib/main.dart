@@ -7,6 +7,7 @@ import 'package:cashly/firebase_options.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 Future<void> main() async {
@@ -25,6 +26,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final storage = const FlutterSecureStorage();
+    storage.write(key: 'jwt', value: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTc1MjA5NDc2NywiZXhwIjoxNzUyMDk4MzY3fQ.10tkfXAYaSpShY2f1ZnFtNfcAq7jtVXkOKAg62oM0tc");
     return MaterialApp(
       title: 'Material App',
       theme: AppTheme.lightTheme,

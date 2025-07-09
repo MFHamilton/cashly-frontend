@@ -19,7 +19,7 @@ class GoalsScreen extends StatelessWidget {
       'category': 'Emergencia',
     },
     {
-      'currentAmount': 300,
+      'currentAmount': 300.0,
       'goalAmount': 10000.0,
       'name': 'Vacaciones',
       'category': 'Entretenimiento',
