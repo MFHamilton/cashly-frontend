@@ -1,15 +1,19 @@
+import 'package:cashly/core/constants/app_color.dart';
+import 'package:cashly/core/models/dashboard.dart';
+import 'package:cashly/core/themes/text_scheme.dart';
+import 'package:cashly/core/widgets/menu.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
-import '../core/constants/app_color.dart' show AppColors;
-import '../core/models/dashboard.dart' show HomeScreenDashboardModel;
-import '../core/models/home_screen_chart.dart' show HomeScreenChartModel;
-import '../core/models/home_screen_income.dart' show HomeScreenIncomeModel;
-import '../core/services/home_screen_service.dart' show HomeScreenService;
-import '../core/themes/text_scheme.dart' show MyTextTheme;
-import '../core/widgets/home_screen_dashboard.dart' show HomeScreenDashBoard;
-import '../core/widgets/income_list.dart' show IncomeList;
-import '../core/widgets/monthly_bar_chart.dart' show MonthlyBarChart;
+
+import '../../../core/models/home_screen_chart.dart';
+import '../../../core/models/home_screen_income.dart';
+import '../../../core/services/home_screen_service.dart';
+import '../../../core/widgets/header.dart';
+import '../../../core/widgets/home_screen_dashboard.dart';
+import '../../../core/widgets/income_list.dart';
+import '../../../core/widgets/monthly_bar_chart.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -34,55 +38,16 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        flexibleSpace: SafeArea(
-          child: Stack(
-            children: [
-              // Botón izquierdo
-              Align(
-                alignment: Alignment.centerLeft,
-                child: IconButton(
-                  icon: const Icon(Icons.menu),
-                  onPressed: () {
-                    // Acción del botón izquierdo
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Menú presionado")),
-                    );
-                  },
-                  color: AppColors.primary,
-                ),
-              ),
-              // Imagen centrada
-              Center(
-                child: SvgPicture.asset(
-                  'assets/logotype/whiteLogo.svg',
-                  color: AppColors.secondary,
-                  width: 100,
-                ),
-              ),
-              // Botón derecho
-              Align(
-                alignment: Alignment.centerRight,
-                child: IconButton(
-                  icon: const Icon(Icons.account_circle_outlined),
-                  onPressed: () {
-                    // Acción del botón derecho
-                    ScaffoldMessenger.of(context).showSnackBar(
-                      const SnackBar(content: Text("Perfil presionado")),
-                    );
-                  },
-                  color: AppColors.primary,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
+      drawer: const MenuLateralScreen(),
+      appBar: Header(),
+
+
       body: SingleChildScrollView(
         padding: EdgeInsets.all(8.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            //Header(),
             // TODO: probar el endpoint dashboard
             FutureBuilder<HomeScreenDashboardModel>(
               future: dashboardFuture,
@@ -154,6 +119,9 @@ class _HomeScreenState extends State<HomeScreen> {
           ],
         ),
       ),
+
     );
+
+
   }
 }
