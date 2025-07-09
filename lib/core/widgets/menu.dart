@@ -1,3 +1,4 @@
+import 'package:cashly/feautures/gastos/gastos_screen.dart';
 import 'package:flutter/material.dart';
 
 class MenuLateralScreen extends StatefulWidget {
@@ -37,6 +38,8 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
           _buildMenuItem(
             title: "Gastos",
             subItems: ["Reporte de gastos"],
+            navigateto: GastosScreen(),
+
           ),
           _buildMenuItem(
             title: "Metas",
@@ -55,6 +58,7 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
   Widget _buildMenuItem({
     required String title,
     required List<String> subItems,
+    navigateto,
   }) {
     return Theme(
       data: Theme.of(context).copyWith(
@@ -83,6 +87,12 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
             onTap: () {
               // Cerrar el Drawer y navegar
               Navigator.pop(context);
+              if (navigateto != null) {
+               Navigator.of(context).push(
+                 MaterialPageRoute(builder: (context) => navigateto),
+               );
+              }
+
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text("Seleccionaste: $item")),
               );
