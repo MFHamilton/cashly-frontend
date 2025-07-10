@@ -13,7 +13,7 @@ class HomeScreenService {
   static Future<HomeScreenDashboardModel> fetchDashboardData() async {
     final token = await _storage.read(key: 'jwt');
     final response = await http.get(
-      Uri.parse('$baseUrl/dashboard'),
+      Uri.parse('$baseUrl/dashboard-data'),
       headers: {
         'Content-Type': 'application/json',
         "Authorization": "Bearer $token",
@@ -31,7 +31,7 @@ class HomeScreenService {
   static Future<List<HomeScreenChartModel>> fetchChartData() async {
     final token = await _storage.read(key: "jwt");
     final response = await http.get(
-      Uri.parse("$baseUrl/dashboard/chart"),
+      Uri.parse("$baseUrl/dashboard-data/chart"),
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer $token",
@@ -51,7 +51,7 @@ class HomeScreenService {
   static Future<List<HomeScreenIncomeModel>> fetchIncomeList() async {
     final token = await _storage.read(key: "token");
     final response = await http.get(
-      Uri.parse("$baseUrl/dashboard/income"),
+      Uri.parse("$baseUrl/dashboard-data/income"),
       headers: {
         "Content-Type": "application/json",
         "Authorization": "Bearer $token",
