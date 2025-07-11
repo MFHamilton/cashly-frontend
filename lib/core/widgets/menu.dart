@@ -38,7 +38,7 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
           _buildMenuItem(
             title: "Gastos",
             subItems: ["Mis gastos","Reporte de gastos"],
-            navigateto: GastosScreen(),
+            navigateto: [GastosScreen(),]
 
           ),
           _buildMenuItem(
@@ -78,10 +78,10 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
         ),
         iconColor: Theme.of(context).colorScheme.surface,
         collapsedIconColor: Theme.of(context).colorScheme.surface,
-        children: subItems.map((item) {
+        children: List.generate(subItems.length, (index) {
           return ListTile(
             title: Text(
-              item,
+              subItems[index],
               style: const TextStyle(color: Colors.white70),
             ),
             onTap: () {
@@ -92,9 +92,9 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
                  MaterialPageRoute(builder: (context) => navigateto[index]),
                );
               }
-
+              // TODO: Quitar este mensaje cuando el programa este listo
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Seleccionaste: $item")),
+                SnackBar(content: Text("Seleccionaste: $index")),
               );
             },
           );
