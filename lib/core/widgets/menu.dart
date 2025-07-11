@@ -33,21 +33,21 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
 
           _buildMenuItem(
             title: "Ingresos",
-            subItems: ["Reporte de ingresos"],
+            subItems: ["Mis ingresos","Reporte de ingresos"],
           ),
           _buildMenuItem(
             title: "Gastos",
-            subItems: ["Reporte de gastos"],
+            subItems: ["Mis gastos","Reporte de gastos"],
             navigateto: GastosScreen(),
 
           ),
           _buildMenuItem(
             title: "Metas",
-            subItems: ["Reporte de Metas"],
+            subItems: ["Mis Metas","Reporte de Metas"],
           ),
           _buildMenuItem(
             title: "Presupuestos",
-            subItems: ["Reporte de Presupuestos"],
+            subItems: ["Mis presupuestos","Reporte de Presupuestos"],
           ),
         ],
       ),
@@ -89,7 +89,7 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
               Navigator.pop(context);
               if (navigateto != null) {
                Navigator.of(context).push(
-                 MaterialPageRoute(builder: (context) => navigateto),
+                 MaterialPageRoute(builder: (context) => navigateto[index]),
                );
               }
 
