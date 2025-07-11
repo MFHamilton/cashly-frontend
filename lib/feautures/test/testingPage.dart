@@ -18,7 +18,28 @@ class _TestingPageState extends State<TestingPage> {
       body: Center(
         child: Column(
           children: [
-            Category(title: "Comida", icon: Icons.flatware,),
+            Category(
+              title: [
+                'Comida',
+                'Salario',
+                'Hogar',
+                'Trabajo',
+                'Alquiler',
+                'Viaje',
+                'Mascota',
+                'Nueva'
+              ],
+              icon: [
+                Icons.flatware,
+                Icons.account_balance,
+                Icons.cottage,
+                Icons.badge,
+                Icons.attach_money,
+                Icons.flight,
+                Icons.pets,
+                Icons.add
+              ],
+            ),
             Text('pruebaaaa'),
           ],
         ),

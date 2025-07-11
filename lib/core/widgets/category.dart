@@ -64,8 +64,8 @@ GridView buildGridView() {
  */
 
 class Category extends StatelessWidget {
-  final String title;
-  final IconData? icon;
+  final List<String> title;
+  final List<IconData> icon;
 
   const Category({
     super.key,
@@ -73,7 +73,6 @@ class Category extends StatelessWidget {
     required this.icon,
   });
 
-  @override
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(16),
@@ -89,6 +88,65 @@ class Category extends StatelessWidget {
           ),
         ],
       ),
+
+      child: GridView.count(
+        crossAxisCount: 3,
+        shrinkWrap: true,
+        //physics: const neverScrollableScrollPhysics(),
+        children: List.generate(8, (index) {
+          return Container(
+            child: Row(
+              children: [
+                Expanded(
+                  child: Container(
+                      width: double.infinity,
+                      padding: EdgeInsets.all(16),
+                      margin: EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Theme.of(context).colorScheme.surface,
+                        borderRadius: BorderRadius.circular(3),
+                        boxShadow: [
+                          BoxShadow(
+                            color: Colors.black12,
+                            blurRadius: 6,
+                            offset: Offset(0, 2),
+                          ),
+                        ],
+                      ),
+                      child: Column(
+                          children: [
+                            Icon(
+                                icon[index],
+                                color: Theme.of(context).colorScheme.primary
+                            ),
+                            Text(
+                              title[index],
+                              style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                                color: Theme.of(context).colorScheme.primary,
+                              ),
+                            ),
+                          ]
+
+                      )
+
+                  ),
+                ),
+              ],
+            ),
+          );
+        }),
+
+      )
+
+
+    );
+
+  }
+}
+
+
+
+      /*
 
       child: Column(
         children: [
@@ -296,6 +354,7 @@ class Category extends StatelessWidget {
         ],
 
       ),
+       */
       /*
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -339,8 +398,4 @@ class Category extends StatelessWidget {
 
        */
 
-    );
 
-
-  }
-}
