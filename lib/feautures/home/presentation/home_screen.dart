@@ -76,7 +76,6 @@ class _HomeScreenState extends State<HomeScreen> {
               "Comparativa Mensual",
               style: MyTextTheme.lightTextTheme.titleLarge,
             ),
-            // TODO: probar endpoint integrado
             FutureBuilder<List<HomeScreenChartModel>>(
               future: chartFuture,
               builder: (context, snapshot) {

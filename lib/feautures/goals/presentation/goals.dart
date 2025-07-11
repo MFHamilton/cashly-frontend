@@ -54,7 +54,7 @@ class GoalsScreen extends StatelessWidget {
             ),
             // card general de metas
             GoalCard(
-              amount: 9365700,
+              amount: 936570,
               percentageCompleted: 0.55,
               date: DateTime(2025, 7, 2),
             ),
@@ -158,7 +158,10 @@ class GoalCard extends StatelessWidget {
             Center(
               child: Text(
                 "RD\$${NumberFormat("#,##0.00", "en_US").format(amount)}",
-                style: Theme.of(context).textTheme.displayLarge,
+                style:
+                    amount < 1000000
+                        ? Theme.of(context).textTheme.displayLarge
+                        : Theme.of(context).textTheme.displayMedium,
               ),
             ),
             const SizedBox(height: 16),
