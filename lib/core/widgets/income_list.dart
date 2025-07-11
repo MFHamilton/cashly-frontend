@@ -18,7 +18,7 @@ class IncomeList extends StatelessWidget {
         final item = data[index];
         return IncomeCard(
           frequency: item.frequency,
-          date: item.toString(),
+          date: item.formattedDay,
           amount: item.amount,
         );
       },

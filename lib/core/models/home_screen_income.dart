@@ -19,5 +19,5 @@ class HomeScreenIncomeModel {
     );
   }
 
-  String get formattedDay => DateFormat('YYYY-MM--dd').format(date);
+  String get formattedDay => DateFormat('yyyy-MM-dd').format(date);
 }
