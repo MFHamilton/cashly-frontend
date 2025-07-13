@@ -10,6 +10,7 @@ class Frecuency extends StatefulWidget {
 class _FrecuencyState extends State<Frecuency> {
   final _formKey = GlobalKey<FormState>();
 
+
   int? _selectedCatIndex;
 
   void _onRegistrar() {
@@ -54,14 +55,39 @@ class _FrecuencyState extends State<Frecuency> {
               ),
             ),
 
+
+
+
             // TODO : hacer que se pueda deseleccionar una categoria si se da click en ella misma
             GridView.count(
+
               crossAxisCount: 2,
               childAspectRatio: 150 / 80,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(), // opcional
+
               children: List.generate(6, (index) {
                 final selected = index == _selectedCatIndex;
+
+                final List<String> Options = [
+                  'Semanal',
+                  'Quincenal',
+                  'Mensual',
+                  'Trimestral',
+                  'Semestral',
+                  'Anual'
+                ];
+
+                final List<String> OptionDates = [
+                  'Cada 7 días',
+                  'Cada 15 días',
+                  'Cada mes',
+                  'Cada 3 meses',
+                  'Cada 6 meses',
+                  'Cada año'
+                ];
+
+
                 return GestureDetector(
                   onTap: () => setState(() => _selectedCatIndex = index),
                   child: Container(
@@ -89,6 +115,18 @@ class _FrecuencyState extends State<Frecuency> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        Text(
+                            Options[index],
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface
+                          ),
+                        ),
+                        Text(
+                          OptionDates[index],
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface
+                          ),
+                        )
 
                       ],
                     ),

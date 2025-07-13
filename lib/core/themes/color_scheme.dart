@@ -8,6 +8,7 @@ class AppColorScheme {
       onPrimary: AppColors.background,
       primaryContainer: AppColors.primaryContainer,
       onPrimaryContainer: AppColors.onPrimaryContainer,
+
       secondary: AppColors.secondary,
       onSecondary: AppColors.background,
       tertiary: AppColors.accent,
