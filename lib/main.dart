@@ -10,6 +10,8 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
+import 'feautures/goals/presentation/goals.dart';
+
 
 Future<void> main() async {
 
@@ -32,7 +34,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
      theme: AppTheme.lightTheme,
-      home: TestingPage(),
+      home: GoalsScreen(),
+
     );
   }
 }
