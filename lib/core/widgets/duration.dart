@@ -1,0 +1,99 @@
+import 'package:flutter/material.dart';
+
+class Duration extends StatefulWidget {
+  const Duration({super.key});
+
+  @override
+  State<Duration> createState() => _DurationState();
+}
+
+class _DurationState extends State<Duration> {
+  TextEditingController _dateControllerStart = TextEditingController();
+  TextEditingController _dateControllerEnd = TextEditingController();
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(8),
+      margin: EdgeInsets.all(50),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer,
+        borderRadius: BorderRadius.circular(3)
+      ),
+      
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+              'Duración',
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              color: Theme.of(context).colorScheme.primary
+            ),
+          ),
+
+          TextField(
+            controller:   _dateControllerStart,
+            decoration: InputDecoration(
+              labelText: 'Fecha de Inicio',
+              filled: true,
+              prefixIcon: Icon(Icons.calendar_month),
+              enabledBorder: OutlineInputBorder(
+                borderSide: BorderSide.none
+              ),
+              focusedBorder: OutlineInputBorder(
+                borderSide: BorderSide(color: Theme.of(context).colorScheme.primary)
+              )
+            ),
+            readOnly: true,
+            onTap: (){
+              _selectDate(_dateControllerStart);
+            },
+          ),
+
+          SizedBox(height: 20,),
+
+          TextField(
+            controller:   _dateControllerEnd,
+            decoration: InputDecoration(
+                labelText: 'Fecha de Fin (Opcional)',
+                filled: true,
+                prefixIcon: Icon(Icons.calendar_month),
+                enabledBorder: OutlineInputBorder(
+                    borderSide: BorderSide.none
+                ),
+                focusedBorder: OutlineInputBorder(
+                    borderSide: BorderSide(color: Theme.of(context).colorScheme.primary)
+                )
+            ),
+            readOnly: true,
+            onTap: (){
+              _selectDate(_dateControllerEnd);
+            },
+          )
+        ],
+      ),
+
+
+      
+    );
+    
+
+  }
+
+  Future<void> _selectDate(TextEditingController controller) async{
+    DateTime? _picked = await showDatePicker(
+        context: context,
+        initialDate: DateTime.now(),
+        firstDate: DateTime(2000),
+        lastDate: DateTime(2100)
+    );
+
+    if (_picked != null){
+      setState(() {
+        controller.text = _picked.toString().split(" ")[0];
+
+      });
+    }
+  }
+}
+
