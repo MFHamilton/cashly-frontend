@@ -48,6 +48,7 @@ class _FrecuencyState extends State<Frecuency> {
               padding: EdgeInsets.only(left: 20, top: 10),
             ),
 
+            //TODO : Preguntarle a buenaventura WTF
             Text(
               'Frecuencia',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
@@ -124,7 +125,7 @@ class _FrecuencyState extends State<Frecuency> {
                         Text(
                           OptionDates[index],
                           style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface
+                            color: Theme.of(context).colorScheme.onSurfaceVariant
                           ),
                         )
 
