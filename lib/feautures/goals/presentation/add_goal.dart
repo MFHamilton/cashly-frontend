@@ -1,14 +1,11 @@
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cashly/core/constants/app_color.dart';
 import 'package:cashly/core/themes/text_scheme.dart';
 import 'package:cashly/core/widgets/category.dart' as CategoryInput;
 import 'package:cashly/core/widgets/category_selector.dart';
 import 'package:cashly/core/widgets/custom_button.dart';
 import 'package:cashly/core/widgets/form_input.dart';
 import 'package:cashly/core/widgets/header.dart';
-import 'package:cashly/core/widgets/input.dart';
 
 class AddGoalScreen extends StatefulWidget {
   const AddGoalScreen({super.key});
@@ -72,15 +69,15 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
             ),
             FormInput(
               inputController: nameController,
-              title: "Nombre de la meta",
-              hintText: "ej: fondo de emergencias",
-              icon: Icons.label,
+              title: "Monto",
+              hintText: "\$0.00",
+              icon: Icons.attach_money,
             ),
             FormInput(
               inputController: nameController,
-              title: "Nombre de la meta",
-              hintText: "ej: fondo de emergencias",
-              icon: Icons.label,
+              title: "Descripción",
+              hintText: "describe tu meta...",
+              icon: null,
             ),
             // TODO: cargar categorias del backend
             CategoryInput.Category(
