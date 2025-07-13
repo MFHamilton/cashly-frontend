@@ -74,6 +74,7 @@ class _CategoryState extends State<Category> {
               ),
             ),
 
+            // TODO : hacer que se pueda deseleccionar una categoria si se da click en ella misma
             GridView.count(
               crossAxisCount: 3,
               shrinkWrap: true,
@@ -87,14 +88,19 @@ class _CategoryState extends State<Category> {
                     margin: EdgeInsets.all(8), // usa menos margen si hay overflow
                     decoration: BoxDecoration(
                       color: selected
-                          ? Theme.of(context).colorScheme.primaryContainer
+                          ? Theme.of(context).colorScheme.onPrimaryContainer
                           : Colors.white,
-                      borderRadius: BorderRadius.circular(3),
+                      borderRadius: BorderRadius.circular(4),
+                      border: Border.all(
+                        color: selected
+                            ? Theme.of(context).colorScheme.primary
+                            : Theme.of(context).colorScheme.primaryContainer,
+                        width: 1.5,
+                      ),
                       boxShadow: [
                         BoxShadow(
-                          color: selected
-                              ? Theme.of(context).colorScheme.primary
-                              : Theme.of(context).colorScheme.primaryContainer,
+                          color: Colors.black12,
+                          blurRadius: 2,
                           offset: Offset(0, 2),
                         ),
                       ],
