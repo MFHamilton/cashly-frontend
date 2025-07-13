@@ -1,12 +1,7 @@
+import 'package:cashly/core/widgets/category.dart';
 import 'package:cashly/core/widgets/form_input.dart';
+import 'package:cashly/core/widgets/frecuency.dart';
 import 'package:flutter/material.dart';
-
-class TestingPage extends StatefulWidget {
-  const TestingPage({super.key});
-
-  @override
-  State<TestingPage> createState() => _TestingPageState();
-}
 
 class _TestingPageState extends State<TestingPage> {
   final TextEditingController inputController = TextEditingController();
@@ -15,12 +10,21 @@ class _TestingPageState extends State<TestingPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Center(
-        child: FormInput(
-          title: 'Nombre del Ingreo',
-          icon: Icons.sell,
-          inputController: inputController,
-        )
+        child: Column(
+          children: [
+            Frecuency(),
+            Text('pruebaaaa'),
+          ],
+        ),
+
       ),
     );
   }
+}
+
+class TestingPage extends StatefulWidget {
+  const TestingPage({super.key});
+
+  @override
+  State<TestingPage> createState() => _TestingPageState();
 }

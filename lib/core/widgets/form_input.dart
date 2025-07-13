@@ -30,8 +30,7 @@ class FormInput extends StatelessWidget {
       margin: EdgeInsets.all(16),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Theme.of(context).colorScheme.primary),
+        borderRadius: BorderRadius.circular(3),
         boxShadow: [
           BoxShadow(
             color: Colors.black12,
@@ -79,8 +78,6 @@ class FormInput extends StatelessWidget {
           ),
         ],
       ),
-
-
 
     );
   }
