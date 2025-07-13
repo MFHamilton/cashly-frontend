@@ -4,6 +4,7 @@ import 'package:cashly/core/themes/text_scheme.dart';
 import 'package:cashly/core/widgets/category.dart' as CategoryInput;
 import 'package:cashly/core/widgets/category_selector.dart';
 import 'package:cashly/core/widgets/custom_button.dart';
+import 'package:cashly/core/widgets/duration.dart' as Duration;
 import 'package:cashly/core/widgets/form_input.dart';
 import 'package:cashly/core/widgets/header.dart';
 
@@ -81,17 +82,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
               ],
             ),
             // fechas
-            FormInput(
-              inputController: startDateController,
-              title: "Fecha de inicio",
-              hintText: "Seleccionar Fecha",
-              icon: Icons.date_range,
-            ),
-            FormInput(
-              inputController: endDateController,
-              title: "Fecha de fin (opcional)",
-              hintText: "Seleccionar Fecha",
-              icon: Icons.date_range,
+            Duration.Duration(
             ),
             // botón para enviar la solicitud
             Padding(

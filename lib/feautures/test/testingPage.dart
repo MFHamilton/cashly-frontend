@@ -1,6 +1,7 @@
 import 'package:cashly/core/widgets/category.dart';
 import 'package:cashly/core/widgets/form_input.dart';
 import 'package:cashly/core/widgets/frecuency.dart';
+import 'package:cashly/core/widgets/duration.dart';
 import 'package:flutter/material.dart';
 
 class _TestingPageState extends State<TestingPage> {
@@ -12,8 +13,15 @@ class _TestingPageState extends State<TestingPage> {
       body: Center(
         child: Column(
           children: [
-            Frecuency(),
-            Text('pruebaaaa'),
+            Duration(),
+            SizedBox(height: 10,),
+            Category(title: [
+              'Comida',
+              ],
+                icon: [
+                  Icons.flatware,
+                ])
+            //Text('pruebaaaa'),
           ],
         ),
 
