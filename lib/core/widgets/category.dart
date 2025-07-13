@@ -36,7 +36,7 @@ class _CategoryState extends State<Category> {
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.all(18),
-        margin: EdgeInsets.all(30),
+        margin: EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(3),
@@ -76,7 +76,7 @@ class _CategoryState extends State<Category> {
                 return GestureDetector(
                   onTap: () => setState(() => _selectedCatIndex = index),
                   child: Container(
-                    padding: EdgeInsets.all(20),
+                    padding: EdgeInsets.all(4),
                     margin: EdgeInsets.all(8), // usa menos margen si hay overflow
                     decoration: BoxDecoration(
                       color: selected
@@ -108,7 +108,7 @@ class _CategoryState extends State<Category> {
                         Text(
                           widget.title[index],
                           textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                          style: Theme.of(context).textTheme.titleSmall?.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                           ),
                         ),
