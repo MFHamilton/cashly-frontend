@@ -33,21 +33,21 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
 
           _buildMenuItem(
             title: "Ingresos",
-            subItems: ["Reporte de ingresos"],
+            subItems: ["Mis ingresos","Reporte de ingresos"],
           ),
           _buildMenuItem(
             title: "Gastos",
-            subItems: ["Reporte de gastos"],
-            navigateto: GastosScreen(),
+            subItems: ["Mis gastos","Reporte de gastos"],
+            navigateto: [GastosScreen(),]
 
           ),
           _buildMenuItem(
             title: "Metas",
-            subItems: ["Reporte de Metas"],
+            subItems: ["Mis Metas","Reporte de Metas"],
           ),
           _buildMenuItem(
             title: "Presupuestos",
-            subItems: ["Reporte de Presupuestos"],
+            subItems: ["Mis presupuestos","Reporte de Presupuestos"],
           ),
         ],
       ),
@@ -78,10 +78,10 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
         ),
         iconColor: Theme.of(context).colorScheme.surface,
         collapsedIconColor: Theme.of(context).colorScheme.surface,
-        children: subItems.map((item) {
+        children: List.generate(subItems.length, (index) {
           return ListTile(
             title: Text(
-              item,
+              subItems[index],
               style: const TextStyle(color: Colors.white70),
             ),
             onTap: () {
@@ -89,12 +89,12 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
               Navigator.pop(context);
               if (navigateto != null) {
                Navigator.of(context).push(
-                 MaterialPageRoute(builder: (context) => navigateto),
+                 MaterialPageRoute(builder: (context) => navigateto[index]),
                );
               }
-
+              // TODO: Quitar este mensaje cuando el programa este listo
               ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Seleccionaste: $item")),
+                SnackBar(content: Text("Seleccionaste: $index")),
               );
             },
           );
