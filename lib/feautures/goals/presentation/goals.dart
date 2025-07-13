@@ -1,3 +1,4 @@
+import 'package:cashly/core/widgets/menu.dart';
 import 'package:cashly/feautures/goals/presentation/add_goal.dart';
 import 'package:flutter/material.dart';
 
@@ -47,6 +48,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const MenuLateralScreen(),
       appBar: Header(),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(8.0),

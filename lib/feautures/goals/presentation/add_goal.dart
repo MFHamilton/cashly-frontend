@@ -8,6 +8,8 @@ import 'package:cashly/core/widgets/duration.dart' as Duration;
 import 'package:cashly/core/widgets/form_input.dart';
 import 'package:cashly/core/widgets/header.dart';
 
+import '../../../core/widgets/menu.dart';
+
 class AddGoalScreen extends StatefulWidget {
   const AddGoalScreen({super.key});
 
@@ -27,6 +29,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const MenuLateralScreen(),
       appBar: Header(),
       body: SingleChildScrollView(
         child: Column(
