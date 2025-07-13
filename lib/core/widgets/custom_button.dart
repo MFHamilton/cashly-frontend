@@ -4,20 +4,20 @@ import '';
 
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({required this.text, this.onPressed,super.key});
+  const CustomButton({required this.text, this.onPressed, required this.style, super.key});
 
   final String text;
+  final String style;
   final VoidCallback? onPressed;
 
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
         onPressed: onPressed ?? () {},
-        style: Theme.of(context).elevatedButtonTheme.style,
-        child: Text(
-          text,
-          //style: Theme.of(context).textTheme.bodyMedium,
-        )
+        style: style == 'primary'
+            ? Theme.of(context).elevatedButtonTheme.style
+            : Theme.of(context).elevatedButtonTheme.style,
+
     );
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../themes/button_theme.dart';
 import 'custom_button.dart';
 
 class ConfirmationMessage extends StatelessWidget {
@@ -37,6 +38,16 @@ class ConfirmationMessage extends StatelessWidget {
 
             CustomButton(
               text: 'Aceptar',
+              onPressed: () {
+                ScaffoldMessenger.of(context).showSnackBar(
+                  SnackBar(content: Text("Boton presionado")),
+                );
+              },
+            ),
+
+            CustomButton(
+              text: 'Cancelar',
+              style: AppButtonTheme.secondaryOutlinedButtonStyle,
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text("Boton presionado")),
