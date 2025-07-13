@@ -65,7 +65,7 @@ class DeleteMessage extends StatelessWidget {
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
-                                "$controllerName eliminado",
+                                "$controllerName Eliminado",
                               style: Theme.of(context).textTheme.labelLarge?.copyWith(
                                   color: Theme.of(context).colorScheme.surface
                               ),
