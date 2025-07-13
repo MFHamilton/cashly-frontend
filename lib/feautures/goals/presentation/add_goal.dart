@@ -21,15 +21,6 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
 
-  List<CategoryItem> categoryItems = [
-    CategoryItem(icon: Icons.health_and_safety, label: 'Salud'),
-    CategoryItem(icon: Icons.flight, label: 'Viajes'),
-    CategoryItem(icon: Icons.school, label: 'Educación'),
-    CategoryItem(icon: Icons.savings, label: 'Ahorro'),
-    CategoryItem(icon: Icons.home, label: 'Hogar'),
-    CategoryItem(icon: Icons.directions_car, label: 'Transporte'),
-  ];
-
   CategoryItem? _selectedCategory;
 
   @override
