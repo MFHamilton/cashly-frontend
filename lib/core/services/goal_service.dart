@@ -52,4 +52,16 @@ class GoalService {
       throw Exception('Error al cargar datos del dashboard');
     }
   }
+
+  static Future<void> postGoal(GoalModel goal) async {
+    final token = await _storage.read(key: "jwt");
+
+    await http.post(
+      Uri.parse('$baseUrl/metas'),
+      headers: {
+        "Authorization": "Bearer $token",
+      },
+      body: jsonEncode(goal.toJson()),
+    );
+  }
 }

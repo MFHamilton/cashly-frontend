@@ -36,7 +36,7 @@ class _CategoryState extends State<Category> {
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.all(18),
-        margin: EdgeInsets.all(30),
+        margin: EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(3),

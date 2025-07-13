@@ -1,3 +1,5 @@
+import 'package:cashly/core/services/goal_service.dart';
+import 'package:cashly/feautures/goals/data/models/goal.dart';
 import 'package:flutter/material.dart';
 
 import 'package:cashly/core/themes/text_scheme.dart';
@@ -25,6 +27,26 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
   final TextEditingController endDateController = TextEditingController();
 
   CategoryItem? _selectedCategory;
+
+  void addGoal() async {
+    GoalModel goal = GoalModel(
+      metaId: 0,
+      usuarioId: 0,
+      periodoId: 0,
+      metaNombre: nameController.text,
+      metaDescripcion: descriptionController.text,
+      metaMontoInicial: double.parse(amountController.text),
+      metaMontoUlt: 0,
+      categoriaId: null,
+      categoriaNom: null,
+      fechaInicio: DateTime.parse(startDateController.text),
+      fechaFin: DateTime.parse(endDateController.text),
+    );
+
+    await GoalService.postGoal(goal);
+
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -63,13 +85,13 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
               icon: Icons.label,
             ),
             FormInput(
-              inputController: nameController,
+              inputController: amountController,
               title: "Monto",
               hintText: "\$0.00",
               icon: Icons.attach_money,
             ),
             FormInput(
-              inputController: nameController,
+              inputController: descriptionController,
               title: "Descripción",
               hintText: "describe tu meta...",
               icon: null,
@@ -86,6 +108,8 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
             ),
             // fechas
             Duration.Duration(
+              dateStartController: startDateController,
+              dateEndController: endDateController,
             ),
             // botón para enviar la solicitud
             Padding(
@@ -93,9 +117,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
               child: CustomButton(
                 text: "Guardar Meta",
                 style: 'primary',
-                onPressed: () {
-                  // TODO: enviar la solicitud y redirigir a la pantalla de metas
-                },
+                onPressed: addGoal,
               ),
             ),
           ],

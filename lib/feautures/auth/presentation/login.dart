@@ -129,6 +129,7 @@ import '../../../core/widgets/custom_button.dart';
                     CustomButton(
                       text: 'Iniciar sesión',
                       onPressed: login,
+                      style: "primary",
                     ),
 
                     SizedBox(height: 20),

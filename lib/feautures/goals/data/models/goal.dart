@@ -52,4 +52,20 @@ class GoalModel {
               : null,
     );
   }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'meta_id': metaId,
+      'usuario_id': usuarioId,
+      'categoria_id': categoriaId,
+      'categoria_nom': categoriaNom,
+      'periodo_id': periodoId,
+      'meta_nombre': metaNombre,
+      'meta_descripcion': metaDescripcion,
+      'meta_monto_inicial': metaMontoInicial.toStringAsFixed(2),
+      'meta_monto_ult': metaMontoUlt?.toStringAsFixed(2),
+      'meta_fecha_inicio': fechaInicio?.toIso8601String(),
+      'meta_fecha_fin': fechaFin?.toIso8601String(),
+    };
+  }
 }
