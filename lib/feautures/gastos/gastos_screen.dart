@@ -112,6 +112,7 @@ class _GastosScreenState extends State<GastosScreen>{
             ),
           ),
 
+          // TODO: convertir esto a un componente
           // Lista de gastos recientes
           Expanded(
             child: Padding(
