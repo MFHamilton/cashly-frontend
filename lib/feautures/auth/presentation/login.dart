@@ -106,6 +106,7 @@ import 'package:cashly/feautures/home/presentation/home_screen.dart';
 
                     CustomButton(
                       text: 'Iniciar sesión',
+                      style: 'primary',
                       onPressed: () {
                         print('Botón presionado');
                         Navigator.of(context).push(

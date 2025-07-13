@@ -38,6 +38,7 @@ class ConfirmationMessage extends StatelessWidget {
 
             CustomButton(
               text: 'Aceptar',
+              style: 'primary',
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text("Boton presionado")),
@@ -47,7 +48,7 @@ class ConfirmationMessage extends StatelessWidget {
 
             CustomButton(
               text: 'Cancelar',
-              style: AppButtonTheme.secondaryOutlinedButtonStyle,
+              style: 'secondary',
               onPressed: () {
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(content: Text("Boton presionado")),

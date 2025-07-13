@@ -120,6 +120,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
               padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: CustomButton(
                 text: "Guardar Meta",
+                style: 'primary',
                 onPressed: () {
                   // TODO: enviar la solicitud y redirigir a la pantalla de metas
                 },

@@ -163,6 +163,7 @@ class _GastosScreenState extends State<GastosScreen>{
             padding: const EdgeInsets.all(16.0),
             child: CustomButton(
               text: '+ Agregar Gasto',
+              style: 'primary',
               onPressed: () {   // aquí sólo la función anónima, sin llaves extra
                 Navigator.of(context).push(
                   MaterialPageRoute(

@@ -1,10 +1,11 @@
 
 import 'package:flutter/material.dart';
 import '';
+import '../themes/button_theme.dart';
 
 
 class CustomButton extends StatelessWidget {
-  const CustomButton({required this.text, this.onPressed, required this.style, super.key});
+  const CustomButton({required this.text, required this.style, this.onPressed, super.key});
 
   final String text;
   final String style;
@@ -12,11 +13,15 @@ class CustomButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    final buttonStyle = style == 'primary'
+        ? AppButtonTheme.primaryElevatedButtonStyle
+        : AppButtonTheme.secondaryElevatedButtonStyle;
+
     return ElevatedButton(
         onPressed: onPressed ?? () {},
-        style: style == 'primary'
-            ? Theme.of(context).elevatedButtonTheme.style
-            : Theme.of(context).elevatedButtonTheme.style,
+        style: buttonStyle,
+        child: Text(text)
 
     );
   }

@@ -275,6 +275,7 @@ class _RegisterPageState extends State<RegisterPage> {
               // Botón Registrar
               CustomButton(
                 text: 'Registrar',
+                style: 'primary',
                 onPressed: _onRegisterPressed,
               ),
 
