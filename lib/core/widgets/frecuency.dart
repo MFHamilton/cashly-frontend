@@ -1,24 +1,15 @@
-
-
 import 'package:flutter/material.dart';
 
-
-class Category extends StatefulWidget {
-  final List<String> title;
-  final List<IconData> icon;
-
-  const Category({
-    super.key,
-    required this.title,
-    required this.icon,
-  });
+class Frecuency extends StatefulWidget {
+  const Frecuency({super.key});
 
   @override
-  State<Category> createState() => _CategoryState();
+  State<Frecuency> createState() => _FrecuencyState();
 }
 
-class _CategoryState extends State<Category> {
+class _FrecuencyState extends State<Frecuency> {
   final _formKey = GlobalKey<FormState>();
+
 
   int? _selectedCatIndex;
 
@@ -32,7 +23,7 @@ class _CategoryState extends State<Category> {
       );
     }
   }
-
+  @override
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.all(16),
@@ -51,36 +42,53 @@ class _CategoryState extends State<Category> {
 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-
           children: [
-
             // TODO : Arreglar los titulso estos del demonio
             Padding(
               padding: EdgeInsets.only(left: 20, top: 10),
             ),
 
+            //TODO : Preguntarle a buenaventura WTF
             Text(
-              'Categorías',
+              'Frecuencia',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),
 
-            Text(
-              // TODO: cambiar color
-              'Selecciona una categoría',
-              style: Theme.of(context).textTheme.titleSmall?.copyWith(
 
-              ),
-            ),
+
 
             // TODO : hacer que se pueda deseleccionar una categoria si se da click en ella misma
             GridView.count(
-              crossAxisCount: 3,
+
+              crossAxisCount: 2,
+              childAspectRatio: 150 / 80,
               shrinkWrap: true,
               physics: NeverScrollableScrollPhysics(), // opcional
-              children: List.generate(widget.title.length, (index) {
+
+              children: List.generate(6, (index) {
                 final selected = index == _selectedCatIndex;
+
+                final List<String> Options = [
+                  'Semanal',
+                  'Quincenal',
+                  'Mensual',
+                  'Trimestral',
+                  'Semestral',
+                  'Anual'
+                ];
+
+                final List<String> OptionDates = [
+                  'Cada 7 días',
+                  'Cada 15 días',
+                  'Cada mes',
+                  'Cada 3 meses',
+                  'Cada 6 meses',
+                  'Cada año'
+                ];
+
+
                 return GestureDetector(
                   onTap: () => setState(() => _selectedCatIndex = index),
                   child: Container(
@@ -108,18 +116,19 @@ class _CategoryState extends State<Category> {
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        Icon(
-                          widget.icon[index],
-                          color: Theme.of(context).colorScheme.primary,
-                        ),
-                        SizedBox(height: 3),
                         Text(
-                          widget.title[index],
-                          textAlign: TextAlign.center,
-                          style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.primary,
+                            Options[index],
+                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface
                           ),
                         ),
+                        Text(
+                          OptionDates[index],
+                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurfaceVariant
+                          ),
+                        )
+
                       ],
                     ),
                   ),
@@ -134,9 +143,5 @@ class _CategoryState extends State<Category> {
 
 
     );
-
   }
 }
-
-
-
