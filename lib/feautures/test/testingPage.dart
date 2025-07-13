@@ -1,7 +1,9 @@
 import 'package:cashly/core/widgets/category.dart';
+import 'package:cashly/core/widgets/confirmation_message.dart';
 import 'package:cashly/core/widgets/form_input.dart';
 import 'package:cashly/core/widgets/frecuency.dart';
 import 'package:cashly/core/widgets/duration.dart';
+import 'package:cashly/feautures/gastos/gastos_screen.dart';
 import 'package:flutter/material.dart';
 
 class _TestingPageState extends State<TestingPage> {
@@ -11,19 +13,9 @@ class _TestingPageState extends State<TestingPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Center(
-        child: Column(
-          children: [
-            Duration(),
-            SizedBox(height: 10,),
-            Category(title: [
-              'Comida',
-              ],
-                icon: [
-                  Icons.flatware,
-                ])
-            //Text('pruebaaaa'),
-          ],
-        ),
+        child: ConfirmationMessage(
+          controllerName: 'Gastos',
+          targetRoute: GastosScreen(),),
 
       ),
     );

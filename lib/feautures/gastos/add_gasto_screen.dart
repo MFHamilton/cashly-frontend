@@ -209,6 +209,7 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
         padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
         child: CustomButton(
           text: 'Registrar',
+          style: 'primary',
           onPressed: _onRegistrar,
         ),
       ),
