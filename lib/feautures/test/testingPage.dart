@@ -2,13 +2,6 @@ import 'package:cashly/core/widgets/category.dart';
 import 'package:cashly/core/widgets/form_input.dart';
 import 'package:flutter/material.dart';
 
-class TestingPage extends StatefulWidget {
-  const TestingPage({super.key});
-
-  @override
-  State<TestingPage> createState() => _TestingPageState();
-}
-
 class _TestingPageState extends State<TestingPage> {
   final TextEditingController inputController = TextEditingController();
   @override
@@ -24,20 +17,16 @@ class _TestingPageState extends State<TestingPage> {
                 'Salario',
                 'Hogar',
                 'Trabajo',
-                'Alquiler',
-                'Viaje',
-                'Mascota',
-                'Nueva'
+
+
               ],
               icon: [
                 Icons.flatware,
                 Icons.account_balance,
                 Icons.cottage,
                 Icons.badge,
-                Icons.attach_money,
-                Icons.flight,
-                Icons.pets,
-                Icons.add
+
+
               ],
             ),
             Text('pruebaaaa'),
@@ -47,4 +36,11 @@ class _TestingPageState extends State<TestingPage> {
       ),
     );
   }
+}
+
+class TestingPage extends StatefulWidget {
+  const TestingPage({super.key});
+
+  @override
+  State<TestingPage> createState() => _TestingPageState();
 }
