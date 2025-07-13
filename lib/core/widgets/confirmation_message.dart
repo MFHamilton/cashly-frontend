@@ -5,8 +5,13 @@ import 'custom_button.dart';
 
 class ConfirmationMessage extends StatelessWidget {
   final String controllerName;
+  final Widget targetRoute;
 
-  const ConfirmationMessage({required this.controllerName,super.key});
+  const ConfirmationMessage({
+    required this.controllerName,
+    required this.targetRoute,
+    super.key
+  });
 
   @override
     Widget build(BuildContext context) {
@@ -45,7 +50,7 @@ class ConfirmationMessage extends StatelessWidget {
                 padding: EdgeInsets.all(16),
                 child: Row(
                     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-
+                    // TODO : Probar si se pueden poner los botones mas peque;os
                     children: [
 
                       Expanded(
@@ -53,6 +58,10 @@ class ConfirmationMessage extends StatelessWidget {
                             text: 'Aceptar',
                             style: 'primary',
                             onPressed: () {
+                              Navigator.pushReplacement(
+                                  context,
+                                  MaterialPageRoute(builder: (_) => targetRoute),
+                              );
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text("Boton presionado")),
                               );
@@ -68,6 +77,7 @@ class ConfirmationMessage extends StatelessWidget {
                             text: 'Cancelar',
                             style: 'secondary',
                             onPressed: () {
+                              Navigator.of(context).pop();
                               ScaffoldMessenger.of(context).showSnackBar(
                                 SnackBar(content: Text("Boton presionado")),
                               );
