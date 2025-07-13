@@ -35,37 +35,29 @@ class _CategoryState extends State<Category> {
 
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(16),
-        margin: EdgeInsets.all(16),
+        padding: EdgeInsets.all(18),
+        margin: EdgeInsets.all(30),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(3),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 6,
-              offset: Offset(0, 2),
-            ),
-          ],
         ),
 
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-
           children: [
 
+            /*
             // TODO : Arreglar los titulso estos del demonio
             Padding(
               padding: EdgeInsets.only(left: 20, top: 10),
             ),
-
+            */
             Text(
               'Categorías',
               style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                 color: Theme.of(context).colorScheme.primary,
               ),
             ),
-
             Text(
               // TODO: cambiar color
               'Selecciona una categoría',

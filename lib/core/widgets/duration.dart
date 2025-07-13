@@ -14,8 +14,8 @@ class _DurationState extends State<Duration> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8),
-      margin: EdgeInsets.all(50),
+      padding: EdgeInsets.all(18),
+      margin: EdgeInsets.all(30),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(3)
@@ -24,12 +24,16 @@ class _DurationState extends State<Duration> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
+
+
           Text(
               'Duración',
             style: Theme.of(context).textTheme.headlineSmall?.copyWith(
               color: Theme.of(context).colorScheme.primary
             ),
           ),
+
+          SizedBox(height: 20,),
 
           TextField(
             controller:   _dateControllerStart,
@@ -69,7 +73,11 @@ class _DurationState extends State<Duration> {
             onTap: (){
               _selectDate(_dateControllerEnd);
             },
-          )
+          ),
+
+          Padding(
+            padding: EdgeInsets.only( bottom: 10),
+          ),
         ],
       ),
 

@@ -14,6 +14,13 @@ class _TestingPageState extends State<TestingPage> {
         child: Column(
           children: [
             Duration(),
+            SizedBox(height: 10,),
+            Category(title: [
+              'Comida',
+              ],
+                icon: [
+                  Icons.flatware,
+                ])
             //Text('pruebaaaa'),
           ],
         ),
