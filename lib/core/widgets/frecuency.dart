@@ -92,8 +92,8 @@ class _FrecuencyState extends State<Frecuency> {
                 return GestureDetector(
                   onTap: () => setState(() => _selectedCatIndex = index),
                   child: Container(
-                    padding: EdgeInsets.all(20),
-                    margin: EdgeInsets.all(8), // usa menos margen si hay overflow
+                    padding: EdgeInsets.all(18),
+                    margin: EdgeInsets.all(30), // usa menos margen si hay overflow
                     decoration: BoxDecoration(
                       color: selected
                           ? Theme.of(context).colorScheme.onPrimaryContainer
