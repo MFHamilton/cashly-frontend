@@ -12,7 +12,7 @@ class _TestingPageState extends State<TestingPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Center(
-        child: ConfirmationMessage(),
+        child: ConfirmationMessage(controllerName: 'Presupuesto',),
 
       ),
     );
