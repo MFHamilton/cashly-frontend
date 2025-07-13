@@ -1,12 +1,14 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/material.dart';
+
 import 'package:cashly/core/constants/app_color.dart';
 import 'package:cashly/core/themes/text_scheme.dart';
+import 'package:cashly/core/widgets/category.dart' as CategoryInput;
 import 'package:cashly/core/widgets/category_selector.dart';
 import 'package:cashly/core/widgets/custom_button.dart';
 import 'package:cashly/core/widgets/form_input.dart';
 import 'package:cashly/core/widgets/header.dart';
 import 'package:cashly/core/widgets/input.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 class AddGoalScreen extends StatefulWidget {
   const AddGoalScreen({super.key});
@@ -38,7 +40,6 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
     return Scaffold(
       appBar: Header(),
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
@@ -81,26 +82,15 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
               hintText: "ej: fondo de emergencias",
               icon: Icons.label,
             ),
-            // TODO: seleccionar categoria
-            Padding(
-              padding: EdgeInsets.fromLTRB(16.0, 0, 0, 0),
-              child: Text(
-                "Categoría",
-                style: MyTextTheme.lightTextTheme.titleLarge?.copyWith(
-                  color: AppColors.primary,
-                ),
-              ),
-            ),
-            Padding(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
-              child: CategorySelector(
-                  items: categoryItems,
-                  onChanged: (category) {
-                    setState(() {
-                      _selectedCategory = category;
-                    });
-                  },
-                ),
+            // TODO: cargar categorias del backend
+            CategoryInput.Category(
+              title: ['Comida', 'Salario', 'Hogar', 'Trabajo'],
+              icon: [
+                Icons.flatware,
+                Icons.account_balance,
+                Icons.cottage,
+                Icons.badge,
+              ],
             ),
             // fechas
             FormInput(
@@ -142,7 +132,6 @@ class DateRangePicker extends StatelessWidget {
   final FormFieldValidator<String>? validator;
   final int? maxLength;
 
-
   const DateRangePicker({
     super.key,
     required this.inputController,
@@ -165,11 +154,7 @@ class DateRangePicker extends StatelessWidget {
         borderRadius: BorderRadius.circular(12),
         border: Border.all(color: Theme.of(context).colorScheme.primary),
         boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 6,
-            offset: Offset(0, 2),
-          ),
+          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2)),
         ],
       ),
       child: Column(
@@ -180,8 +165,7 @@ class DateRangePicker extends StatelessWidget {
               children: [
                 if (icon != null)
                   Icon(icon, color: Theme.of(context).colorScheme.primary),
-                if (icon != null)
-                  SizedBox(width: 8),
+                if (icon != null) SizedBox(width: 8),
                 Text(
                   title,
                   style: Theme.of(context).textTheme.titleMedium?.copyWith(
@@ -194,18 +178,23 @@ class DateRangePicker extends StatelessWidget {
           TextFormField(
             controller: inputController,
             decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+              contentPadding: const EdgeInsets.symmetric(
+                vertical: 8,
+                horizontal: 12,
+              ),
               hintText: hintText,
               filled: true,
               fillColor: Theme.of(context).colorScheme.surface,
               border: OutlineInputBorder(
                 borderRadius: BorderRadius.circular(3),
                 borderSide: BorderSide(
-                  color: Theme.of(context).colorScheme.primary, // o cualquier otro color
+                  color:
+                      Theme.of(
+                        context,
+                      ).colorScheme.primary, // o cualquier otro color
                   //width: 1.5, // ancho opcional
                 ),
               ),
-
             ),
             style: Theme.of(context).textTheme.bodySmall,
           ),
