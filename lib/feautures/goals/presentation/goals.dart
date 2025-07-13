@@ -1,15 +1,16 @@
-import 'package:cashly/feautures/goals/presentation/add_goal.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cashly/core/services/goal_service.dart' show GoalService;
-import 'package:cashly/feautures/goals/data/models/goal.dart' show GoalModel;
-import 'package:cashly/feautures/goals/data/models/goal_detail.dart'
-    show GoalDetailModel;
+import '../../../core/services/goal_service.dart' show GoalService;
+import '../../../core/themes/text_scheme.dart' show MyTextTheme;
+import '../../../core/widgets/custom_button.dart' show CustomButton;
 import '../../../core/widgets/goal_card.dart' show GoalCard;
 import '../../../core/widgets/goal_list.dart' show GoalList;
 import '../../../core/widgets/header.dart' show Header;
-import '../../../core/themes/text_scheme.dart' show MyTextTheme;
-import '../../../core/widgets/custom_button.dart' show CustomButton;
+import '../../../core/widgets/menu.dart' show MenuLateralScreen;
+import '../../../feautures/goals/data/models/goal.dart' show GoalModel;
+import '../../../feautures/goals/data/models/goal_detail.dart'
+    show GoalDetailModel;
+import '../../../feautures/goals/presentation/add_goal.dart' show AddGoalScreen;
 
 class GoalsScreen extends StatefulWidget {
   const GoalsScreen({super.key});
@@ -47,6 +48,7 @@ class _GoalsScreenState extends State<GoalsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      drawer: const MenuLateralScreen(),
       appBar: Header(),
       body: SingleChildScrollView(
         padding: EdgeInsets.all(8.0),
