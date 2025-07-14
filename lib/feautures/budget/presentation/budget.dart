@@ -81,13 +81,11 @@ class _BudgetScreenState extends State<BudgetScreen> {
             ),
             // Card con el presupesto total del mes
             GeneralBudgetCard(amount: 5000),
-            // TODO: listado de presupuestos
-            BudgetCard(
-              presupuesto: presupuestos[0],
-            ),
+            // listado de presupuestos
+            ListaBudgetCards(lista: presupuestos),
             // boton para ir a la pantalla de agregar presupuesto
             Padding(
-              padding: const EdgeInsets.fromLTRB(12, 16, 12, 16),
+              padding: const EdgeInsets.fromLTRB(11, 8, 11, 16),
               child: CustomButton(
                 text: "+ Agregar Presupuesto",
                 style: 'primary',
@@ -354,6 +352,30 @@ class BudgetCard extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+}
+
+class ListaBudgetCards extends StatelessWidget {
+  final List<Presupuestos> lista;
+
+  const ListaBudgetCards({super.key, required this.lista});
+
+  @override
+  Widget build(BuildContext context) {
+    if (lista.isEmpty) {
+      return const Center(
+        child: Text("No hay presupuestos registrados."),
+      );
+    }
+
+    return ListView.builder(
+      shrinkWrap: true,
+      physics: const NeverScrollableScrollPhysics(), // permite usar dentro de scrolls
+      itemCount: lista.length,
+      itemBuilder: (context, index) {
+        return BudgetCard(presupuesto: lista[index]);
+      },
     );
   }
 }
