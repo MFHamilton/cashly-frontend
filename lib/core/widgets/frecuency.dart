@@ -26,7 +26,7 @@ class _FrecuencyState extends State<Frecuency> {
   @override
   Widget build(BuildContext context) {
     return Container(
-        padding: EdgeInsets.all(16),
+        padding: EdgeInsets.all(0),
         margin: EdgeInsets.all(16),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primaryContainer,
@@ -92,13 +92,13 @@ class _FrecuencyState extends State<Frecuency> {
                 return GestureDetector(
                   onTap: () => setState(() => _selectedCatIndex = index),
                   child: Container(
-                    padding: EdgeInsets.all(18),
-                    margin: EdgeInsets.all(30), // usa menos margen si hay overflow
+                    padding: EdgeInsets.all(15),
+                    margin: EdgeInsets.all(12), // usa menos margen si hay overflow
                     decoration: BoxDecoration(
                       color: selected
                           ? Theme.of(context).colorScheme.onPrimaryContainer
                           : Colors.white,
-                      borderRadius: BorderRadius.circular(4),
+                      borderRadius: BorderRadius.circular(10),
                       border: Border.all(
                         color: selected
                             ? Theme.of(context).colorScheme.primary
