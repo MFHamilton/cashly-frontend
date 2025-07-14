@@ -5,12 +5,11 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../core/constants/app_color.dart';
-import '../../../core/widgets/category_selector.dart';
 import '../../../core/widgets/form_input.dart';
 import '../../../core/widgets/frecuency_selector.dart';
 import '../../../core/widgets/header.dart';
 import '../../../core/themes/text_scheme.dart';
-
+s
 class AgregarGastoScreen extends StatefulWidget {
   const AgregarGastoScreen({Key? key}) : super(key: key);
 
