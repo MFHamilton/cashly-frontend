@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 
 import 'add_budget.dart';
 import '../../../core/models/presupuestos.dart';
 import '../../../core/themes/text_scheme.dart';
-import '../../../core/widgets/budget_card.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/header.dart';
 import '../../../core/widgets/menu.dart';
@@ -64,7 +64,7 @@ class _BudgetDetailScreenState extends State<BudgetDetailScreen> {
               ),
             ),
             // card con el detalle del presupuesto
-            BudgetCard(presupuesto: widget.budget),
+            BudgetDetailCard(presupuesto: widget.budget),
             // opciones de resumen, historial y análisis
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
@@ -132,11 +132,130 @@ class _BudgetDetailScreenState extends State<BudgetDetailScreen> {
 
 // TODO: componente de card de detalles
 class BudgetDetailCard extends StatelessWidget {
-  const BudgetDetailCard({super.key});
+  final Presupuestos presupuesto;
+
+  const BudgetDetailCard({super.key, required this.presupuesto});
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final restante = presupuesto.presMontoInicial - presupuesto.presMontoUlt;
+    final porcentajeGastado =
+        presupuesto.presMontoUlt / presupuesto.presMontoInicial;
+    final diasTotales =
+        presupuesto.finRecurrencia
+            ?.difference(presupuesto.inicioRecurrencia!)
+            .inDays;
+    final diasActuales =
+        DateTime.now().difference(presupuesto.inicioRecurrencia!).inDays + 1;
+
+    final currency = NumberFormat.currency(symbol: "\$", decimalDigits: 0);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.grey.shade200),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Título
+          Row(
+            children: [
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    presupuesto.presNombre,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 18,
+                    ),
+                  ),
+                  Text(
+                    presupuesto.categoriaNom ?? "",
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Montos
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              // Restante
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    currency.format(restante),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(
+                    "de ${currency.format(presupuesto.presMontoInicial)}",
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+
+              // Gastado
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  Text(
+                    currency.format(presupuesto.presMontoUlt),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 20,
+                    ),
+                  ),
+                  Text(
+                    "${(porcentajeGastado * 100).toStringAsFixed(0)}% usado",
+                    style: const TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+
+          // Progreso del periodo
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Text(
+                "Progreso del periodo",
+                style: TextStyle(color: Colors.grey),
+              ),
+              Text(
+                "$diasActuales de ${diasTotales ?? '--'} días",
+                style: const TextStyle(color: Colors.grey),
+              ),
+            ],
+          ),
+          const SizedBox(height: 8),
+
+          // Barra de progreso
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: LinearProgressIndicator(
+              minHeight: 12,
+              value: porcentajeGastado.clamp(0.0, 1.0),
+              backgroundColor: Colors.grey.shade300,
+              valueColor: const AlwaysStoppedAnimation<Color>(Colors.green),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
