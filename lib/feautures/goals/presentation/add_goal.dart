@@ -116,7 +116,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
               inputController: descriptionController,
               title: "Descripción",
               hintText: "describe tu meta...",
-              icon: null,
+              icon: Icons.text_snippet,
             ),
             // cargar categorias del backend
             FutureBuilder<List<Categoria>>(
