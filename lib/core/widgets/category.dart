@@ -6,11 +6,13 @@ import 'package:flutter/material.dart';
 class Category extends StatefulWidget {
   final List<String> title;
   final List<IconData> icon;
+  final ValueNotifier<int?> selectedIndexNotifier;
 
   const Category({
     super.key,
     required this.title,
     required this.icon,
+    required this.selectedIndexNotifier,
   });
 
   @override
@@ -36,7 +38,7 @@ class _CategoryState extends State<Category> {
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.all(18),
-        margin: EdgeInsets.all(30),
+        margin: EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(3),
@@ -74,7 +76,10 @@ class _CategoryState extends State<Category> {
               children: List.generate(widget.title.length, (index) {
                 final selected = index == _selectedCatIndex;
                 return GestureDetector(
-                  onTap: () => setState(() => _selectedCatIndex = index),
+                  onTap: () => setState(() {
+                    _selectedCatIndex = index;
+                    widget.selectedIndexNotifier.value = index;
+                  }),
                   child: Container(
                     padding: EdgeInsets.all(20),
                     margin: EdgeInsets.all(8), // usa menos margen si hay overflow

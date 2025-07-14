@@ -1,4 +1,5 @@
 import 'package:cashly/feautures/gastos/gastos_screen.dart';
+import 'package:cashly/feautures/goals/presentation/goals.dart';
 import 'package:flutter/material.dart';
 
 class MenuLateralScreen extends StatefulWidget {
@@ -44,6 +45,7 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
           _buildMenuItem(
             title: "Metas",
             subItems: ["Mis Metas","Reporte de Metas"],
+            navigateto: [GoalsScreen(),],
           ),
           _buildMenuItem(
             title: "Presupuestos",

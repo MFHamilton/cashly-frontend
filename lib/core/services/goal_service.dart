@@ -6,10 +6,10 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
 
 import '../../feautures/goals/data/models/goal_detail.dart';
+import '../constants/url.dart';
 
 class GoalService {
   static const FlutterSecureStorage _storage = FlutterSecureStorage();
-  static const String baseUrl = 'https://cashlyservice.onrender.com';
 
   static Future<GoalDetailModel> fetchGoalDetail() async {
     final token = await _storage.read(key: 'jwt');
@@ -51,5 +51,21 @@ class GoalService {
     } else {
       throw Exception('Error al cargar datos del dashboard');
     }
+  }
+
+  static Future<void> postGoal(GoalModel goal) async {
+    final token = await _storage.read(key: "jwt");
+
+    print("body del request: ${jsonEncode(goal.toJson())}");
+    final response = await http.post(
+      Uri.parse('$baseUrl/metas'),
+      headers: {
+        "Authorization": "Bearer $token",
+        "Content-Type": "application/json",
+      },
+      body: jsonEncode(goal.toJson()),
+    );
+
+    print(response.statusCode);
   }
 }
