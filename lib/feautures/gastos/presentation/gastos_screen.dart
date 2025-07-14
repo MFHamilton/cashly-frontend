@@ -7,7 +7,9 @@ import 'package:cashly/feautures/home/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/widgets/custom_button.dart';
-import '../../../../core/themes/text_scheme.dart';
+
+import '../../../../core/widgets/cardItem.dart';
+
 
 // StatefulWidget
 class GastosScreen extends StatefulWidget {
@@ -25,6 +27,10 @@ class _GastosScreenState extends State<GastosScreen>{
   }
 
   void _onEditGasto(String gastoId) {
+
+  }
+
+  void _onDeleteGasto(String gastoId) {
 
   }
 
@@ -134,29 +140,33 @@ class _GastosScreenState extends State<GastosScreen>{
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: ListView(
                 children: [
-                  _cardItem(
+                  CardItem(
                     title: 'Colegio',
                     subtitle: 'Hijo · Mensual',
                     amount: 'RD\$50,000.00',
                     onEdit: () => _onEditGasto('colegio'),
+                    onDelete: () => _onDeleteGasto('colegio'),
                   ),
-                  _cardItem(
+                  CardItem(
                     title: 'Super',
                     subtitle: 'Casa · Semanal',
                     amount: 'RD\$50,000.00',
                     onEdit: () => _onEditGasto('super'),
+                    onDelete: () => _onDeleteGasto('super'),
                   ),
-                  _cardItem(
+                  CardItem(
                     title: 'Salón',
                     subtitle: 'Personal · Quincenal',
                     amount: 'RD\$50,000.00',
                     onEdit: () => _onEditGasto('salon'),
+                    onDelete: () => _onDeleteGasto('salon'),
                   ),
-                  _cardItem(
+                  CardItem(
                     title: 'Uñas',
                     subtitle: 'Personal · Quincenal',
                     amount: 'RD\$50,000.00',
                     onEdit: () => _onEditGasto('uñas'),
+                    onDelete: () => _onDeleteGasto('uñas'),
                   ),
                   SizedBox(height: 8),
                 ],
@@ -228,46 +238,4 @@ class _SmallStatCard extends StatelessWidget {
 }
 
 
-class _cardItem extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final String amount;
-  final VoidCallback onEdit;
 
-  const _cardItem({
-    Key? key,
-    required this.title,
-    required this.subtitle,
-    required this.amount,
-    required this.onEdit,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 6),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: ListTile(
-        leading: Icon(Icons.arrow_upward, color: Color(0xFFB5D4B1)),
-        title: Text(title, style: TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Text(subtitle, style: MyTextTheme.lightTextTheme.titleSmall),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(amount,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith()),
-            SizedBox(width: 8),
-            IconButton(
-              icon: Icon(Icons.edit, color: Theme.of(context).colorScheme.secondary),
-              onPressed: onEdit,
-            ),
-            IconButton(
-              icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.secondary),
-              onPressed: () {},
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}
