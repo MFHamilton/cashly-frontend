@@ -7,12 +7,14 @@ class SavingGoalCard extends StatelessWidget {
     required this.goalAmount,
     required this.name,
     required this.category,
+    this.description,
   });
 
   final double currentAmount;
   final double goalAmount;
   final String name;
   final String category;
+  final String? description;
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +51,20 @@ class SavingGoalCard extends StatelessWidget {
             Text(category, style: TextStyle(color: Colors.grey)),
 
             SizedBox(height: 12),
-            Text(
-              "Ahorrar para gastos inesperados",
-              style: TextStyle(color: Colors.grey, fontWeight: FontWeight.w500),
-            ),
-
-            SizedBox(height: 16),
+            (description != null && description != "")
+                ? Column(
+                  children: [
+                    Text(
+                      description!,
+                      style: TextStyle(
+                        color: Colors.grey,
+                        fontWeight: FontWeight.w500,
+                      ),
+                    ),
+                    SizedBox(height: 16),
+                  ],
+                )
+                : SizedBox(height: 0),
 
             // Progress bar
             ClipRRect(
