@@ -1,9 +1,10 @@
-import 'package:cashly/core/models/presupuestos.dart';
-import 'package:cashly/core/widgets/budget_card.dart';
-import 'package:cashly/core/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
+import 'add_budget.dart';
+import '../../../core/models/presupuestos.dart';
 import '../../../core/themes/text_scheme.dart';
+import '../../../core/widgets/budget_card.dart';
+import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/header.dart';
 import '../../../core/widgets/menu.dart';
 
@@ -25,9 +26,22 @@ class _BudgetDetailScreenState extends State<BudgetDetailScreen> {
     });
   }
 
+  void navigate() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => AddBudgetScreen()),
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      floatingActionButton: FloatingActionButton.large(
+        foregroundColor: Theme.of(context).colorScheme.primary,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
+        onPressed: navigate,
+        child: Icon(Icons.edit_outlined),
+      ),
       drawer: MenuLateralScreen(),
       appBar: Header(),
       body: SingleChildScrollView(
@@ -51,7 +65,7 @@ class _BudgetDetailScreenState extends State<BudgetDetailScreen> {
             ),
             // card con el detalle del presupuesto
             BudgetCard(presupuesto: widget.budget),
-            // opciones de resumen, historial y analisis
+            // opciones de resumen, historial y análisis
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
               child: Row(
@@ -84,7 +98,7 @@ class _BudgetDetailScreenState extends State<BudgetDetailScreen> {
                       width: 90,
                       height: 50,
                       child: CustomButton(
-                        text: "Analisis",
+                        text: "Análisis",
                         style: "primary",
                         onPressed: () => changeTo(3),
                       ),
@@ -93,7 +107,7 @@ class _BudgetDetailScreenState extends State<BudgetDetailScreen> {
                 ],
               ),
             ),
-            // renderizar resumen, historial o analisis
+            // renderizar resumen, historial o análisis
             if (option == 1)
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -109,7 +123,6 @@ class _BudgetDetailScreenState extends State<BudgetDetailScreen> {
                 padding: const EdgeInsets.symmetric(horizontal: 12),
                 child: MonthProjection(),
               ),
-            // TODO: boton flotante para agregar presupuesto
           ],
         ),
       ),
