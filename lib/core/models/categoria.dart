@@ -1,5 +1,3 @@
-import 'package:flutter_iconpicker/flutter_iconpicker.dart';
-
 class Categoria {
   final int categoriaId;
   final String categoriaNom;
