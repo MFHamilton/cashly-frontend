@@ -1,11 +1,14 @@
+import 'package:cashly/core/models/presupuestos.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/themes/text_scheme.dart';
 import '../../../core/widgets/header.dart';
 import '../../../core/widgets/menu.dart';
 
-class BudgetDetail extends StatelessWidget {
-  const BudgetDetail({super.key});
+class BudgetDetailScreen extends StatelessWidget {
+  const BudgetDetailScreen({super.key, required this.budget});
+
+  final Presupuestos budget;
 
   @override
   Widget build(BuildContext context) {

@@ -7,6 +7,7 @@ import 'package:intl/intl.dart';
 
 import '../../../core/themes/text_scheme.dart';
 import '../../../core/widgets/custom_button.dart';
+import 'budget_detail.dart';
 
 class BudgetScreen extends StatefulWidget {
   const BudgetScreen({super.key});
@@ -194,6 +195,15 @@ class BudgetCard extends StatelessWidget {
 
   const BudgetCard({super.key, required this.presupuesto});
 
+  void navigateTo(BuildContext context) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => BudgetDetailScreen(budget: presupuesto),
+      ),
+    );
+  }
+
   Widget _buildMontoResumen(
     BuildContext context,
     IconData icon,
@@ -276,9 +286,12 @@ class BudgetCard extends StatelessWidget {
               ),
               Row(
                 children: [
-                  Icon(
-                    Icons.edit,
-                    color: Theme.of(context).colorScheme.secondary,
+                  InkWell(
+                    onTap: () => navigateTo(context),
+                    child: Icon(
+                      Icons.edit,
+                      color: Theme.of(context).colorScheme.secondary,
+                    ),
                   ),
                   SizedBox(width: 8),
                   Icon(
