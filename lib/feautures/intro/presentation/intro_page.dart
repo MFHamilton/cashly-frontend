@@ -52,6 +52,7 @@ class IntroPage extends StatelessWidget {
                   SizedBox(height: 30),
                   CustomButton(
                       text: 'Comenzar',
+                    style: 'primary',
                     onPressed: (){
                         Navigator.of(context).push(
                           _createRoute(),

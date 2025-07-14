@@ -10,6 +10,7 @@ class GoalModel {
   final double? metaMontoUlt;
   final DateTime? fechaInicio;
   final DateTime? fechaFin;
+  final bool metaEsActivo;
 
   const GoalModel({
     required this.metaId,
@@ -23,6 +24,7 @@ class GoalModel {
     this.metaMontoUlt,
     this.fechaInicio,
     this.fechaFin,
+    required this.metaEsActivo,
   });
 
   factory GoalModel.fromJson(Map<String, dynamic> json) {
@@ -50,6 +52,24 @@ class GoalModel {
           json['meta_fecha_fin'] != null
               ? DateTime.parse(json['meta_fecha_fin'])
               : null,
+      metaEsActivo: json['meta_es_activo'] ?? false,
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'meta_id': metaId,
+      'usuario_id': usuarioId,
+      'categoria_id': categoriaId,
+      'categoria_nom': categoriaNom,
+      'periodo_id': periodoId,
+      'meta_nombre': metaNombre,
+      'meta_descripcion': metaDescripcion,
+      'meta_monto_inicial': metaMontoInicial.toStringAsFixed(2),
+      'meta_monto_ult': metaMontoUlt?.toStringAsFixed(2),
+      'meta_fecha_inicio': fechaInicio?.toIso8601String(),
+      'meta_fecha_fin': fechaFin?.toIso8601String(),
+      'meta_es_activo': metaEsActivo,
+    };
   }
 }

@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 
 class Duration extends StatefulWidget {
-  const Duration({super.key});
+  Duration({
+    super.key,
+    required this.dateStartController,
+    required this.dateEndController,
+  });
+
+  final TextEditingController dateStartController;
+  final TextEditingController dateEndController;
 
   @override
   State<Duration> createState() => _DurationState();
 }
 
 class _DurationState extends State<Duration> {
-  TextEditingController _dateControllerStart = TextEditingController();
-  TextEditingController _dateControllerEnd = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -36,7 +41,7 @@ class _DurationState extends State<Duration> {
           SizedBox(height: 20,),
 
           TextField(
-            controller:   _dateControllerStart,
+            controller: widget.dateStartController,
             decoration: InputDecoration(
               labelText: 'Fecha de Inicio',
               filled: true,
@@ -50,14 +55,14 @@ class _DurationState extends State<Duration> {
             ),
             readOnly: true,
             onTap: (){
-              _selectDate(_dateControllerStart);
+              _selectDate(widget.dateStartController);
             },
           ),
 
           SizedBox(height: 20,),
 
           TextField(
-            controller:   _dateControllerEnd,
+            controller: widget.dateEndController,
             decoration: InputDecoration(
                 labelText: 'Fecha de Fin (Opcional)',
                 filled: true,
@@ -71,7 +76,7 @@ class _DurationState extends State<Duration> {
             ),
             readOnly: true,
             onTap: (){
-              _selectDate(_dateControllerEnd);
+              _selectDate(widget.dateEndController);
             },
           ),
 

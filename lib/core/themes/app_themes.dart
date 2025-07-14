@@ -8,6 +8,6 @@ class AppTheme{
     useMaterial3: true,
     colorScheme: AppColorScheme.light,
     textTheme: MyTextTheme.lightTextTheme,
-    elevatedButtonTheme: AppButtonTheme.btn,
+    elevatedButtonTheme: AppButtonTheme.primaryElevatedButtonTheme,
   );
 }

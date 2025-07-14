@@ -4,7 +4,8 @@ import 'package:cashly/feautures/home/presentation/home_screen.dart';
   import 'package:flutter/material.dart';
   import 'package:sign_in_button/sign_in_button.dart';
 
-  import '../../../core/widgets/custom_button.dart';
+  import '../../../core/services/auth_service.dart';
+import '../../../core/widgets/custom_button.dart';
   import 'package:flutter_svg/flutter_svg.dart';
   import 'signin_screen.dart';
 
@@ -23,6 +24,27 @@ import 'package:cashly/feautures/home/presentation/home_screen.dart';
     final TextEditingController passwordController = TextEditingController();
 
     ValueNotifier userCredential = ValueNotifier('');
+
+    final AuthService _authService = AuthService();
+
+    void login() async {
+      final correo = emailController.text.trim();
+      final password = passwordController.text;
+
+      try{
+        await _authService.login(correo: correo, password: password);
+      }catch(e){
+        print("Error: $e");
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(content: Text('Error de inicio de sesión')),
+        );
+        return;
+      }
+
+      Navigator.of(context).pushReplacement(
+        MaterialPageRoute(builder: (_) => const HomeScreen()),
+      );
+    }
 
 
     @override
@@ -106,12 +128,8 @@ import 'package:cashly/feautures/home/presentation/home_screen.dart';
 
                     CustomButton(
                       text: 'Iniciar sesión',
-                      onPressed: () {
-                        print('Botón presionado');
-                        Navigator.of(context).push(
-                          MaterialPageRoute(builder: (_) => const HomeScreen()),
-                        );
-                      },
+                      onPressed: login,
+                      style: "primary",
                     ),
 
                     SizedBox(height: 20),

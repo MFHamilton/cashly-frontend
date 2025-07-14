@@ -20,6 +20,7 @@ class GoalList extends StatelessWidget {
           currentAmount: meta.metaMontoUlt ?? 0.0,
           goalAmount: meta.metaMontoInicial,
           name: meta.metaNombre,
+          description: meta.metaDescripcion,
           category: meta.categoriaNom ?? "",
         );
       },
