@@ -1,6 +1,7 @@
 import 'package:cashly/core/models/presupuestos.dart';
 import 'package:cashly/core/widgets/header.dart';
 import 'package:cashly/core/widgets/menu.dart';
+import 'package:cashly/feautures/budget/presentation/add_budget.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
@@ -15,6 +16,7 @@ class BudgetScreen extends StatefulWidget {
 }
 
 class _BudgetScreenState extends State<BudgetScreen> {
+  // TODO: load data from backend
   final List<Presupuestos> presupuestos = [
     Presupuestos(
       presId: 1,
@@ -47,17 +49,19 @@ class _BudgetScreenState extends State<BudgetScreen> {
   ];
 
   Future<void> navigateAddBudget() async {
-    /*final result = await Navigator.push(
+    final result = await Navigator.push(
       context,
-      MaterialPageRoute(builder: (context) => AddGoalScreen()),
+      MaterialPageRoute(builder: (context) => AddBudgetScreen()),
     );
 
     if (result == true) {
       setState(() {
         loadBudget();
       });
-    }*/
+    }
   }
+
+  void loadBudget() {}
 
   @override
   Widget build(BuildContext context) {
@@ -262,7 +266,10 @@ class BudgetCard extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      Text(presupuesto.categoriaNom ?? "Categoría", style: TextStyle(color: Colors.grey)),
+                      Text(
+                        presupuesto.categoriaNom ?? "Categoría",
+                        style: TextStyle(color: Colors.grey),
+                      ),
                     ],
                   ),
                 ],
