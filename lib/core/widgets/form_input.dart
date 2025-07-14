@@ -9,6 +9,7 @@ class FormInput extends StatelessWidget {
   final String? prefixText;
   final FormFieldValidator<String>? validator;
   final int? maxLength;
+  final Function()? onTap;
 
 
   const FormInput({
@@ -21,6 +22,7 @@ class FormInput extends StatelessWidget {
     this.prefixText,
     this.validator,
     this.maxLength,
+    this.onTap,
   });
 
   @override
@@ -75,6 +77,7 @@ class FormInput extends StatelessWidget {
 
             ),
             style: Theme.of(context).textTheme.bodySmall,
+            onTap: onTap,
           ),
         ],
       ),

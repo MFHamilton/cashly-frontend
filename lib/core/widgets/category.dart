@@ -38,7 +38,7 @@ class _CategoryState extends State<Category> {
   Widget build(BuildContext context) {
     return Container(
         padding: EdgeInsets.all(18),
-        margin: EdgeInsets.all(8),
+        margin: EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(3),
@@ -81,7 +81,7 @@ class _CategoryState extends State<Category> {
                     widget.selectedIndexNotifier.value = index;
                   }),
                   child: Container(
-                    padding: EdgeInsets.all(20),
+                    padding: EdgeInsets.all(4),
                     margin: EdgeInsets.all(8), // usa menos margen si hay overflow
                     decoration: BoxDecoration(
                       color: selected
