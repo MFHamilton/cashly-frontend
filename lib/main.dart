@@ -1,17 +1,7 @@
 import 'package:cashly/core/themes/app_themes.dart';
 import 'package:cashly/feautures/budget/presentation/budget.dart';
-import 'package:cashly/feautures/gastos/gastos_screen.dart';
-import 'package:cashly/feautures/goals/presentation/add_goal.dart';
-import 'package:cashly/feautures/home/presentation/home_screen.dart';
-import 'package:cashly/feautures/intro/presentation/intro_page.dart';
-import 'package:cashly/feautures/test/testingPage.dart';
-import 'package:cashly/firebase_options.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
-
-import 'feautures/goals/presentation/goals.dart';
 
 
 Future<void> main() async {
