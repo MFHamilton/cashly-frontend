@@ -26,9 +26,13 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
 
-  CategoryItem? _selectedCategory;
+  final ValueNotifier<int?> selectedCategoryIndex = ValueNotifier<int?>(null);
 
   void addGoal() async {
+    final index = selectedCategoryIndex.value;
+    final categoriaId = index != null ? index + 1 : null;
+    final categoriaNom = index != null ? ['Comida', 'Salario', 'Hogar', 'Trabajo'][index] : null;
+
     GoalModel goal = GoalModel(
       metaId: 0,
       usuarioId: 0,
@@ -37,8 +41,8 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
       metaDescripcion: descriptionController.text,
       metaMontoInicial: double.parse(amountController.text),
       metaMontoUlt: 0,
-      categoriaId: null,
-      categoriaNom: null,
+      categoriaId: categoriaId,
+      categoriaNom: categoriaNom,
       fechaInicio: DateTime.parse(startDateController.text),
       fechaFin: endDateController.text != "" ? DateTime.parse(endDateController.text) : null,
       metaEsActivo: true,
@@ -111,6 +115,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                 Icons.cottage,
                 Icons.badge,
               ],
+              selectedIndexNotifier: selectedCategoryIndex,
             ),
             // fechas
             Duration.Duration(
