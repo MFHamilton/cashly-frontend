@@ -9,7 +9,7 @@ import '../../../core/widgets/form_input.dart';
 import '../../../core/widgets/frecuency_selector.dart';
 import '../../../core/widgets/header.dart';
 import '../../../core/themes/text_scheme.dart';
-s
+
 class AgregarGastoScreen extends StatefulWidget {
   const AgregarGastoScreen({Key? key}) : super(key: key);
 
@@ -120,7 +120,8 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                     Icons.bolt,
                     Icons.more_horiz,
                     Icons.add
-                            ]
+                            ],
+                selectedIndexNotifier: ValueNotifier<int?>(null),
             ),
             const SizedBox(height: 8),
             const SizedBox(height: 24),
@@ -168,8 +169,9 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
             ),
             const SizedBox(height: 24),
             CustomButton(
-              text: 'Registrar',
+              text: 'Guarda Gasto',
               onPressed: _onRegistrar,
+              style: 'primary',
             ),
             SizedBox(height: 24),
 
