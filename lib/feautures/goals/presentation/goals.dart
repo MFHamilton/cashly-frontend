@@ -35,7 +35,9 @@ class _GoalsScreenState extends State<GoalsScreen> {
     );
 
     if (result == true) {
-      setState(loadGoals);
+      setState(() {
+        loadGoals();
+      });
     }
   }
 
