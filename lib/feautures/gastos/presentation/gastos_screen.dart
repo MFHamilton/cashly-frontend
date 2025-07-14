@@ -1,9 +1,13 @@
+import 'package:cashly/core/constants/app_color.dart';
 import 'package:cashly/core/models/gastos.dart';
-import 'package:cashly/feautures/gastos/add_gasto_screen.dart';
+import 'package:cashly/core/widgets/header.dart';
+import 'package:cashly/core/widgets/menu.dart';
+import 'package:cashly/feautures/gastos/presentation/add_gasto_screen.dart';
 import 'package:cashly/feautures/home/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../core/widgets/custom_button.dart';
+import '../../../core/widgets/custom_button.dart';
+import '../../../core/themes/text_scheme.dart';
 
 // StatefulWidget
 class GastosScreen extends StatefulWidget {
@@ -27,33 +31,44 @@ class _GastosScreenState extends State<GastosScreen>{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFF6F9F3),
-      appBar: AppBar(
-        backgroundColor: Colors.transparent,
-        elevation: 0,
-        leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0xFF28523A)),
-          onPressed: () => Navigator.of(context).push(MaterialPageRoute(builder: (context) => HomeScreen())),
-
-        ),
-        title: Text(
-          'Gastos',
-          style: TextStyle(color: Color(0xFF28523A), fontWeight: FontWeight.bold),
-        ),
-        actions: [
-          IconButton(
-            icon: SvgPicture.asset(
-              'assets/icons/user.svg', // tu SVG de usuario
-              width: 24,
-              height: 24,
-              color: Color(0xFF28523A),
-            ),
-            onPressed: () {},
+        backgroundColor: Color(0xFFF6F9F3),
+        drawer: const MenuLateralScreen(),
+        appBar: Header(),
+        body: Column(
+          children: [
+          // — Aquí va tu "AppBar manual" debajo del Header —
+          Container(
+          height: kToolbarHeight,
+          color: Colors.transparent,
+          padding: const EdgeInsets.symmetric(horizontal: 8.0),
+          child: Row(
+            children: [
+              IconButton(
+                icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF28523A)),
+                onPressed: () => Navigator.of(context).push(
+                  MaterialPageRoute(builder: (_) => const HomeScreen()),
+                ),
+              ),
+              const SizedBox(width: 8),
+              Text(
+                'Gastos',
+                style: MyTextTheme.lightTextTheme.headlineMedium,
+              ),
+              const Spacer(),
+              IconButton(
+                icon: SvgPicture.asset(
+                  'assets/icons/user.svg',
+                  width: 24,
+                  height: 24,
+                  color: Color(0xFF28523A),
+                ),
+                onPressed: () {},
+              ),
+            ],
           ),
-        ],
-      ),
-      body: Column(
-        children: [
+        ),
+
+
           // Tarjeta de Gastos Totales
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
@@ -144,15 +159,6 @@ class _GastosScreenState extends State<GastosScreen>{
                     onEdit: () => _onEditGasto('uñas'),
                   ),
                   SizedBox(height: 8),
-                  Center(
-                    child: TextButton(
-                      onPressed: () {
-                        // acción ver más
-                      },
-                      child: Text('Ver más',
-                          style: TextStyle(color: Color(0xFF28523A))),
-                    ),
-                  ),
                 ],
               ),
             ),
@@ -172,6 +178,7 @@ class _GastosScreenState extends State<GastosScreen>{
               },
             ),
           ),
+          SizedBox(height: 15,),
         ],
       ),
     );
