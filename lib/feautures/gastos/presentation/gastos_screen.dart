@@ -6,8 +6,8 @@ import 'package:cashly/feautures/gastos/presentation/add_gasto_screen.dart';
 import 'package:cashly/feautures/home/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../core/widgets/custom_button.dart';
-import '../../../core/themes/text_scheme.dart';
+import '../../../../core/widgets/custom_button.dart';
+import '../../../../core/themes/text_scheme.dart';
 
 // StatefulWidget
 class GastosScreen extends StatefulWidget {
@@ -52,7 +52,7 @@ class _GastosScreenState extends State<GastosScreen>{
               const SizedBox(width: 8),
               Text(
                 'Gastos',
-                style: MyTextTheme.lightTextTheme.headlineMedium,
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(),
               ),
               const Spacer(),
               IconButton(
@@ -75,7 +75,7 @@ class _GastosScreenState extends State<GastosScreen>{
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color(0xFFEAF1EA),
+                color: Theme.of(context).colorScheme.primaryContainer,
                 borderRadius: BorderRadius.circular(8),
               ),
               padding: const EdgeInsets.all(16),
@@ -84,15 +84,15 @@ class _GastosScreenState extends State<GastosScreen>{
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.attach_money, color: Color(0xFF28523A)),
+                      Icon(Icons.attach_money, color: Theme.of(context).colorScheme.primary),
                       SizedBox(width: 8),
                       Text('Gastos Totales',
-                          style: TextStyle(color: Color(0xFF28523A), fontWeight: FontWeight.w600)),
+                          style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w600)),
                       Spacer(),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                         decoration: BoxDecoration(
-                          color: Color(0xFF28523A),
+                          color: Theme.of(context).colorScheme.secondary,
                           borderRadius: BorderRadius.circular(16),
                         ),
                         child: Text('Julio 2025', style: TextStyle(color: Colors.white)),
@@ -102,10 +102,10 @@ class _GastosScreenState extends State<GastosScreen>{
                   SizedBox(height: 12),
                   Text('RD\$5,000',
                       style: TextStyle(
-                          color: Color(0xFF28523A),
+                          color: Theme.of(context).colorScheme.primary,
                           fontSize: 28,
                           fontWeight: FontWeight.bold)),
-                  Text('Este mes', style: TextStyle(color: Color(0xFF28523A).withOpacity(0.7))),
+                  Text('Este mes', style: TextStyle(color: Theme.of(context).colorScheme.primary.withOpacity(0.7))),
                 ],
               ),
             ),
@@ -134,25 +134,25 @@ class _GastosScreenState extends State<GastosScreen>{
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: ListView(
                 children: [
-                  _GastoItem(
+                  _cardItem(
                     title: 'Colegio',
                     subtitle: 'Hijo · Mensual',
                     amount: 'RD\$50,000.00',
                     onEdit: () => _onEditGasto('colegio'),
                   ),
-                  _GastoItem(
+                  _cardItem(
                     title: 'Super',
                     subtitle: 'Casa · Semanal',
                     amount: 'RD\$50,000.00',
                     onEdit: () => _onEditGasto('super'),
                   ),
-                  _GastoItem(
+                  _cardItem(
                     title: 'Salón',
                     subtitle: 'Personal · Quincenal',
                     amount: 'RD\$50,000.00',
                     onEdit: () => _onEditGasto('salon'),
                   ),
-                  _GastoItem(
+                  _cardItem(
                     title: 'Uñas',
                     subtitle: 'Personal · Quincenal',
                     amount: 'RD\$50,000.00',
@@ -168,7 +168,7 @@ class _GastosScreenState extends State<GastosScreen>{
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: CustomButton(
-              text: '+ Agregar Gasto',
+              text: '+  Agregar Gasto',
               style: 'primary',
               onPressed: () {   // aquí sólo la función anónima, sin llaves extra
                 Navigator.of(context).push(
@@ -216,8 +216,8 @@ class _SmallStatCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: TextStyle(color: Colors.black54, fontSize: 12)),
-                Text(value, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold)),
+                Text(label, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12)),
+                Text(value, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold)),
               ],
             ),
           ],
@@ -227,13 +227,14 @@ class _SmallStatCard extends StatelessWidget {
   }
 }
 
-class _GastoItem extends StatelessWidget {
+
+class _cardItem extends StatelessWidget {
   final String title;
   final String subtitle;
   final String amount;
   final VoidCallback onEdit;
 
-  const _GastoItem({
+  const _cardItem({
     Key? key,
     required this.title,
     required this.subtitle,
@@ -249,17 +250,20 @@ class _GastoItem extends StatelessWidget {
       child: ListTile(
         leading: Icon(Icons.arrow_upward, color: Color(0xFFB5D4B1)),
         title: Text(title, style: TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Text(subtitle, style: TextStyle(color: Colors.black54)),
+        subtitle: Text(subtitle, style: MyTextTheme.lightTextTheme.titleSmall),
         trailing: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
             Text(amount,
-                style: TextStyle(
-                    color: Color(0xFF28523A), fontWeight: FontWeight.bold)),
+                style: Theme.of(context).textTheme.titleMedium?.copyWith()),
             SizedBox(width: 8),
             IconButton(
-              icon: Icon(Icons.edit, color: Color(0xFF28523A)),
+              icon: Icon(Icons.edit, color: Theme.of(context).colorScheme.secondary),
               onPressed: onEdit,
+            ),
+            IconButton(
+              icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.secondary),
+              onPressed: () {},
             ),
           ],
         ),
