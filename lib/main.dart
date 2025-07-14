@@ -1,5 +1,6 @@
 import 'package:cashly/core/themes/app_themes.dart';
 import 'package:cashly/feautures/budget/presentation/budget.dart';
+import 'package:cashly/feautures/intro/presentation/intro_page.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 

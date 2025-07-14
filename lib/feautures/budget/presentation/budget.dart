@@ -20,8 +20,8 @@ class _BudgetScreenState extends State<BudgetScreen> {
       presId: 1,
       usuarioId: 2,
       presNombre: "Gastos Casa",
-      presMontoInicial: 2000,
-      presMontoUlt: 550,
+      presMontoInicial: 3000,
+      presMontoUlt: 1000,
       esActivo: true,
       fechaCreacion: DateTime(2025, 2, 12),
       fechaUltAct: DateTime.now(),
@@ -29,21 +29,9 @@ class _BudgetScreenState extends State<BudgetScreen> {
       finRecurrencia: DateTime(2025, 8, 14),
     ),
     Presupuestos(
-      presId: 2,
+      presId: 1,
       usuarioId: 2,
-      presNombre: "Auto",
-      presMontoInicial: 2000,
-      presMontoUlt: 550,
-      esActivo: true,
-      fechaCreacion: DateTime(2025, 2, 12),
-      fechaUltAct: DateTime.now(),
-      inicioRecurrencia: DateTime(2025, 2, 12),
-      finRecurrencia: DateTime(2025, 8, 14),
-    ),
-    Presupuestos(
-      presId: 3,
-      usuarioId: 2,
-      presNombre: "Gym y salud",
+      presNombre: "Gastos Comida",
       presMontoInicial: 2000,
       presMontoUlt: 550,
       esActivo: true,
@@ -92,8 +80,11 @@ class _BudgetScreenState extends State<BudgetScreen> {
               ),
             ),
             // Card con el presupesto total del mes
-            BudgetCard(amount: 5000),
+            GeneralBudgetCard(amount: 5000),
             // TODO: listado de presupuestos
+            BudgetCard(
+              presupuesto: presupuestos[0],
+            ),
             // boton para ir a la pantalla de agregar presupuesto
             Padding(
               padding: const EdgeInsets.fromLTRB(12, 16, 12, 16),
@@ -110,8 +101,8 @@ class _BudgetScreenState extends State<BudgetScreen> {
   }
 }
 
-class BudgetCard extends StatelessWidget {
-  const BudgetCard({super.key, required this.amount});
+class GeneralBudgetCard extends StatelessWidget {
+  const GeneralBudgetCard({super.key, required this.amount});
 
   final double amount;
 
@@ -122,7 +113,7 @@ class BudgetCard extends StatelessWidget {
       padding: const EdgeInsets.all(16),
       margin: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.surface,
+        color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(8),
       ),
       child: Column(
@@ -134,12 +125,16 @@ class BudgetCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.attach_money, color: Colors.green, size: 20),
+                  Icon(
+                    Icons.attach_money,
+                    color: Theme.of(context).colorScheme.secondary,
+                    size: 20,
+                  ),
                   const SizedBox(width: 6),
                   Text(
                     "Total en Presupuestos",
                     style: Theme.of(context).textTheme.bodyLarge?.copyWith(
-                      color: Colors.green.shade800,
+                      color: Theme.of(context).colorScheme.primary,
                       fontWeight: FontWeight.bold,
                     ),
                   ),
@@ -151,7 +146,7 @@ class BudgetCard extends StatelessWidget {
                   vertical: 4,
                 ),
                 decoration: BoxDecoration(
-                  color: Colors.green.shade900,
+                  color: Theme.of(context).colorScheme.secondary,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: const Text(
@@ -170,7 +165,7 @@ class BudgetCard extends StatelessWidget {
           Text(
             "RD\$${NumberFormat("#,##0.00", "en_US").format(amount)}",
             style: Theme.of(context).textTheme.headlineMedium?.copyWith(
-              color: Colors.green.shade800,
+              color: Theme.of(context).primaryColor,
               fontWeight: FontWeight.bold,
             ),
           ),
@@ -178,9 +173,184 @@ class BudgetCard extends StatelessWidget {
           // Subtexto
           Text(
             "Este mes",
-            style: Theme.of(
-              context,
-            ).textTheme.bodySmall?.copyWith(color: Colors.green.shade800),
+            style: Theme.of(context).textTheme.bodySmall?.copyWith(
+              color: Theme.of(context).colorScheme.secondary,
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+class BudgetCard extends StatelessWidget {
+  final Presupuestos presupuesto;
+
+  const BudgetCard({super.key, required this.presupuesto});
+
+  Widget _buildMontoResumen(
+      BuildContext context,
+      IconData icon,
+      String label,
+      String value,
+      ) {
+    return Container(
+      padding: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.grey.shade300),
+        borderRadius: BorderRadius.circular(8),
+      ),
+      child: Column(
+        children: [
+          Icon(icon, color: Colors.green),
+          const SizedBox(height: 4),
+          Text(label, style: const TextStyle(color: Colors.grey)),
+          Text(
+            value,
+            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+          ),
+        ],
+      ),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final restante = presupuesto.presMontoInicial - presupuesto.presMontoUlt;
+    final porcentajeGastado =
+        presupuesto.presMontoUlt / presupuesto.presMontoInicial;
+    final diasTotales =
+        presupuesto.finRecurrencia
+            ?.difference(presupuesto.inicioRecurrencia!)
+            .inDays;
+    final diasRestantes =
+        presupuesto.finRecurrencia?.difference(DateTime.now()).inDays;
+    final promedioDiario =
+        presupuesto.presMontoUlt /
+        ((DateTime.now().difference(presupuesto.inicioRecurrencia!).inDays) +
+            1);
+
+    final currency = NumberFormat.currency(symbol: "\$", decimalDigits: 0);
+
+    return Container(
+      padding: const EdgeInsets.all(16),
+      margin: const EdgeInsets.all(12),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        border: Border.all(color: Colors.grey.shade200),
+        borderRadius: BorderRadius.circular(12),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          // Título y acciones
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Row(
+                children: [
+                  const Icon(Icons.home, color: Colors.green, size: 24),
+                  const SizedBox(width: 8),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        presupuesto.presNombre,
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Text("Hogar", style: TextStyle(color: Colors.grey)),
+                    ],
+                  ),
+                ],
+              ),
+              Row(
+                children: const [
+                  Icon(Icons.edit, color: Colors.green),
+                  SizedBox(width: 8),
+                  Icon(Icons.delete, color: Colors.green),
+                ],
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          // Monto resumen
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              _buildMontoResumen(
+                context,
+                Icons.attach_money,
+                "Límite",
+                currency.format(presupuesto.presMontoInicial),
+              ),
+              _buildMontoResumen(
+                context,
+                Icons.money_off,
+                "Gastado",
+                currency.format(presupuesto.presMontoUlt),
+              ),
+              _buildMontoResumen(
+                context,
+                Icons.wallet,
+                "Restante",
+                currency.format(restante),
+              ),
+            ],
+          ),
+          const SizedBox(height: 16),
+          const Text(
+            "Progreso del periodo",
+            style: TextStyle(color: Colors.grey),
+          ),
+          const SizedBox(height: 8),
+          ClipRRect(
+            borderRadius: BorderRadius.circular(10),
+            child: LinearProgressIndicator(
+              minHeight: 12,
+              value: porcentajeGastado.clamp(0.0, 1.0),
+              backgroundColor: Colors.grey.shade300,
+              valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+            ),
+          ),
+          const SizedBox(height: 16),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: [
+              Column(
+                children: [
+                  Text(
+                    "\$${promedioDiario.toStringAsFixed(1)}",
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const Text(
+                    "Promedio/día",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+              Container(height: 28, width: 1, color: Colors.grey.shade300),
+              Column(
+                children: [
+                  Text(
+                    diasRestantes.toString(),
+                    style: const TextStyle(
+                      fontWeight: FontWeight.bold,
+                      fontSize: 16,
+                    ),
+                  ),
+                  const Text(
+                    "Días Restantes",
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ],
+              ),
+            ],
           ),
         ],
       ),
