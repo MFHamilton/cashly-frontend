@@ -19,6 +19,8 @@ class _BudgetScreenState extends State<BudgetScreen> {
     Presupuestos(
       presId: 1,
       usuarioId: 2,
+      categoriaId: 0,
+      categoriaNom: "Hogar",
       presNombre: "Gastos Casa",
       presMontoInicial: 3000,
       presMontoUlt: 1000,
@@ -31,6 +33,8 @@ class _BudgetScreenState extends State<BudgetScreen> {
     Presupuestos(
       presId: 1,
       usuarioId: 2,
+      categoriaId: 2,
+      categoriaNom: "Comida",
       presNombre: "Gastos Comida",
       presMontoInicial: 2000,
       presMontoUlt: 550,
@@ -85,7 +89,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
             ListaBudgetCards(lista: presupuestos),
             // boton para ir a la pantalla de agregar presupuesto
             Padding(
-              padding: const EdgeInsets.fromLTRB(11, 8, 11, 16),
+              padding: EdgeInsets.fromLTRB(11, 0, 11, 16),
               child: CustomButton(
                 text: "+ Agregar Presupuesto",
                 style: 'primary',
@@ -187,28 +191,28 @@ class BudgetCard extends StatelessWidget {
   const BudgetCard({super.key, required this.presupuesto});
 
   Widget _buildMontoResumen(
-      BuildContext context,
-      IconData icon,
-      String label,
-      String value,
-      ) {
-    return Container(
-      padding: const EdgeInsets.all(12),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.grey.shade300),
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: Column(
-        children: [
-          Icon(icon, color: Colors.green),
-          const SizedBox(height: 4),
-          Text(label, style: const TextStyle(color: Colors.grey)),
-          Text(
-            value,
-            style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+    BuildContext context,
+    IconData icon,
+    String label,
+    String value,
+  ) {
+    return Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 30, vertical: 12),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade300),
+            borderRadius: BorderRadius.circular(8),
           ),
-        ],
-      ),
+          child: Icon(icon, color: Theme.of(context).colorScheme.secondary),
+        ),
+        SizedBox(height: 4),
+        Text(label, style: const TextStyle(color: Colors.grey)),
+        Text(
+          value,
+          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+        ),
+      ],
     );
   }
 
@@ -247,7 +251,6 @@ class BudgetCard extends StatelessWidget {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.home, color: Colors.green, size: 24),
                   const SizedBox(width: 8),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -259,16 +262,22 @@ class BudgetCard extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const Text("Hogar", style: TextStyle(color: Colors.grey)),
+                      Text(presupuesto.categoriaNom ?? "Categoría", style: TextStyle(color: Colors.grey)),
                     ],
                   ),
                 ],
               ),
               Row(
-                children: const [
-                  Icon(Icons.edit, color: Colors.green),
+                children: [
+                  Icon(
+                    Icons.edit,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                   SizedBox(width: 8),
-                  Icon(Icons.delete, color: Colors.green),
+                  Icon(
+                    Icons.delete,
+                    color: Theme.of(context).colorScheme.secondary,
+                  ),
                 ],
               ),
             ],
@@ -364,14 +373,13 @@ class ListaBudgetCards extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (lista.isEmpty) {
-      return const Center(
-        child: Text("No hay presupuestos registrados."),
-      );
+      return const Center(child: Text("No hay presupuestos registrados."));
     }
 
     return ListView.builder(
       shrinkWrap: true,
-      physics: const NeverScrollableScrollPhysics(), // permite usar dentro de scrolls
+      physics:
+          const NeverScrollableScrollPhysics(), // permite usar dentro de scrolls
       itemCount: lista.length,
       itemBuilder: (context, index) {
         return BudgetCard(presupuesto: lista[index]);
