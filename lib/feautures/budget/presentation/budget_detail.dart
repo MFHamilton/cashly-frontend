@@ -1,14 +1,29 @@
 import 'package:cashly/core/models/presupuestos.dart';
+import 'package:cashly/core/widgets/budget_card.dart';
+import 'package:cashly/core/widgets/custom_button.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/themes/text_scheme.dart';
 import '../../../core/widgets/header.dart';
 import '../../../core/widgets/menu.dart';
 
-class BudgetDetailScreen extends StatelessWidget {
+class BudgetDetailScreen extends StatefulWidget {
   const BudgetDetailScreen({super.key, required this.budget});
 
   final Presupuestos budget;
+
+  @override
+  State<BudgetDetailScreen> createState() => _BudgetDetailScreenState();
+}
+
+class _BudgetDetailScreenState extends State<BudgetDetailScreen> {
+  int option = 1;
+
+  void changeTo(int number) {
+    setState(() {
+      option = number;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -34,12 +49,110 @@ class BudgetDetailScreen extends StatelessWidget {
                 ],
               ),
             ),
-            // TODO: card con el detalle del presupuesto
-            // TODO: opciones de resumen, historial y analisis
-            // TODO: renderizar resumen, historial o analisis
+            // card con el detalle del presupuesto
+            BudgetCard(presupuesto: widget.budget),
+            // opciones de resumen, historial y analisis
+            Padding(
+              padding: const EdgeInsets.fromLTRB(12, 0, 12, 12),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Expanded(
+                    child: SizedBox(
+                      width: 90,
+                      height: 50,
+                      child: CustomButton(
+                        text: "Resumen",
+                        style: "primary",
+                        onPressed: () => changeTo(1),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      width: 90,
+                      height: 50,
+                      child: CustomButton(
+                        text: "Historial",
+                        style: "primary",
+                        onPressed: () => changeTo(2),
+                      ),
+                    ),
+                  ),
+                  Expanded(
+                    child: SizedBox(
+                      width: 90,
+                      height: 50,
+                      child: CustomButton(
+                        text: "Analisis",
+                        style: "primary",
+                        onPressed: () => changeTo(3),
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            // renderizar resumen, historial o analisis
+            if (option == 1)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: Summary(),
+              ),
+            if (option == 2)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: History(),
+              ),
+            if (option == 3)
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 12),
+                child: MonthProjection(),
+              ),
+            // TODO: boton flotante para agregar presupuesto
           ],
         ),
       ),
     );
+  }
+}
+
+// TODO: componente de card de detalles
+class BudgetDetailCard extends StatelessWidget {
+  const BudgetDetailCard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+// TODO: componente de resumen
+class Summary extends StatelessWidget {
+  const Summary({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Placeholder();
+  }
+}
+
+// TODO: componente de historial
+class History extends StatelessWidget {
+  const History({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text("Transacciones Recientes");
+  }
+}
+
+// TODO: componente de análisis de proyección del mes
+class MonthProjection extends StatelessWidget {
+  const MonthProjection({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Text("Proyección del Mes");
   }
 }
