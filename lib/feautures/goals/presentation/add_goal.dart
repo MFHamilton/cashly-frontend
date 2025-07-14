@@ -32,7 +32,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
     GoalModel goal = GoalModel(
       metaId: 0,
       usuarioId: 0,
-      periodoId: 0,
+      periodoId: 1,
       metaNombre: nameController.text,
       metaDescripcion: descriptionController.text,
       metaMontoInicial: double.parse(amountController.text),
@@ -40,12 +40,18 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
       categoriaId: null,
       categoriaNom: null,
       fechaInicio: DateTime.parse(startDateController.text),
-      fechaFin: DateTime.parse(endDateController.text),
+      fechaFin: endDateController.text != "" ? DateTime.parse(endDateController.text) : null,
+      metaEsActivo: true,
     );
 
-    await GoalService.postGoal(goal);
+    try{
+      await GoalService.postGoal(goal);
 
-    Navigator.pop(context);
+      Navigator.pop(context, true);
+      print("NO ERROR");
+    } catch(e){
+      print("Error: $e");
+    }
   }
 
   @override

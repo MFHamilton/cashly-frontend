@@ -56,12 +56,16 @@ class GoalService {
   static Future<void> postGoal(GoalModel goal) async {
     final token = await _storage.read(key: "jwt");
 
-    await http.post(
+    print("body del request: ${jsonEncode(goal.toJson())}");
+    final response = await http.post(
       Uri.parse('$baseUrl/metas'),
       headers: {
         "Authorization": "Bearer $token",
+        "Content-Type": "application/json",
       },
       body: jsonEncode(goal.toJson()),
     );
+
+    print(response.statusCode);
   }
 }
