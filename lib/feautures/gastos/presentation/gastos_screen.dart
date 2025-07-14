@@ -1,5 +1,6 @@
 import 'package:cashly/core/constants/app_color.dart';
 import 'package:cashly/core/models/gastos.dart';
+import 'package:cashly/core/widgets/delete_message.dart';
 import 'package:cashly/core/widgets/header.dart';
 import 'package:cashly/core/widgets/menu.dart';
 import 'package:cashly/feautures/gastos/presentation/add_gasto_screen.dart';
@@ -7,7 +8,7 @@ import 'package:cashly/feautures/home/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import '../../../../core/widgets/custom_button.dart';
-
+import 'package:intl/intl.dart';
 import '../../../../core/widgets/cardItem.dart';
 
 
@@ -22,6 +23,10 @@ class GastosScreen extends StatefulWidget {
 // State class
 class _GastosScreenState extends State<GastosScreen>{
 
+  final String mesAnio = toBeginningOfSentenceCase(
+      DateFormat('MMMM yyyy', 'es_ES').format(DateTime.now())
+  )!;
+
   void _onAgregarGasto() {
 
   }
@@ -31,7 +36,11 @@ class _GastosScreenState extends State<GastosScreen>{
   }
 
   void _onDeleteGasto(String gastoId) {
-
+    showDialog(context: context, builder: (_) => Dialog(
+        child: DeleteMessage(controllerName: gastoId, targetRoute: const GastosScreen()
+        ),
+    ),
+    );
   }
 
   @override
@@ -101,7 +110,7 @@ class _GastosScreenState extends State<GastosScreen>{
                           color: Theme.of(context).colorScheme.secondary,
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        child: Text('Julio 2025', style: TextStyle(color: Colors.white)),
+                        child: Text(mesAnio, style: TextStyle(color: Colors.white)),
                       )
                     ],
                   ),

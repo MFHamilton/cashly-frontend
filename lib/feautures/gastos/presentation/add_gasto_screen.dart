@@ -108,6 +108,7 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                   'Transporte',
                   'Salud',
                   'Compras',
+                  'Educación',
                   'Electricidad',
                   'Otros',
                   'Nueva Categoria'
@@ -117,6 +118,7 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                     Icons.directions_bus,
                     Icons.health_and_safety,
                     Icons.shopping_cart,
+                    Icons.school,
                     Icons.bolt,
                     Icons.more_horiz,
                     Icons.add
