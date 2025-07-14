@@ -9,7 +9,7 @@ import '../../../core/widgets/form_input.dart';
 import '../../../core/widgets/frecuency_selector.dart';
 import '../../../core/widgets/header.dart';
 import '../../../core/themes/text_scheme.dart';
-s
+
 class AgregarGastoScreen extends StatefulWidget {
   const AgregarGastoScreen({Key? key}) : super(key: key);
 
@@ -23,6 +23,8 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
   final TextEditingController _montoController = TextEditingController();
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
+
+  final ValueNotifier<int?> selectedCategoryIndex = ValueNotifier<int?>(null);
 
 
   void _onRegistrar() {
@@ -120,7 +122,8 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                     Icons.bolt,
                     Icons.more_horiz,
                     Icons.add
-                            ]
+                            ],
+                selectedIndexNotifier: selectedCategoryIndex
             ),
             const SizedBox(height: 8),
             const SizedBox(height: 24),
@@ -170,6 +173,7 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
             CustomButton(
               text: 'Registrar',
               onPressed: _onRegistrar,
+              style: 'primary',
             ),
             SizedBox(height: 24),
 
