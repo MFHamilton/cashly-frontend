@@ -1,16 +1,18 @@
-import 'package:cashly/core/services/goal_service.dart';
-import 'package:cashly/feautures/goals/data/models/goal.dart';
 import 'package:flutter/material.dart';
 
-import 'package:cashly/core/themes/text_scheme.dart';
-import 'package:cashly/core/widgets/category.dart' as CategoryInput;
-import 'package:cashly/core/widgets/category_selector.dart';
-import 'package:cashly/core/widgets/custom_button.dart';
-import 'package:cashly/core/widgets/duration.dart' as Duration;
-import 'package:cashly/core/widgets/form_input.dart';
-import 'package:cashly/core/widgets/header.dart';
-
+import '../../../core/models/categoria.dart';
+import '../../../core/models/icon_helper.dart';
+import '../../../core/services/category_service.dart';
+import '../../../core/services/goal_service.dart';
+import '../../../core/themes/text_scheme.dart';
+import '../../../core/widgets/category.dart' as CategoryInput;
+import '../../../core/widgets/custom_button.dart';
+import '../../../core/widgets/duration.dart' as Duration;
+import '../../../core/widgets/form_input.dart';
+import '../../../core/widgets/header.dart';
 import '../../../core/widgets/menu.dart';
+
+import '../../../feautures/goals/data/models/goal.dart';
 
 class AddGoalScreen extends StatefulWidget {
   const AddGoalScreen({super.key});
@@ -20,6 +22,8 @@ class AddGoalScreen extends StatefulWidget {
 }
 
 class _AddGoalScreenState extends State<AddGoalScreen> {
+  late Future<List<Categoria>> categoryListFuture;
+
   final TextEditingController nameController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
   final TextEditingController descriptionController = TextEditingController();
@@ -31,7 +35,8 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
   void addGoal() async {
     final index = selectedCategoryIndex.value;
     final categoriaId = index != null ? index + 1 : null;
-    final categoriaNom = index != null ? ['Comida', 'Salario', 'Hogar', 'Trabajo'][index] : null;
+    final categoriaNom =
+        index != null ? ['Comida', 'Salario', 'Hogar', 'Trabajo'][index] : null;
 
     GoalModel goal = GoalModel(
       metaId: 0,
@@ -44,18 +49,27 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
       categoriaId: categoriaId,
       categoriaNom: categoriaNom,
       fechaInicio: DateTime.parse(startDateController.text),
-      fechaFin: endDateController.text != "" ? DateTime.parse(endDateController.text) : null,
+      fechaFin:
+          endDateController.text != ""
+              ? DateTime.parse(endDateController.text)
+              : null,
       metaEsActivo: true,
     );
 
-    try{
+    try {
       await GoalService.postGoal(goal);
 
       Navigator.pop(context, true);
       print("NO ERROR");
-    } catch(e){
+    } catch (e) {
       print("Error: $e");
     }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    categoryListFuture = CategoryService.fetchCategories();
   }
 
   @override
@@ -106,16 +120,26 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
               hintText: "describe tu meta...",
               icon: null,
             ),
-            // TODO: cargar categorias del backend
-            CategoryInput.Category(
-              title: ['Comida', 'Salario', 'Hogar', 'Trabajo'],
-              icon: [
-                Icons.flatware,
-                Icons.account_balance,
-                Icons.cottage,
-                Icons.badge,
-              ],
-              selectedIndexNotifier: selectedCategoryIndex,
+            // cargar categorias del backend
+            FutureBuilder<List<Categoria>>(
+              future: categoryListFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text("Error: ${snapshot.error}");
+                } else if (snapshot.hasData) {
+                  final data = snapshot.data!;
+                  return CategoryInput.Category(
+                    title: data.map((c) => c.categoriaNom).toList(),
+                    icon:
+                        data.map((c) => IconHelper.getIcon(c.iconRef)).toList(),
+                    selectedIndexNotifier: selectedCategoryIndex,
+                  );
+                } else {
+                  return Text("Sin datos");
+                }
+              },
             ),
             // fechas
             Duration.Duration(
@@ -133,88 +157,6 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
             ),
           ],
         ),
-      ),
-    );
-  }
-}
-
-class DateRangePicker extends StatelessWidget {
-  final TextEditingController inputController;
-  final String hintText;
-  final String title;
-  final IconData? icon;
-  final TextInputType? keyboardType;
-  final String? prefixText;
-  final FormFieldValidator<String>? validator;
-  final int? maxLength;
-
-  const DateRangePicker({
-    super.key,
-    required this.inputController,
-    this.hintText = '',
-    this.title = '',
-    this.icon,
-    this.keyboardType,
-    this.prefixText,
-    this.validator,
-    this.maxLength,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: EdgeInsets.all(16),
-      margin: EdgeInsets.all(16),
-      decoration: BoxDecoration(
-        color: Theme.of(context).colorScheme.primaryContainer,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Theme.of(context).colorScheme.primary),
-        boxShadow: [
-          BoxShadow(color: Colors.black12, blurRadius: 6, offset: Offset(0, 2)),
-        ],
-      ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          if (title.isNotEmpty)
-            Row(
-              children: [
-                if (icon != null)
-                  Icon(icon, color: Theme.of(context).colorScheme.primary),
-                if (icon != null) SizedBox(width: 8),
-                Text(
-                  title,
-                  style: Theme.of(context).textTheme.titleMedium?.copyWith(
-                    color: Theme.of(context).colorScheme.primary,
-                  ),
-                ),
-              ],
-            ),
-          SizedBox(height: 8),
-          TextFormField(
-            controller: inputController,
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.symmetric(
-                vertical: 8,
-                horizontal: 12,
-              ),
-              hintText: hintText,
-              filled: true,
-              fillColor: Theme.of(context).colorScheme.surface,
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(3),
-                borderSide: BorderSide(
-                  color:
-                      Theme.of(
-                        context,
-                      ).colorScheme.primary, // o cualquier otro color
-                  //width: 1.5, // ancho opcional
-                ),
-              ),
-            ),
-            style: Theme.of(context).textTheme.bodySmall,
-          ),
-        ],
       ),
     );
   }
