@@ -126,7 +126,6 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
 
                             ],
                 selectedIndexNotifier: ValueNotifier<int?>(null),
-
             ),
             const SizedBox(height: 8),
             const SizedBox(height: 24),
@@ -177,7 +176,6 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
               text: 'Guarda Gasto',
               onPressed: _onRegistrar,
               style: 'primary',
-
             ),
             SizedBox(height: 24),
 

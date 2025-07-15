@@ -7,6 +7,9 @@ import 'package:cashly/core/widgets/frecuency.dart';
 import 'package:cashly/core/widgets/duration.dart';
 import 'package:cashly/feautures/gastos/presentation/gastos_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:cashly/core/widgets/notifications.dart';
+
+import '../../core/widgets/notifications.dart';
 
 class _TestingPageState extends State<TestingPage> {
   final TextEditingController inputController = TextEditingController();
@@ -15,9 +18,10 @@ class _TestingPageState extends State<TestingPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Center(
-        child: DeleteMessage(
-            controllerName: 'ingreso',
-            targetRoute: GastosScreen()),
+        child: Notifications(),
+
+
+
 
       ),
     );
