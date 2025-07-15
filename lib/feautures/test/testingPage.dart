@@ -5,7 +5,7 @@ import 'package:cashly/core/widgets/delete_message.dart';
 import 'package:cashly/core/widgets/form_input.dart';
 import 'package:cashly/core/widgets/frecuency.dart';
 import 'package:cashly/core/widgets/duration.dart';
-import 'package:cashly/feautures/gastos/gastos_screen.dart';
+import 'package:cashly/feautures/gastos/presentation/gastos_screen.dart';
 import 'package:flutter/material.dart';
 
 class _TestingPageState extends State<TestingPage> {
