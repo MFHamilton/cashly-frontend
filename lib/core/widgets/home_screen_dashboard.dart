@@ -37,7 +37,7 @@ class HomeScreenDashBoard extends StatelessWidget {
           cardTitle: "Ingresos",
           amount: incomeMonthlyAmount,
           bottomContent:
-              "${(percentageIncome * 100 > 0) ? '+${percentageIncome * 100}' : '-${percentageIncome * 100}'}% al mes anterior",
+              "${(percentageIncome * 100 > 0) ? '+${(percentageIncome * 100).toStringAsFixed(1)}' : '-${(percentageIncome * 100).toStringAsFixed(1)}'}% al mes anterior",
         ),
 
         DashboardCard(
@@ -45,7 +45,7 @@ class HomeScreenDashBoard extends StatelessWidget {
           cardTitle: "Gastos",
           amount: costsMonthlyAmount,
           bottomContent:
-              "${percentageCosts * 100 > 0 ? "+${percentageCosts * 100}" : "-${percentageCosts * 100}"}% al mes anterior",
+              "${percentageCosts * 100 > 0 ? "+${(percentageCosts * 100).toStringAsFixed(1)}" : "-${(percentageCosts * 100).toStringAsFixed(1)}"}% al mes anterior",
         ),
 
         DashboardCard(
