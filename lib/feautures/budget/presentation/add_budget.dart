@@ -2,9 +2,11 @@ import 'package:cashly/core/models/presupuestos.dart';
 import 'package:cashly/core/services/category_service.dart';
 import 'package:cashly/core/widgets/header.dart';
 import 'package:cashly/core/widgets/menu.dart';
+import 'package:cashly/core/widgets/notifications.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/models/categoria.dart';
+import '../../../core/services/budget_service.dart';
 import '../../../core/themes/text_scheme.dart';
 import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/form_input.dart';
@@ -31,7 +33,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
   final ValueNotifier<int?> selectedCategoryIndex = ValueNotifier<int?>(null);
 
   void addBudget() async {
-    /*final index = selectedCategoryIndex.value;
+    final index = selectedCategoryIndex.value;
     final categoriaId = index != null ? index + 1 : null;
 
     Presupuestos budget = Presupuestos(
@@ -51,10 +53,10 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
       categoriaId: categoriaId,
       categoriaNom: null,
       periodoId: null,
-    );*/
+    );
 
     try {
-      // await BudgetService.postBudget(budget);
+      await BudgetService.postBudget(budget);
 
       Navigator.pop(context, true);
       print("NO ERROR");
@@ -126,19 +128,19 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                 }
               },
             ),
-            // TODO: confirmar si esto va en este formulario
-            Frecuency(),
+            Frecuency(), // TODO: confirmar si esto va en este formulario
             // fechas
             Duration.Duration(
               dateStartController: startDateController,
               dateEndController: endDateController,
             ),
-            // TODO: alertas
+            // alertas
+            Notifications(),
             // guardar presupuesto
             Padding(
-              padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+              padding: EdgeInsets.fromLTRB(12, 16, 12, 8),
               child: CustomButton(
-                text: "Guardar Meta",
+                text: "Guardar Presupuesto",
                 style: 'primary',
                 onPressed: addBudget,
               ),
