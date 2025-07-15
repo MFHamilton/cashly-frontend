@@ -77,6 +77,7 @@ class GastosService {
 
     if (response.statusCode != 200) {
       throw Exception('Error al eliminar el gasto');
+
     }
   }
 }

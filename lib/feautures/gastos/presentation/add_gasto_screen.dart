@@ -24,6 +24,7 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
   final TextEditingController _startDateController = TextEditingController();
   final TextEditingController _endDateController = TextEditingController();
 
+  final ValueNotifier<int?> selectedCategoryIndex = ValueNotifier<int?>(null);
 
   void _onRegistrar() {
 
@@ -122,8 +123,10 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                     Icons.bolt,
                     Icons.more_horiz,
                     Icons.add
+
                             ],
                 selectedIndexNotifier: ValueNotifier<int?>(null),
+
             ),
             const SizedBox(height: 8),
             const SizedBox(height: 24),
@@ -174,6 +177,7 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
               text: 'Guarda Gasto',
               onPressed: _onRegistrar,
               style: 'primary',
+
             ),
             SizedBox(height: 24),
 
