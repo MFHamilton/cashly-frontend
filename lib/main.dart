@@ -4,15 +4,19 @@ import 'package:cashly/feautures/gastos/presentation/gastos_screen.dart';
 import 'package:cashly/feautures/goals/presentation/add_goal.dart';
 import 'package:cashly/feautures/home/presentation/home_screen.dart';
 import 'package:cashly/feautures/intro/presentation/intro_page.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
+
+import 'core/services/firebase_api.dart';
 
 
 Future<void> main() async {
 
   WidgetsFlutterBinding.ensureInitialized();
 
-  //await Firebase.initializeApp(options: DefaultFirebaseOptions.currentPlatform,);
+  await Firebase.initializeApp();
+  await FirebaseApi().initNotification();
 
   //await dotenv.load(); // Cargando las variables de entorno
 
