@@ -10,6 +10,14 @@ class Notifications extends StatefulWidget {
 class _NotificationsState extends State<Notifications> {
   bool _isSwitched = false;
 
+  final List<String> dropdownMenuEntries = [
+    '100%',
+    '75%',
+    '50%',
+    '25%',
+  ];
+
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -69,8 +77,6 @@ class _NotificationsState extends State<Notifications> {
                   ),
                 ),
 
-
-
                 Switch(
                   value: _isSwitched,
                   onChanged: (value){
@@ -86,6 +92,22 @@ class _NotificationsState extends State<Notifications> {
               ],
             ),
 
+
+          ),
+
+          Container(
+            padding: EdgeInsets.all(10),
+            margin: EdgeInsets.all(10),
+            decoration: BoxDecoration(
+                color: Theme.of(context).colorScheme.surface,
+                borderRadius: BorderRadius.circular(3)
+            ),
+            
+            child: DropdownMenu(
+              hintText: 'Selecciona una opción',
+                width: 300,
+                dropdownMenuEntries: dropdownMenuEntries.map((e) => DropdownMenuEntry(value: e, label: e)).toList(),
+            )
 
           )
 
