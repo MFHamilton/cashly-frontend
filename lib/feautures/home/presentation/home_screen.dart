@@ -91,27 +91,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 }
               },
             ),
-            // fuente de ingresos
-            SizedBox(height: 20),
-            Text(
-              "Fuentes de Ingresos",
-              style: MyTextTheme.lightTextTheme.titleLarge,
-            ),
-            FutureBuilder<List<HomeScreenIncomeModel>>(
-              future: incomeFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Text("${snapshot.error}");
-                } else if (snapshot.hasData) {
-                  final data = snapshot.data!;
-                  return IncomeList(data: data);
-                } else {
-                  return Text("Sin datos");
-                }
-              },
-            ),
           ],
         ),
       ),
