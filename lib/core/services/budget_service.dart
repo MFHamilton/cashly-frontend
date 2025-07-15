@@ -32,6 +32,25 @@ class BudgetService {
     }
   }
 
+  static Future<double> fetchBudgetAmount() async {
+    final token = await _storage.read(key: "jwt");
+
+    final response = await http.get(
+      Uri.parse('$baseUrl/presupuesto'),
+      headers: {
+        'Content-Type': 'application/json',
+        "Authorization": "Bearer $token",
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final data = jsonDecode(response.body);
+      return double.parse(data["amount"]);
+    } else {
+      throw Exception('Error al cargar datos de presupuestos');
+    }
+  }
+
   static Future<void> postBudget(Presupuestos budget) async {
     final token = await _storage.read(key: "jwt");
 

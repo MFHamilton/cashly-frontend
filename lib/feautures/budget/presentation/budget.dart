@@ -1,3 +1,4 @@
+import 'package:cashly/core/services/budget_service.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/models/presupuestos.dart';
@@ -17,37 +18,13 @@ class BudgetScreen extends StatefulWidget {
 }
 
 class _BudgetScreenState extends State<BudgetScreen> {
-  // TODO: load data from backend
-  final List<Presupuestos> presupuestos = [
-    Presupuestos(
-      presId: 1,
-      usuarioId: 2,
-      categoriaId: 0,
-      categoriaNom: "Hogar",
-      presNombre: "Gastos Casa",
-      presMontoInicial: 3000,
-      presMontoUlt: 1000,
-      esActivo: true,
-      fechaCreacion: DateTime(2025, 2, 12),
-      fechaUltAct: DateTime.now(),
-      inicioRecurrencia: DateTime(2025, 2, 12),
-      finRecurrencia: DateTime(2025, 8, 14),
-    ),
-    Presupuestos(
-      presId: 1,
-      usuarioId: 2,
-      categoriaId: 2,
-      categoriaNom: "Comida",
-      presNombre: "Gastos Comida",
-      presMontoInicial: 2000,
-      presMontoUlt: 550,
-      esActivo: true,
-      fechaCreacion: DateTime(2025, 2, 12),
-      fechaUltAct: DateTime.now(),
-      inicioRecurrencia: DateTime(2025, 2, 12),
-      finRecurrencia: DateTime(2025, 8, 14),
-    ),
-  ];
+  late Future<List<Presupuestos>> budgetFuture;
+  late Future<double> amountFuture;
+
+  void loadBudget() {
+    budgetFuture = BudgetService.fetchBudget();
+    amountFuture = BudgetService.fetchBudgetAmount();
+  }
 
   Future<void> navigateAddBudget() async {
     final result = await Navigator.push(
@@ -62,7 +39,11 @@ class _BudgetScreenState extends State<BudgetScreen> {
     }
   }
 
-  void loadBudget() {}
+  @override
+  void initState() {
+    super.initState();
+    loadBudget();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -89,9 +70,37 @@ class _BudgetScreenState extends State<BudgetScreen> {
               ),
             ),
             // Card con el presupesto total del mes
-            GeneralBudgetCard(amount: 5000),
+            FutureBuilder<double>(
+              future: amountFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text("Error: ${snapshot.error}");
+                } else if (snapshot.hasData) {
+                  final data = snapshot.data!;
+                  return GeneralBudgetCard(amount: data);
+                } else {
+                  return Text("Sin datos");
+                }
+              },
+            ),
             // listado de presupuestos
-            ListaBudgetCards(lista: presupuestos),
+            FutureBuilder<List<Presupuestos>>(
+              future: budgetFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text("Error: ${snapshot.error}");
+                } else if (snapshot.hasData) {
+                  final data = snapshot.data!;
+                  return ListaBudgetCards(lista: data);
+                } else {
+                  return Text("Sin datos");
+                }
+              },
+            ),
             // boton para ir a la pantalla de agregar presupuesto
             Padding(
               padding: EdgeInsets.fromLTRB(11, 0, 11, 16),
