@@ -9,11 +9,11 @@ import '../constants/url.dart';
 class GastosService {
   static const FlutterSecureStorage _storage = FlutterSecureStorage();
 
-  static Future<List<double>> fetchGastosMontoMensual(int month, int year) async {
+  static Future<List<double>> fetchGastosMontoMensual(int month, int year, int presId) async {
     final token = await _storage.read(key: "jwt");
 
     final response = await http.get(
-      Uri.parse('$baseUrl/presupuesto?month=$month&year=$year'),
+      Uri.parse('$baseUrl/presupuesto?month=$month&year=$year&pres_id=$presId'),
       headers: {
         'Content-Type': 'application/json',
         "Authorization": "Bearer $token",

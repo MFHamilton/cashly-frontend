@@ -40,7 +40,11 @@ class _BudgetDetailScreenState extends State<BudgetDetailScreen> {
   void initState() {
     super.initState();
     DateTime today = DateTime.now();
-    gastosFuture = GastosService.fetchGastosMontoMensual(today.month, today.year);
+    gastosFuture = GastosService.fetchGastosMontoMensual(
+      today.month,
+      today.year,
+      widget.budget.presId,
+    );
   }
 
   @override
