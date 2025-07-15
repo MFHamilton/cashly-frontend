@@ -40,21 +40,45 @@ class _NotificationsState extends State<Notifications> {
                 borderRadius: BorderRadius.circular(3)
             ),
 
-            child: Column(
+            child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(
-                  'Activar Alertas',
-                  style: Theme.of(context).textTheme.titleSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onSurface
+
+                Expanded(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(top: 5),
+                      ),
+                      Text(
+                        'Activar Alertas',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            color: Theme.of(context).colorScheme.onSurface
+                        ),
+                      ),
+                      Text(
+                        'Recibe notificaciones de ',
+                        style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                            color: Theme.of(context).colorScheme.onPrimaryContainer
+                        ),
+                      ),
+
+
+                    ],
                   ),
                 ),
 
-                Text(
-                  'Recibe notificaciones de ',
-                  style: Theme.of(context).textTheme.labelSmall?.copyWith(
-                      color: Theme.of(context).colorScheme.onPrimaryContainer
-                  ),
+
+
+                Switch(
+                  value: _isSwitched,
+                  onChanged: (value){
+                    setState(() {
+                      _isSwitched = value;
+                      //print(_isSwitched);
+                    });
+                  },
                 ),
 
 
