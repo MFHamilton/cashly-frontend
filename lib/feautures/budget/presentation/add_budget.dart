@@ -10,8 +10,8 @@ import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/form_input.dart';
 import '../../../core/widgets/category.dart' as CategoryInput;
 import '../../../core/widgets/duration.dart' as Duration;
-import '../../../core/models/icon_helper.dart';
 import '../../../core/widgets/frecuency.dart';
+import '../../../core/services/budget_service.dart';
 
 class AddBudgetScreen extends StatefulWidget {
   const AddBudgetScreen({super.key});
@@ -26,38 +26,50 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
 
+  int? selectedFrecuencyIndex;
   late Future<List<Categoria>> categoryListFuture;
+  late List<Categoria> categoryList;
 
-  final ValueNotifier<int?> selectedCategoryIndex = ValueNotifier<int?>(null);
+  final ValueNotifier<Categoria?> selectedCategoria = ValueNotifier(null);
 
   void addBudget() async {
-    /*final index = selectedCategoryIndex.value;
-    final categoriaId = index != null ? index + 1 : null;
+    final categoriaSeleccionada = selectedCategoria.value;
+
+    if (categoriaSeleccionada == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Selecciona una categoría")),
+      );
+      return;
+    }
+
+    if (selectedFrecuencyIndex == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Selecciona una frecuencia")),
+      );
+      return;
+    }
 
     Presupuestos budget = Presupuestos(
       presId: 0,
-      usuarioId: 1,
-      presNombre: nameController.text,
-      presMontoInicial: double.parse(amountController.text),
+      usuarioId: 1, // ⚠️ Reemplazar por el ID real del usuario
+      presNombre: nameController.text.trim(),
+      presMontoInicial: double.tryParse(amountController.text.replaceAll(',', '')) ?? 0,
       presMontoUlt: 0,
       esActivo: true,
       fechaCreacion: DateTime.now(),
       fechaUltAct: DateTime.now(),
       inicioRecurrencia: DateTime.parse(startDateController.text),
-      finRecurrencia:
-          endDateController.text != ""
-              ? DateTime.parse(endDateController.text)
-              : null,
-      categoriaId: categoriaId,
+      finRecurrencia: endDateController.text.isNotEmpty
+          ? DateTime.parse(endDateController.text)
+          : null,
+      categoriaId: categoriaSeleccionada.categoriaId,
       categoriaNom: null,
-      periodoId: null,
-    );*/
+      periodoId: selectedFrecuencyIndex! + 1,
+    );
 
     try {
-      // await BudgetService.postBudget(budget);
-
+      await BudgetService.postBudget(budget);
       Navigator.pop(context, true);
-      print("NO ERROR");
     } catch (e) {
       print("Error: $e");
     }
@@ -72,7 +84,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      drawer: MenuLateralScreen(),
+      drawer: const MenuLateralScreen(),
       appBar: Header(),
       body: SingleChildScrollView(
         child: Column(
@@ -81,14 +93,14 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
             // Titulo de la pantalla
             Container(
               width: 180,
-              padding: EdgeInsets.fromLTRB(8, 0, 0, 8),
+              padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
               child: Row(
                 children: [
-                  Icon(Icons.arrow_back_ios),
-                  SizedBox(width: 4),
+                  const Icon(Icons.arrow_back_ios),
+                  const SizedBox(width: 4),
                   Text(
                     "Agregar presupuesto",
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: Theme.of(context).textTheme.headlineMedium,
                   ),
                 ],
               ),
@@ -104,8 +116,9 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
               title: "Monto",
               hintText: "\$0.00",
               icon: Icons.attach_money,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
             ),
-            // cargar categorias del backend
+            // Categorías desde backend
             FutureBuilder<List<Categoria>>(
               future: categoryListFuture,
               builder: (context, snapshot) {
@@ -114,31 +127,32 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                 } else if (snapshot.hasError) {
                   return Text("Error: ${snapshot.error}");
                 } else if (snapshot.hasData) {
-                  final data = snapshot.data!;
+                  categoryList = snapshot.data!;
                   return CategoryInput.Category(
-                    title: data.map((c) => c.categoriaNom).toList(),
-                    icon:
-                        data.map((c) => IconHelper.getIcon(c.iconRef)).toList(),
-                    selectedIndexNotifier: selectedCategoryIndex,
+                    categorias: categoryList,
+                    selectedCategoriaNotifier: selectedCategoria,
                   );
                 } else {
-                  return Text("Sin datos");
+                  return const Text("Sin datos");
                 }
               },
             ),
-            // TODO: confirmar si esto va en este formulario
-            Frecuency(),
-            // fechas
+            Frecuency(
+              onSelect: (index) {
+                setState(() {
+                  selectedFrecuencyIndex = index;
+                });
+              },
+              selectedIndex: selectedFrecuencyIndex,
+            ),
             Duration.Duration(
               dateStartController: startDateController,
               dateEndController: endDateController,
             ),
-            // TODO: alertas
-            // guardar presupuesto
             Padding(
-              padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: CustomButton(
-                text: "Guardar Meta",
+                text: "Guardar Presupuesto",
                 style: 'primary',
                 onPressed: addBudget,
               ),

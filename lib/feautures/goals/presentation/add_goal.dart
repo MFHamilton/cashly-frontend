@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import '../../../core/models/categoria.dart';
-import '../../../core/models/icon_helper.dart';
 import '../../../core/services/category_service.dart';
 import '../../../core/services/goal_service.dart';
 import '../../../core/themes/text_scheme.dart';
@@ -11,20 +10,18 @@ import '../../../core/widgets/duration.dart' as Duration;
 import '../../../core/widgets/form_input.dart';
 import '../../../core/widgets/header.dart';
 import '../../../core/widgets/menu.dart';
-import '../../../core/utils/icon_from_string.dart';
 import '../../../feautures/goals/data/models/goal.dart';
-
-iconFromString(String iconRef) {}
-
 
 class AddGoalScreen extends StatefulWidget {
   const AddGoalScreen({super.key});
+
   @override
   State<AddGoalScreen> createState() => _AddGoalScreenState();
 }
 
 class _AddGoalScreenState extends State<AddGoalScreen> {
   late Future<List<Categoria>> categoryListFuture;
+  late List<Categoria> categoryList;
 
   final TextEditingController nameController = TextEditingController();
   final TextEditingController amountController = TextEditingController();
@@ -32,35 +29,38 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
   final TextEditingController startDateController = TextEditingController();
   final TextEditingController endDateController = TextEditingController();
 
-  final ValueNotifier<int?> selectedCategoryIndex = ValueNotifier<int?>(null);
+  final ValueNotifier<Categoria?> selectedCategoria = ValueNotifier(null);
 
   void addGoal() async {
-    final index = selectedCategoryIndex.value;
-    final categoriaId = index != null ? index + 1 : null;
+    final categoriaSeleccionada = selectedCategoria.value;
+
+    if (categoriaSeleccionada == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text("Selecciona una categoría")),
+      );
+      return;
+    }
 
     GoalModel goal = GoalModel(
       metaId: 0,
-      usuarioId: 0,
+      usuarioId: 0, // Asegúrate de reemplazarlo con el ID real del usuario
       periodoId: 1,
-      metaNombre: nameController.text,
-      metaDescripcion: descriptionController.text,
-      metaMontoInicial: double.parse(amountController.text),
+      metaNombre: nameController.text.trim(),
+      metaDescripcion: descriptionController.text.trim(),
+      metaMontoInicial: double.tryParse(amountController.text.replaceAll(',', '')) ?? 0,
       metaMontoUlt: 0,
-      categoriaId: categoriaId,
+      categoriaId: categoriaSeleccionada.categoriaId,
       categoriaNom: null,
       fechaInicio: DateTime.parse(startDateController.text),
-      fechaFin:
-          endDateController.text != ""
-              ? DateTime.parse(endDateController.text)
-              : null,
+      fechaFin: endDateController.text.isNotEmpty
+          ? DateTime.parse(endDateController.text)
+          : null,
       metaEsActivo: true,
     );
 
     try {
       await GoalService.postGoal(goal);
-
       Navigator.pop(context, true);
-      print("NO ERROR");
     } catch (e) {
       print("Error: $e");
     }
@@ -82,16 +82,17 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              padding: EdgeInsets.fromLTRB(8, 0, 0, 8),
+              padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
               child: Row(
                 children: [
-                  Icon(Icons.arrow_back_ios),
-                  SizedBox(width: 2),
+                  const Icon(Icons.arrow_back_ios),
+                  const SizedBox(width: 2),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         "Agregar Meta",
-                        style: MyTextTheme.lightTextTheme.bodyLarge,
+                        style: MyTextTheme.lightTextTheme.headlineMedium,
                       ),
                       Text(
                         "Registra una nueva meta",
@@ -113,14 +114,14 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
               title: "Monto",
               hintText: "\$0.00",
               icon: Icons.attach_money,
+              keyboardType: const TextInputType.numberWithOptions(decimal: true),
             ),
             FormInput(
               inputController: descriptionController,
               title: "Descripción",
               hintText: "describe tu meta...",
-              icon: Icons.text_snippet,
+              icon: null,
             ),
-            // cargar categorias del backend
             FutureBuilder<List<Categoria>>(
               future: categoryListFuture,
               builder: (context, snapshot) {
@@ -129,26 +130,22 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                 } else if (snapshot.hasError) {
                   return Text("Error: ${snapshot.error}");
                 } else if (snapshot.hasData) {
-                  final data = snapshot.data!;
+                  categoryList = snapshot.data!;
                   return CategoryInput.Category(
-                    title: data.map((c) => c.categoriaNom).toList(),
-                    icon:
-                    data.map((c) => getIconFromString(c.iconRef)).toList(),
-                    selectedIndexNotifier: selectedCategoryIndex,
+                    categorias: categoryList,
+                    selectedCategoriaNotifier: selectedCategoria,
                   );
                 } else {
-                  return Text("Sin datos");
+                  return const Text("Sin categorías disponibles");
                 }
               },
             ),
-            // fechas
             Duration.Duration(
               dateStartController: startDateController,
               dateEndController: endDateController,
             ),
-            // botón para enviar la solicitud
             Padding(
-              padding: EdgeInsets.fromLTRB(16, 16, 16, 8),
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: CustomButton(
                 text: "Guardar Meta",
                 style: 'primary',

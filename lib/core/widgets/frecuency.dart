@@ -1,147 +1,117 @@
 import 'package:flutter/material.dart';
 
-class Frecuency extends StatefulWidget {
-  const Frecuency({super.key});
+class Frecuency extends StatelessWidget {
+  final int? selectedIndex;
+  final Function(int) onSelect;
 
-  @override
-  State<Frecuency> createState() => _FrecuencyState();
-}
+  const Frecuency({
+    super.key,
+    this.selectedIndex,
+    required this.onSelect,
+  });
 
-class _FrecuencyState extends State<Frecuency> {
-  final _formKey = GlobalKey<FormState>();
-
-
-  int? _selectedCatIndex;
-
-  void _onRegistrar() {
-    if (_formKey.currentState?.validate() ?? false && _selectedCatIndex != null) {
-      // TODO: guardar el gasto en tu BD, incluyendo _categorias[_selectedCatIndex!].nombre
-      Navigator.of(context).pop();
-    } else if (_selectedCatIndex == null) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Selecciona una categoría')),
-      );
-    }
-  }
   @override
   Widget build(BuildContext context) {
+    final List<String> options = [
+      'Semanal',
+      'Quincenal',
+      'Mensual',
+      'Trimestral',
+      'Semestral',
+      'Anual'
+    ];
+    final List<String> optionDates = [
+      'Cada 7 días',
+      'Cada 15 días',
+      'Cada mes',
+      'Cada 3 meses',
+      'Cada 6 meses',
+      'Cada año'
+    ];
+
     return Container(
-        padding: EdgeInsets.all(0),
-        margin: EdgeInsets.all(16),
-        decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.primaryContainer,
-          borderRadius: BorderRadius.circular(3),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black12,
-              blurRadius: 6,
-              offset: Offset(0, 2),
+      margin: const EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        color: Theme.of(context).colorScheme.primaryContainer, // 🔴 Color de fondo
+        borderRadius: BorderRadius.circular(3),
+        boxShadow: const [
+          BoxShadow(
+            color: Colors.black12,
+            blurRadius: 6,
+            offset: Offset(0, 2),
+          ),
+        ],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            'Frecuencia',
+            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+              color: Theme.of(context).colorScheme.primary,
             ),
-          ],
-        ),
+          ),
+          const SizedBox(height: 12),
+          GridView.count(
+            crossAxisCount: 2,
+            childAspectRatio: 150 / 80,
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            children: List.generate(6, (index) {
+              final selected = index == selectedIndex;
 
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // TODO : Arreglar los titulso estos del demonio
-            Padding(
-              padding: EdgeInsets.only(left: 20, top: 10),
-            ),
-
-            //TODO : Preguntarle a buenaventura WTF
-            Text(
-              'Frecuencia',
-              style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: Theme.of(context).colorScheme.primary,
-              ),
-            ),
-
-
-
-
-            // TODO : hacer que se pueda deseleccionar una categoria si se da click en ella misma
-            GridView.count(
-
-              crossAxisCount: 2,
-              childAspectRatio: 150 / 80,
-              shrinkWrap: true,
-              physics: NeverScrollableScrollPhysics(), // opcional
-
-              children: List.generate(6, (index) {
-                final selected = index == _selectedCatIndex;
-
-                final List<String> Options = [
-                  'Semanal',
-                  'Quincenal',
-                  'Mensual',
-                  'Trimestral',
-                  'Semestral',
-                  'Anual'
-                ];
-
-                final List<String> OptionDates = [
-                  'Cada 7 días',
-                  'Cada 15 días',
-                  'Cada mes',
-                  'Cada 3 meses',
-                  'Cada 6 meses',
-                  'Cada año'
-                ];
-
-
-                return GestureDetector(
-                  onTap: () => setState(() => _selectedCatIndex = index),
-                  child: Container(
-                    padding: EdgeInsets.all(15),
-                    margin: EdgeInsets.all(12), // usa menos margen si hay overflow
-                    decoration: BoxDecoration(
+              return GestureDetector(
+                onTap: () => onSelect(index),
+                child: Container(
+                  padding: const EdgeInsets.all(15),
+                  margin: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: selected
+                        ? Theme.of(context).colorScheme.onPrimaryContainer
+                        : Colors.white,
+                    borderRadius: BorderRadius.circular(10),
+                    border: Border.all(
                       color: selected
-                          ? Theme.of(context).colorScheme.onPrimaryContainer
-                          : Colors.white,
-                      borderRadius: BorderRadius.circular(10),
-                      border: Border.all(
-                        color: selected
-                            ? Theme.of(context).colorScheme.primary
-                            : Theme.of(context).colorScheme.primaryContainer,
-                        width: 1.5,
+                          ? Theme.of(context).colorScheme.primary
+                          : Theme.of(context).colorScheme.primaryContainer,
+                      width: 1.5,
+                    ),
+                    boxShadow: const [
+                      BoxShadow(
+                        color: Colors.black12,
+                        blurRadius: 2,
+                        offset: Offset(0, 2),
                       ),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black12,
-                          blurRadius: 2,
-                          offset: Offset(0, 2),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                            Options[index],
-                          style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurface
-                          ),
-                        ),
-                        Text(
-                          OptionDates[index],
-                          style: Theme.of(context).textTheme.bodySmall?.copyWith(
-                            color: Theme.of(context).colorScheme.onSurfaceVariant
-                          ),
-                        )
-
-                      ],
-                    ),
+                    ],
                   ),
-                );
-              }),
-            )
-
-          ],
-
-
-        )
-
-
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        options[index],
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodyMedium
+                            ?.copyWith(color: Theme.of(context).colorScheme.onSurface),
+                      ),
+                      Text(
+                        optionDates[index],
+                        style: Theme.of(context)
+                            .textTheme
+                            .bodySmall
+                            ?.copyWith(color: Theme.of(context).colorScheme.onSurfaceVariant),
+                      )
+                    ],
+                  ),
+                ),
+              );
+            }),
+          ),
+        ],
+      ),
     );
   }
 }
+
+
