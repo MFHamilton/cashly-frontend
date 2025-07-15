@@ -30,7 +30,6 @@ class MyApp extends StatelessWidget {
       title: 'Material App',
      theme: AppTheme.lightTheme,
       home: LoginPage(),
-
     );
   }
 }

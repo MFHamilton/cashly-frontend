@@ -1,3 +1,4 @@
+
 class Categoria {
   final int categoriaId;
   final String categoriaNom;
