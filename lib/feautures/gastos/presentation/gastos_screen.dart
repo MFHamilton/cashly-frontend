@@ -1,13 +1,16 @@
 import 'package:cashly/core/constants/app_color.dart';
 import 'package:cashly/core/models/gastos.dart';
+import 'package:cashly/core/widgets/delete_message.dart';
 import 'package:cashly/core/widgets/header.dart';
 import 'package:cashly/core/widgets/menu.dart';
 import 'package:cashly/feautures/gastos/presentation/add_gasto_screen.dart';
 import 'package:cashly/feautures/home/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import '../../../core/widgets/custom_button.dart';
-import '../../../core/themes/text_scheme.dart';
+import '../../../../core/widgets/custom_button.dart';
+import 'package:intl/intl.dart';
+import '../../../../core/widgets/cardItem.dart';
+
 
 // StatefulWidget
 class GastosScreen extends StatefulWidget {
@@ -20,12 +23,24 @@ class GastosScreen extends StatefulWidget {
 // State class
 class _GastosScreenState extends State<GastosScreen>{
 
+  final String mesAnio = toBeginningOfSentenceCase(
+      DateFormat('MMMM yyyy', 'es_ES').format(DateTime.now())
+  )!;
+
   void _onAgregarGasto() {
 
   }
 
   void _onEditGasto(String gastoId) {
 
+  }
+
+  void _onDeleteGasto(String gastoId) {
+    showDialog(context: context, builder: (_) => Dialog(
+        child: DeleteMessage(controllerName: gastoId, targetRoute: const GastosScreen()
+        ),
+    ),
+    );
   }
 
   @override
@@ -52,7 +67,7 @@ class _GastosScreenState extends State<GastosScreen>{
               const SizedBox(width: 8),
               Text(
                 'Gastos',
-                style: MyTextTheme.lightTextTheme.headlineMedium,
+                style: Theme.of(context).textTheme.headlineMedium?.copyWith(),
               ),
               const Spacer(),
               IconButton(
@@ -75,7 +90,7 @@ class _GastosScreenState extends State<GastosScreen>{
             child: Container(
               width: double.infinity,
               decoration: BoxDecoration(
-                color: Color(0xFFEAF1EA),
+                color: Theme.of(context).colorScheme.primaryContainer,
                 borderRadius: BorderRadius.circular(8),
               ),
               padding: const EdgeInsets.all(16),
@@ -84,28 +99,28 @@ class _GastosScreenState extends State<GastosScreen>{
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.attach_money, color: Color(0xFF28523A)),
+                      Icon(Icons.attach_money, color: Theme.of(context).colorScheme.primary),
                       SizedBox(width: 8),
                       Text('Gastos Totales',
-                          style: TextStyle(color: Color(0xFF28523A), fontWeight: FontWeight.w600)),
+                          style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.w600)),
                       Spacer(),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                         decoration: BoxDecoration(
-                          color: Color(0xFF28523A),
+                          color: Theme.of(context).colorScheme.secondary,
                           borderRadius: BorderRadius.circular(16),
                         ),
-                        child: Text('Julio 2025', style: TextStyle(color: Colors.white)),
+                        child: Text(mesAnio, style: TextStyle(color: Colors.white)),
                       )
                     ],
                   ),
                   SizedBox(height: 12),
                   Text('RD\$5,000',
                       style: TextStyle(
-                          color: Color(0xFF28523A),
+                          color: Theme.of(context).colorScheme.primary,
                           fontSize: 28,
                           fontWeight: FontWeight.bold)),
-                  Text('Este mes', style: TextStyle(color: Color(0xFF28523A).withOpacity(0.7))),
+                  Text('Este mes', style: TextStyle(color: Theme.of(context).colorScheme.primary.withOpacity(0.7))),
                 ],
               ),
             ),
@@ -134,29 +149,33 @@ class _GastosScreenState extends State<GastosScreen>{
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: ListView(
                 children: [
-                  _GastoItem(
+                  CardItem(
                     title: 'Colegio',
                     subtitle: 'Hijo · Mensual',
                     amount: 'RD\$50,000.00',
                     onEdit: () => _onEditGasto('colegio'),
+                    onDelete: () => _onDeleteGasto('colegio'),
                   ),
-                  _GastoItem(
+                  CardItem(
                     title: 'Super',
                     subtitle: 'Casa · Semanal',
                     amount: 'RD\$50,000.00',
                     onEdit: () => _onEditGasto('super'),
+                    onDelete: () => _onDeleteGasto('super'),
                   ),
-                  _GastoItem(
+                  CardItem(
                     title: 'Salón',
                     subtitle: 'Personal · Quincenal',
                     amount: 'RD\$50,000.00',
                     onEdit: () => _onEditGasto('salon'),
+                    onDelete: () => _onDeleteGasto('salon'),
                   ),
-                  _GastoItem(
+                  CardItem(
                     title: 'Uñas',
                     subtitle: 'Personal · Quincenal',
                     amount: 'RD\$50,000.00',
                     onEdit: () => _onEditGasto('uñas'),
+                    onDelete: () => _onDeleteGasto('uñas'),
                   ),
                   SizedBox(height: 8),
                 ],
@@ -168,7 +187,7 @@ class _GastosScreenState extends State<GastosScreen>{
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: CustomButton(
-              text: '+ Agregar Gasto',
+              text: '+  Agregar Gasto',
               style: 'primary',
               onPressed: () {   // aquí sólo la función anónima, sin llaves extra
                 Navigator.of(context).push(
@@ -216,8 +235,8 @@ class _SmallStatCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label, style: TextStyle(color: Colors.black54, fontSize: 12)),
-                Text(value, style: TextStyle(color: Colors.black87, fontWeight: FontWeight.bold)),
+                Text(label, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 12)),
+                Text(value, style: TextStyle(color: Theme.of(context).colorScheme.primary, fontWeight: FontWeight.bold)),
               ],
             ),
           ],
@@ -227,43 +246,5 @@ class _SmallStatCard extends StatelessWidget {
   }
 }
 
-class _GastoItem extends StatelessWidget {
-  final String title;
-  final String subtitle;
-  final String amount;
-  final VoidCallback onEdit;
 
-  const _GastoItem({
-    Key? key,
-    required this.title,
-    required this.subtitle,
-    required this.amount,
-    required this.onEdit,
-  }) : super(key: key);
 
-  @override
-  Widget build(BuildContext context) {
-    return Card(
-      margin: EdgeInsets.symmetric(vertical: 6),
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: ListTile(
-        leading: Icon(Icons.arrow_upward, color: Color(0xFFB5D4B1)),
-        title: Text(title, style: TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Text(subtitle, style: TextStyle(color: Colors.black54)),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            Text(amount,
-                style: TextStyle(
-                    color: Color(0xFF28523A), fontWeight: FontWeight.bold)),
-            SizedBox(width: 8),
-            IconButton(
-              icon: Icon(Icons.edit, color: Color(0xFF28523A)),
-              onPressed: onEdit,
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-}

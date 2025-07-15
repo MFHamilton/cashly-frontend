@@ -11,12 +11,14 @@ import '../../../core/widgets/duration.dart' as Duration;
 import '../../../core/widgets/form_input.dart';
 import '../../../core/widgets/header.dart';
 import '../../../core/widgets/menu.dart';
-
+import '../../../core/utils/icon_from_string.dart';
 import '../../../feautures/goals/data/models/goal.dart';
+
+iconFromString(String iconRef) {}
+
 
 class AddGoalScreen extends StatefulWidget {
   const AddGoalScreen({super.key});
-
   @override
   State<AddGoalScreen> createState() => _AddGoalScreenState();
 }
@@ -131,7 +133,7 @@ class _AddGoalScreenState extends State<AddGoalScreen> {
                   return CategoryInput.Category(
                     title: data.map((c) => c.categoriaNom).toList(),
                     icon:
-                        data.map((c) => IconHelper.getIcon(c.iconRef)).toList(),
+                    data.map((c) => getIconFromString(c.iconRef)).toList(),
                     selectedIndexNotifier: selectedCategoryIndex,
                   );
                 } else {
