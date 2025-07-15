@@ -45,7 +45,10 @@ class _NotificationsState extends State<Notifications> {
             margin: EdgeInsets.all(10),
             decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(3)
+                borderRadius: BorderRadius.circular(3),
+                border: Border.all(
+                    color: Theme.of(context).colorScheme.secondary
+                )
             ),
 
             child: Row(
@@ -100,13 +103,24 @@ class _NotificationsState extends State<Notifications> {
             margin: EdgeInsets.all(10),
             decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
-                borderRadius: BorderRadius.circular(3)
+                borderRadius: BorderRadius.circular(3),
+                border: Border.all(
+                  color: Theme.of(context).colorScheme.secondary
+                )
             ),
             
             child: DropdownMenu(
               hintText: 'Selecciona una opción',
-                width: 300,
+              width: double.infinity,
+                textStyle: Theme.of(context).textTheme.titleSmall?.copyWith(
+                  color: Theme.of(context).colorScheme.primary,
+                ),
+                // TODO : desplegable size ajustar
+                menuStyle: MenuStyle(
+
+                ),
                 dropdownMenuEntries: dropdownMenuEntries.map((e) => DropdownMenuEntry(value: e, label: e)).toList(),
+
             )
 
           )
