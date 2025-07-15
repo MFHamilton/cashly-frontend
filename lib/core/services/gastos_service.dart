@@ -1,17 +1,15 @@
 import 'dart:convert';
-
 import 'package:cashly/core/models/gastos.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-
-import '../constants/url.dart';
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import '../constants/url.dart'; // Aquí está tu baseUrl
 
 class GastosService {
-  final String _endpoint = '$baseUrl/api/gastos';
-  static const FlutterSecureStorage _storage = FlutterSecureStorage();
+  final String _endpoint = '$baseUrl/gastos';
+  final storage = FlutterSecureStorage();
 
   Future<String?> _getToken() async {
-    return await _storage.read(key: 'authToken');
+    return await storage.read(key: 'jwt',);
   }
 
   Future<List<dynamic>> getGastos() async {
@@ -41,6 +39,9 @@ class GastosService {
       },
       body: json.encode(data),
     );
+
+    print("Status: ${response.statusCode}");
+    print("Body: ${response.body}");
 
     if (response.statusCode == 201) {
       return json.decode(response.body);
@@ -80,12 +81,11 @@ class GastosService {
 
     if (response.statusCode != 200) {
       throw Exception('Error al eliminar el gasto');
-
     }
   }
 
-  static Future<List<double>> fetchGastosMontoMensual(int month, int year, int presId) async {
-    final token = await _storage.read(key: "jwt");
+  Future<List<double>> fetchGastosMontoMensual(int month, int year, int presId) async {
+    final token = await _getToken();
 
     final response = await http.get(
       Uri.parse('$baseUrl/presupuesto?month=$month&year=$year&pres_id=$presId'),
@@ -98,7 +98,7 @@ class GastosService {
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       final List<double> dataList =
-          data.map((e) => Gastos.fromJson(e).gastoMonto).toList();
+      data.map((e) => Gastos.fromJson(e).gastoMonto).toList();
       return dataList;
     } else {
       throw Exception('Error al cargar datos de presupuestos');
