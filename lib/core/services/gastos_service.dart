@@ -4,11 +4,11 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../constants/url.dart'; // Aquí está tu baseUrl
 
 class GastosService {
-  final String _endpoint = '$baseUrl/api/gastos';
+  final String _endpoint = '$baseUrl/gastos';
   final storage = FlutterSecureStorage();
 
   Future<String?> _getToken() async {
-    return await storage.read(key: 'authToken');
+    return await storage.read(key: 'jwt',);
   }
 
   Future<List<dynamic>> getGastos() async {
@@ -38,6 +38,9 @@ class GastosService {
       },
       body: json.encode(data),
     );
+
+    print("Status: ${response.statusCode}");
+    print("Body: ${response.body}");
 
     if (response.statusCode == 201) {
       return json.decode(response.body);
@@ -77,7 +80,6 @@ class GastosService {
 
     if (response.statusCode != 200) {
       throw Exception('Error al eliminar el gasto');
-
     }
   }
 }
