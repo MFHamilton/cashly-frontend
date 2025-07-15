@@ -6,6 +6,9 @@ import 'package:cashly/core/widgets/form_input.dart';
 import 'package:cashly/core/widgets/frecuency.dart';
 import 'package:cashly/core/widgets/duration.dart';
 import 'package:flutter/material.dart';
+import 'package:cashly/core/widgets/notifications.dart';
+
+import '../../core/widgets/notifications.dart';
 
 class _TestingPageState extends State<TestingPage> {
   final TextEditingController inputController = TextEditingController();
@@ -14,6 +17,9 @@ class _TestingPageState extends State<TestingPage> {
     return Scaffold(
       backgroundColor: Theme.of(context).colorScheme.surface,
       body: Center(
+        child: Notifications(),
+
+
 
 
       ),

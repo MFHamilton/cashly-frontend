@@ -34,7 +34,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
      theme: AppTheme.lightTheme,
-      home: HomeScreen(),
+      home: TestingPage(),
     );
   }
 }
