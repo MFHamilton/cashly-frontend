@@ -30,23 +30,29 @@ class Presupuestos {
   });
 
   factory Presupuestos.fromJson(Map<String, dynamic> json) => Presupuestos(
-    presId: json['pres_id'],
-    usuarioId: json['usuario_id'],
+    presId: int.parse(json['pres_id'].toString()),
+    usuarioId: int.parse(json['usuario_id'].toString()),
     presNombre: json['pres_nombre'],
-    presMontoInicial: (json['pres_monto_inicial'] as num).toDouble(),
-    presMontoUlt: (json['pres_monto_ult'] as num).toDouble(),
-    categoriaId: json['categoria_id'],
+    presMontoInicial: double.parse(json['pres_monto_inicial'].toString()),
+    presMontoUlt: double.parse(json['pres_monto_ult'].toString()),
+    categoriaId:
+        json['categoria_id'] != null ? int.parse(json['categoria_id'].toString()) : null,
     categoriaNom: json['categoria_nom'],
-    periodoId: json['periodo_id'],
+    periodoId:
+        json['periodo_id'] != null
+            ? int.parse(json['periodo_id'].toString())
+            : null,
     esActivo: json['es_activo'],
     fechaCreacion: DateTime.parse(json['fecha_creacion']),
     fechaUltAct: DateTime.parse(json['fecha_ult_act']),
-    inicioRecurrencia: json['inicio_recurrencia'] == null
-        ? null
-        : DateTime.parse(json['inicio_recurrencia']),
-    finRecurrencia: json['fin_recurrencia'] == null
-        ? null
-        : DateTime.parse(json['fin_recurrencia']),
+    inicioRecurrencia:
+        json['inicio_recurrencia'] == null
+            ? null
+            : DateTime.parse(json['inicio_recurrencia']),
+    finRecurrencia:
+        json['fin_recurrencia'] == null
+            ? null
+            : DateTime.parse(json['fin_recurrencia']),
   );
 
   Map<String, dynamic> toJson() => {

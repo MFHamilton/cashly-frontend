@@ -20,7 +20,7 @@ class BudgetService {
       },
     );
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       final List<dynamic> data = jsonDecode(response.body);
       final List<Presupuestos> dataList =
           data
@@ -36,7 +36,7 @@ class BudgetService {
     final token = await _storage.read(key: "jwt");
 
     final response = await http.get(
-      Uri.parse('$baseUrl/presupuesto'),
+      Uri.parse('$baseUrl/presupuesto/detail'),
       headers: {
         'Content-Type': 'application/json',
         "Authorization": "Bearer $token",
@@ -45,7 +45,7 @@ class BudgetService {
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
-      return double.parse(data["amount"]);
+      return double.parse(data["amount"].toString());
     } else {
       throw Exception('Error al cargar datos de presupuestos');
     }
