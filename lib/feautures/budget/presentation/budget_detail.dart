@@ -1,6 +1,8 @@
+import 'package:cashly/core/models/gastos.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
+import '../../../core/services/gastos_service.dart';
 import 'add_budget.dart';
 import '../../../core/models/presupuestos.dart';
 import '../../../core/themes/text_scheme.dart';
@@ -18,6 +20,7 @@ class BudgetDetailScreen extends StatefulWidget {
 }
 
 class _BudgetDetailScreenState extends State<BudgetDetailScreen> {
+  late Future<List<double>> gastosFuture;
   int option = 1;
 
   void changeTo(int number) {
@@ -31,6 +34,12 @@ class _BudgetDetailScreenState extends State<BudgetDetailScreen> {
       context,
       MaterialPageRoute(builder: (context) => AddBudgetScreen()),
     );
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    gastosFuture = GastosService.fetchGastos();
   }
 
   @override
@@ -109,9 +118,26 @@ class _BudgetDetailScreenState extends State<BudgetDetailScreen> {
             ),
             // renderizar resumen, historial o análisis
             if (option == 1)
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 12),
-                child: Summary(),
+              FutureBuilder<List<double>>(
+                future: gastosFuture,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return Text("Error: ${snapshot.error}");
+                  } else if (snapshot.hasData) {
+                    final data = snapshot.data!;
+                    return Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 12),
+                      child: Summary(
+                        budget: widget.budget,
+                        gastosPorSemana: data,
+                      ),
+                    );
+                  } else {
+                    return Text("Sin datos");
+                  }
+                },
               ),
             if (option == 2)
               Padding(
@@ -130,7 +156,7 @@ class _BudgetDetailScreenState extends State<BudgetDetailScreen> {
   }
 }
 
-// TODO: componente de card de detalles
+// componente de card de detalles
 class BudgetDetailCard extends StatelessWidget {
   final Presupuestos presupuesto;
 
@@ -259,13 +285,112 @@ class BudgetDetailCard extends StatelessWidget {
   }
 }
 
-// TODO: componente de resumen
+// componente de resumen
 class Summary extends StatelessWidget {
-  const Summary({super.key});
+  const Summary({
+    super.key,
+    required this.budget,
+    required this.gastosPorSemana,
+  });
+
+  final Presupuestos budget;
+  final List<double> gastosPorSemana;
 
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    final maxGasto = gastosPorSemana.reduce((a, b) => a > b ? a : b);
+
+    final diasRestantes =
+        budget.finRecurrencia?.difference(DateTime.now()).inDays;
+    final promedioDiario =
+        budget.presMontoUlt /
+        ((DateTime.now().difference(budget.inicioRecurrencia!).inDays) + 1);
+
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        // Parte superior: días restantes y promedio/día
+        Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          children: [
+            _InfoCard(
+              icon: Icons.calendar_today,
+              value: diasRestantes.toString(),
+              label: 'Días restantes',
+            ),
+            _InfoCard(
+              icon: Icons.star,
+              value: "\$${promedioDiario.toStringAsFixed(1)}",
+              label: 'Promedio/día',
+            ),
+          ],
+        ),
+        const SizedBox(height: 20),
+        // Parte inferior: gastos por semana
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            'Gastos por semana',
+            style: Theme.of(context).textTheme.titleMedium,
+          ),
+        ),
+        const SizedBox(height: 8),
+        ...List.generate(4, (index) {
+          final gasto = gastosPorSemana[index];
+          return Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
+            child: Row(
+              children: [
+                SizedBox(width: 60, child: Text('Sem ${index + 1}')),
+                Expanded(
+                  child: LinearProgressIndicator(
+                    value: gasto / maxGasto,
+                    backgroundColor: Colors.grey.shade300,
+                    color: Colors.green,
+                  ),
+                ),
+                const SizedBox(width: 12),
+                SizedBox(width: 50, child: Text('\$$gasto')),
+              ],
+            ),
+          );
+        }),
+      ],
+    );
+  }
+}
+
+class _InfoCard extends StatelessWidget {
+  final IconData icon;
+  final String value;
+  final String label;
+
+  const _InfoCard({
+    required this.icon,
+    required this.value,
+    required this.label,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return Card(
+      child: SizedBox(
+        width: 170,
+        height: 100,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Icon(icon, size: 28, color: Colors.green[800]),
+            const SizedBox(height: 8),
+            Text(
+              value,
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            Text(label, style: const TextStyle(fontSize: 14)),
+          ],
+        ),
+      ),
+    );
   }
 }
 
