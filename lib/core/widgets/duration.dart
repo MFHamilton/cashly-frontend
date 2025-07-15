@@ -20,7 +20,7 @@ class _DurationState extends State<Duration> {
   Widget build(BuildContext context) {
     return Container(
       padding: EdgeInsets.all(18),
-      margin: EdgeInsets.all(30),
+      margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(3)

@@ -26,7 +26,6 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
 
   final ValueNotifier<int?> selectedCategoryIndex = ValueNotifier<int?>(null);
 
-
   void _onRegistrar() {
 
   }
@@ -110,6 +109,7 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                   'Transporte',
                   'Salud',
                   'Compras',
+                  'Educación',
                   'Electricidad',
                   'Otros',
                   'Nueva Categoria'
@@ -119,11 +119,13 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                     Icons.directions_bus,
                     Icons.health_and_safety,
                     Icons.shopping_cart,
+                    Icons.school,
                     Icons.bolt,
                     Icons.more_horiz,
                     Icons.add
+
                             ],
-                selectedIndexNotifier: selectedCategoryIndex
+                selectedIndexNotifier: ValueNotifier<int?>(null),
             ),
             const SizedBox(height: 8),
             const SizedBox(height: 24),
@@ -171,7 +173,7 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
             ),
             const SizedBox(height: 24),
             CustomButton(
-              text: 'Registrar',
+              text: 'Guarda Gasto',
               onPressed: _onRegistrar,
               style: 'primary',
             ),

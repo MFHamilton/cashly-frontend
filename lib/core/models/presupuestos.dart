@@ -5,6 +5,7 @@ class Presupuestos {
   final double presMontoInicial;
   final double presMontoUlt;
   final int? categoriaId;
+  final String? categoriaNom;
   final int? periodoId;
   final bool esActivo;
   final DateTime fechaCreacion;
@@ -19,6 +20,7 @@ class Presupuestos {
     required this.presMontoInicial,
     required this.presMontoUlt,
     this.categoriaId,
+    this.categoriaNom,
     this.periodoId,
     required this.esActivo,
     required this.fechaCreacion,
@@ -34,6 +36,7 @@ class Presupuestos {
     presMontoInicial: (json['pres_monto_inicial'] as num).toDouble(),
     presMontoUlt: (json['pres_monto_ult'] as num).toDouble(),
     categoriaId: json['categoria_id'],
+    categoriaNom: json['categoria_nom'],
     periodoId: json['periodo_id'],
     esActivo: json['es_activo'],
     fechaCreacion: DateTime.parse(json['fecha_creacion']),
@@ -53,6 +56,7 @@ class Presupuestos {
     'pres_monto_inicial': presMontoInicial,
     'pres_monto_ult': presMontoUlt,
     'categoria_id': categoriaId,
+    'categoria_nom': categoriaNom,
     'periodo_id': periodoId,
     'es_activo': esActivo,
     'fecha_creacion': fechaCreacion.toIso8601String(),

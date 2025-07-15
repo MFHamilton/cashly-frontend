@@ -1,3 +1,4 @@
+import 'package:cashly/feautures/budget/presentation/budget.dart';
 import 'package:cashly/feautures/gastos/presentation/gastos_screen.dart';
 import 'package:cashly/feautures/goals/presentation/goals.dart';
 import 'package:flutter/material.dart';
@@ -50,6 +51,7 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
           _buildMenuItem(
             title: "Presupuestos",
             subItems: ["Mis presupuestos","Reporte de Presupuestos"],
+            navigateto: [BudgetScreen(),],
           ),
         ],
       ),
