@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //Header(),
-            // TODO: probar el endpoint dashboard
+            // probar el endpoint dashboard
             FutureBuilder<HomeScreenDashboardModel>(
               future: dashboardFuture,
               builder: (context, snapshot) {
@@ -87,27 +87,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 } else if (snapshot.hasData) {
                   final data = snapshot.data!;
                   return MonthlyBarChart(data: data);
-                } else {
-                  return Text("Sin datos");
-                }
-              },
-            ),
-            // fuente de ingresos
-            SizedBox(height: 20),
-            Text(
-              "Fuentes de Ingresos",
-              style: MyTextTheme.lightTextTheme.titleLarge,
-            ),
-            FutureBuilder<List<HomeScreenIncomeModel>>(
-              future: incomeFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Text("${snapshot.error}");
-                } else if (snapshot.hasData) {
-                  final data = snapshot.data!;
-                  return IncomeList(data: data);
                 } else {
                   return Text("Sin datos");
                 }

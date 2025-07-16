@@ -5,6 +5,7 @@ import 'package:cashly/feautures/budget/presentation/budget.dart';
 import 'package:cashly/feautures/test/testingPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 
 import '../../main.dart';
@@ -20,6 +21,11 @@ Future<void> handleBackgroundMessage(RemoteMessage message) async {
 
 
 class FirebaseApi{
+  final GlobalKey<NavigatorState> navigatorKey;
+
+  FirebaseApi({
+    required this.navigatorKey,
+  });
 
   final _firebaseMessaging = FirebaseMessaging.instance;
 
