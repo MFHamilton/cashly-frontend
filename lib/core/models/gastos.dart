@@ -3,6 +3,7 @@ class Gastos {
   final int usuarioId;
   final int? presId;
   final int? categoriaId;
+  final String? categoriaNom;
   final int? periodoId;
   final String gastoNombre;
   final double gastoMonto;
@@ -16,6 +17,7 @@ class Gastos {
     required this.usuarioId,
     this.presId,
     this.categoriaId,
+    this.categoriaNom,
     this.periodoId,
     required this.gastoNombre,
     required this.gastoMonto,
@@ -26,13 +28,14 @@ class Gastos {
   });
 
   factory Gastos.fromJson(Map<String, dynamic> json) => Gastos(
-    gastoId: json['gasto_id'],
-    usuarioId: json['usuario_id'],
-    presId: json['pres_id'],
-    categoriaId: json['categoria_id'],
-    periodoId: json['periodo_id'],
+    gastoId: int.parse(json['gasto_id'].toString()),
+    usuarioId: int.parse(json['usuario_id'].toString()),
+    presId: int.parse(json['pres_id'].toString()),
+    categoriaId: int.parse(json['categoria_id'].toString()),
+    categoriaNom: json['categoria_nom'],
+    periodoId: int.parse(json['periodo_id'].toString()),
     gastoNombre: json['gasto_nombre'],
-    gastoMonto: (json['gasto_monto'] as num).toDouble(),
+    gastoMonto: double.parse(json['gasto_monto'].toString()),
     gastoFecha: json['gasto_fecha'] == null
         ? null
         : DateTime.parse(json['gasto_fecha']),
