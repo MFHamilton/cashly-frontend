@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'core/services/firebase_api.dart';
+import 'feautures/ingresos/presentation/edit_ingresos.dart';
 import 'feautures/test/testingPage.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
@@ -39,7 +40,7 @@ class MyApp extends StatelessWidget {
       title: 'Material App',
      theme: AppTheme.lightTheme,
       navigatorKey: navigatorKey,
-      home: IntroPage(),
+      home: EditIngresos(),
 
       routes: {
         TestingPage.route: (context) => TestingPage(),
