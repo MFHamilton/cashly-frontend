@@ -21,12 +21,6 @@ Future<void> handleBackgroundMessage(RemoteMessage message) async {
 
 
 class FirebaseApi{
-  final GlobalKey<NavigatorState> navigatorKey;
-
-  FirebaseApi({
-    required this.navigatorKey,
-  });
-
   final _firebaseMessaging = FirebaseMessaging.instance;
 
   final _androidChannel = const AndroidNotificationChannel(

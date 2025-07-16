@@ -11,6 +11,9 @@ import 'package:cashly/feautures/report/presentation/report.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
+import 'feautures/test/testingPage.dart';
+
+final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
 
