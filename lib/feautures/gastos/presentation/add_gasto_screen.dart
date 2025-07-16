@@ -50,12 +50,19 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
   }
 
   String? _parseDate(String input) {
-    final parts = input.split('/');
-    if (parts.length == 3) {
-      final day = int.parse(parts[0]);
-      final month = int.parse(parts[1]);
-      final year = int.parse(parts[2]);
-      return DateTime(year, month, day).toIso8601String();
+    try {
+      // intenta ISO primero
+      final dt = DateTime.parse(input);
+      return dt.toIso8601String();
+    } catch (_) {
+      // si falla, prueba con dd/MM/yyyy
+      final parts = input.split('/');
+      if (parts.length == 3) {
+        final day   = int.parse(parts[0]);
+        final month = int.parse(parts[1]);
+        final year  = int.parse(parts[2]);
+        return DateTime(year, month, day).toIso8601String();
+      }
     }
     return null;
   }
