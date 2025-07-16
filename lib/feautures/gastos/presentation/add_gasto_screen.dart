@@ -88,7 +88,9 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
         "gasto_monto": monto,
         "categoria_id": categoriaSeleccionada.categoriaId,
         "periodo_id": selectedFrecuencyIndex! + 1,
-        "gasto_fecha": DateTime.now().toIso8601String(),
+        "gasto_fecha": _startDateController.text.isNotEmpty
+            ? _parseDate(_startDateController.text)
+            : null,
         "inicio_recurrencia": _startDateController.text.isNotEmpty
             ? _parseDate(_startDateController.text)
             : null,
