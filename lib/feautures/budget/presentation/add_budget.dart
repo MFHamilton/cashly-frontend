@@ -2,8 +2,10 @@ import 'package:cashly/core/models/presupuestos.dart';
 import 'package:cashly/core/services/category_service.dart';
 import 'package:cashly/core/widgets/header.dart';
 import 'package:cashly/core/widgets/menu.dart';
+import 'package:cashly/core/widgets/notifications.dart';
 import 'package:flutter/material.dart';
 
+import '../../../core/constants/app_color.dart';
 import '../../../core/models/categoria.dart';
 import '../../../core/themes/text_scheme.dart';
 import '../../../core/widgets/custom_button.dart';
@@ -92,16 +94,33 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
           children: [
             // Titulo de la pantalla
             Container(
-              width: 180,
+              width: double.infinity,
               padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
               child: Row(
                 children: [
-                  const Icon(Icons.arrow_back_ios),
-                  const SizedBox(width: 4),
-                  Text(
-                    "Agregar presupuesto",
-                    style: Theme.of(context).textTheme.headlineMedium,
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_ios, color: AppColors.textPrimary),
+                    onPressed: () => Navigator.of(context).pop(),
                   ),
+                  const SizedBox(width: 2),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Agregar presupuesto",
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+
+                      Text(
+                        'Registra un nuevo presupuesto',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
+
+                        ),
+                      ),
+                    ],
+                  ),
+
                 ],
               ),
             ),
@@ -148,6 +167,10 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
             Duration.Duration(
               dateStartController: startDateController,
               dateEndController: endDateController,
+            ),
+
+            Notifications(
+
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),

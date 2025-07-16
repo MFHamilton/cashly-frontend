@@ -28,17 +28,20 @@ class FormInput extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(16),
-      margin: EdgeInsets.all(16),
+      padding: EdgeInsets.all(10),
+      margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(3),
         boxShadow: [
+          /*
           BoxShadow(
             color: Colors.black12,
             blurRadius: 6,
             offset: Offset(0, 2),
           ),
+
+           */
         ],
       ),
       child: Column(

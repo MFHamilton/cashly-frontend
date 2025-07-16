@@ -19,7 +19,8 @@ class CustomButton extends StatelessWidget {
         : AppButtonTheme.secondaryElevatedButtonStyle;
 
     return ElevatedButton(
-        onPressed: onPressed ?? () {},
+        onPressed: onPressed ?? () {
+        },
         style: buttonStyle,
         child: Text(text)
 
