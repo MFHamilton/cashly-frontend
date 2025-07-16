@@ -25,6 +25,8 @@ class _RegisterPageState extends State<RegisterPage> {
   final _passwordCtrl = TextEditingController();
   final _confirmPasswordCtrl = TextEditingController();
 
+  bool _isPasswordVisible = false;
+
   // Estado interno
   DateTime? _fechaNacimiento;
   String? _paisSeleccionado;
@@ -241,13 +243,46 @@ class _RegisterPageState extends State<RegisterPage> {
                   // Contraseña
                   Text('Contraseña', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white)),
                   const SizedBox(height: 8),
-                  CustomInputField(controller: _passwordCtrl, hintText: 'Contraseña', obscureText: true),
+                  CustomInputField(
+                      controller: _passwordCtrl,
+                      hintText: 'Contraseña',
+                    obscureText: !_isPasswordVisible,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        color: Theme.of(context).colorScheme.primary,
+                        size: 20,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
+                  ),
 
                   const SizedBox(height: 16),
                   // Confirmar contraseña
                   Text('Confirmar Contraseña', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white)),
                   const SizedBox(height: 8),
-                  CustomInputField(controller: _confirmPasswordCtrl, hintText: 'Confirmar Contraseña', obscureText: true),
+                  CustomInputField(
+                      controller: _confirmPasswordCtrl,
+                      hintText: 'Confirmar Contraseña',
+                    obscureText: !_isPasswordVisible,
+                    suffixIcon: IconButton(
+                      icon: Icon(
+                        _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                        color: Theme.of(context).colorScheme.primary,
+                        size: 20,
+                      ),
+                      onPressed: () {
+                        setState(() {
+                          _isPasswordVisible = !_isPasswordVisible;
+                        });
+                      },
+                    ),
+                  ),
+
 
                   const SizedBox(height: 24),
                   // Botón Registrar

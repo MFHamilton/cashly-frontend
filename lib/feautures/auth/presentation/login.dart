@@ -23,6 +23,8 @@ import '../../../core/widgets/custom_button.dart';
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
 
+    bool _isPasswordVisible = false;
+
     ValueNotifier userCredential = ValueNotifier('');
 
     final AuthService _authService = AuthService();
@@ -30,6 +32,8 @@ import '../../../core/widgets/custom_button.dart';
     void login() async {
       final correo = emailController.text.trim();
       final password = passwordController.text;
+
+
 
       try{
         await _authService.login(correo: correo, password: password);
@@ -60,6 +64,8 @@ import '../../../core/widgets/custom_button.dart';
     Widget build(BuildContext context) {
       return Scaffold(
         backgroundColor: Theme.of(context).colorScheme.primary,
+
+
         body: Center(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -74,8 +80,10 @@ import '../../../core/widgets/custom_button.dart';
 
                 child: Column(
 
+
                   crossAxisAlignment: CrossAxisAlignment.start,
                   mainAxisSize: MainAxisSize.min,
+
 
                   children: [
                     Text(
@@ -106,8 +114,21 @@ import '../../../core/widgets/custom_button.dart';
                     CustomInputField(
                       controller: passwordController,
                       hintText: "Contraseña",
-                      obscureText: true,
+                      obscureText: !_isPasswordVisible,
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible ? Icons.visibility : Icons.visibility_off,
+                          color: Theme.of(context).colorScheme.primary,
+                          size: 20,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
                     ),
+
 
                     SizedBox(height: 7),
 
