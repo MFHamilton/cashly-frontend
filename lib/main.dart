@@ -13,6 +13,7 @@ import 'package:intl/date_symbol_data_local.dart';
 
 import 'feautures/test/testingPage.dart';
 
+final navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
 
