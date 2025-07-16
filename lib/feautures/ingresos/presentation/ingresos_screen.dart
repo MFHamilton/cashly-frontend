@@ -13,6 +13,8 @@ import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/cardItem.dart';
 import 'package:cashly/core/models/categoria.dart';
 
+import 'edit_ingresos.dart';
+
 class IngresosScreen extends StatefulWidget {
   const IngresosScreen({Key? key}) : super(key: key);
 
@@ -82,7 +84,7 @@ class _IngresosScreenState extends State<IngresosScreen> {
   }
 
   void _onEditIngreso(String ingresoId) {
-    // TODO: implementar edición
+
   }
 
   void _onDeleteIngreso(String ingresoId, String ingresoNombre) async {
