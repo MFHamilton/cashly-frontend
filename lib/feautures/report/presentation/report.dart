@@ -1,12 +1,12 @@
-import 'dart:convert';
+import 'package:cashly/core/models/presupuestos.dart';
+import 'package:cashly/feautures/goals/data/models/goal.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/material.dart';
 
 import 'package:cashly/core/models/gastos.dart';
 import 'package:cashly/core/services/gastos_service.dart';
 import 'package:cashly/core/widgets/header.dart';
 import 'package:cashly/core/widgets/menu.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'package:flutter/material.dart';
-
 import '../../../core/themes/text_scheme.dart';
 
 class ReportScreen extends StatefulWidget {
@@ -18,6 +18,36 @@ class ReportScreen extends StatefulWidget {
 
 class _ReportScreenState extends State<ReportScreen> {
   late Future<List<Gastos>> gastosFuture;
+  final List<GoalModel> metas = [
+    GoalModel(
+      metaEsActivo: true,
+      metaId: 1,
+      metaMontoInicial: 500,
+      metaNombre: "meta",
+      fechaInicio: DateTime.now(),
+      metaDescripcion: "",
+      fechaFin: DateTime.now(),
+      metaMontoUlt: 350,
+      usuarioId: 1,
+      categoriaId: 1,
+      periodoId: 1,
+      categoriaNom: "Comida",
+    ),
+    GoalModel(
+      metaEsActivo: true,
+      metaId: 1,
+      metaMontoInicial: 1500,
+      metaNombre: "meta",
+      fechaInicio: DateTime.now(),
+      metaDescripcion: "",
+      fechaFin: DateTime.now(),
+      metaMontoUlt: 1000,
+      usuarioId: 1,
+      categoriaId: 1,
+      periodoId: 1,
+      categoriaNom: "Viaje",
+    ),
+  ];
 
   GastosService _gastosService = GastosService();
 
@@ -52,7 +82,7 @@ class _ReportScreenState extends State<ReportScreen> {
               ),
             ),
             // ExportButtons(),
-            // TODO: distribucion de gastos
+            // distribucion de gastos
             FutureBuilder<List<Gastos>>(
               future: gastosFuture,
               builder: (context, snapshot) {
