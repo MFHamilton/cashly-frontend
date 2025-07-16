@@ -199,7 +199,7 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
               child: CustomButton(
                 text: "Guardar Presupuesto",
                 style: 'primary',
-                onPressed: addBudget,
+                //onPressed: _navigateAddBudget,
 
               ),
             ),
