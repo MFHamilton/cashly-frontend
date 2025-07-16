@@ -19,8 +19,10 @@ class _DurationState extends State<Duration> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(8),
+      //width: 300 ,
+      padding: EdgeInsets.all(10),
       margin: EdgeInsets.all(10),
+
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
         borderRadius: BorderRadius.circular(3)
@@ -29,21 +31,39 @@ class _DurationState extends State<Duration> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-
-
-          Text(
-              'Duración',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: Theme.of(context).colorScheme.primary
-            ),
+          Row(
+            children: [
+              Icon(Icons.schedule, color: Theme.of(context).colorScheme.primary,),
+              SizedBox(width: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                      'Duración',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.primary
+                    ),
+                  ),
+                  Text(
+                    'Selecciona la duración de la frecuencia',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: Theme.of(context).colorScheme.primary.withOpacity(0.7)
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
 
-          SizedBox(height: 20,),
+          SizedBox(height: 12,),
 
           TextField(
             controller: widget.dateStartController,
             decoration: InputDecoration(
               labelText: 'Fecha de Inicio',
+                labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7)
+                ),
               filled: true,
               prefixIcon: Icon(Icons.calendar_month),
               enabledBorder: OutlineInputBorder(
@@ -65,6 +85,9 @@ class _DurationState extends State<Duration> {
             controller: widget.dateEndController,
             decoration: InputDecoration(
                 labelText: 'Fecha de Fin (Opcional)',
+                labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7)
+                ),
                 filled: true,
                 prefixIcon: Icon(Icons.calendar_month),
                 enabledBorder: OutlineInputBorder(

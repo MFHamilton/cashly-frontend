@@ -123,11 +123,14 @@ class _AddIngresoScreenState extends State<AddIngresoScreen> {
                     children: [
                       Text(
                         'Agregar Ingreso',
-                        style: Theme.of(context).textTheme.headlineMedium,
+                        style: Theme.of(context).textTheme.titleLarge,
                       ),
                       Text(
                         'Registra una nueva fuente de ingreso',
-                        style: MyTextTheme.lightTextTheme.labelLarge,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                            color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
+
+                        ),
                       ),
                     ],
                   ),
@@ -159,7 +162,7 @@ class _AddIngresoScreenState extends State<AddIngresoScreen> {
               },
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 10),
 
             // Categoría
             FutureBuilder<List<Categoria>>(
@@ -180,7 +183,7 @@ class _AddIngresoScreenState extends State<AddIngresoScreen> {
               },
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 10),
 
             // Frecuencia
             FrecuencyWidget.Frecuency(
@@ -192,11 +195,10 @@ class _AddIngresoScreenState extends State<AddIngresoScreen> {
               selectedIndex: selectedFrecuencyIndex,
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 10),
 
             // Duración
             Container(
-              padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
                 color: AppColors.background,
                 borderRadius: BorderRadius.circular(8),
@@ -207,14 +209,33 @@ class _AddIngresoScreenState extends State<AddIngresoScreen> {
               ),
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 15),
 
-            // Botón Guardar
-            CustomButton(
-              text: 'Guardar Ingreso',
-              onPressed: _onGuardar,
-              style: 'primary',
+            Container(
+              width: double.infinity,
+              // Botón Guardar
+              child: CustomButton(
+                text: 'Guardar Ingreso',
+                onPressed: (){
+                  _onGuardar;
+                  SnackBar(
+                    content: Text(
+                      "Ingreso creado con exito",
+                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
+                          color: Theme.of(context).colorScheme.surface
+                      ),
+                    ),
+
+                    backgroundColor: Theme.of(context).colorScheme.secondary,
+
+                  );
+                },
+                style: 'primary',
+              ),
+
             ),
+
+
 
             const SizedBox(height: 24),
           ],
