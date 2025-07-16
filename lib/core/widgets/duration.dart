@@ -61,6 +61,9 @@ class _DurationState extends State<Duration> {
             controller: widget.dateStartController,
             decoration: InputDecoration(
               labelText: 'Fecha de Inicio',
+                labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7)
+                ),
               filled: true,
               prefixIcon: Icon(Icons.calendar_month),
               enabledBorder: OutlineInputBorder(
@@ -82,6 +85,9 @@ class _DurationState extends State<Duration> {
             controller: widget.dateEndController,
             decoration: InputDecoration(
                 labelText: 'Fecha de Fin (Opcional)',
+                labelStyle: Theme.of(context).textTheme.labelSmall?.copyWith(
+                    color: Theme.of(context).colorScheme.onSurface.withOpacity(0.7)
+                ),
                 filled: true,
                 prefixIcon: Icon(Icons.calendar_month),
                 enabledBorder: OutlineInputBorder(

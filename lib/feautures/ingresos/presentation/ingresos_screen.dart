@@ -142,7 +142,7 @@ class _IngresosScreenState extends State<IngresosScreen> {
                   onPressed: () => Navigator.of(context).pop(),
                 ),
                 const SizedBox(width: 8),
-                Text('Ingresos', style: Theme.of(context).textTheme.headlineMedium),
+                Text('Ingresos', style: Theme.of(context).textTheme.headlineSmall),
                 const Spacer(),
                 IconButton(
                   icon: SvgPicture.asset(
