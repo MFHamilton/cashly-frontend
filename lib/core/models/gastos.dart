@@ -30,22 +30,25 @@ class Gastos {
   factory Gastos.fromJson(Map<String, dynamic> json) => Gastos(
     gastoId: int.parse(json['gasto_id'].toString()),
     usuarioId: int.parse(json['usuario_id'].toString()),
-    presId: int.parse(json['pres_id'].toString()),
-    categoriaId: int.parse(json['categoria_id'].toString()),
+    presId: int.tryParse(json['pres_id']?.toString() ?? ''),
+    categoriaId: int.tryParse(json['categoria_id']?.toString() ?? ''),
     categoriaNom: json['categoria_nom'],
-    periodoId: int.parse(json['periodo_id'].toString()),
+    periodoId: int.tryParse(json['periodo_id']?.toString() ?? ''),
     gastoNombre: json['gasto_nombre'],
-    gastoMonto: double.parse(json['gasto_monto'].toString()),
-    gastoFecha: json['gasto_fecha'] == null
-        ? null
-        : DateTime.parse(json['gasto_fecha']),
+    gastoMonto: double.tryParse(json['gasto_monto']?.toString() ?? '') ?? 0.0,
+    gastoFecha:
+        json['gasto_fecha'] == null
+            ? null
+            : DateTime.parse(json['gasto_fecha']),
     gastoFrecuencia: json['gasto_frecuencia'],
-    inicioRecurrencia: json['inicio_recurrencia'] == null
-        ? null
-        : DateTime.parse(json['inicio_recurrencia']),
-    finRecurrencia: json['fin_recurrencia'] == null
-        ? null
-        : DateTime.parse(json['fin_recurrencia']),
+    inicioRecurrencia:
+        json['inicio_recurrencia'] == null
+            ? null
+            : DateTime.parse(json['inicio_recurrencia']),
+    finRecurrencia:
+        json['fin_recurrencia'] == null
+            ? null
+            : DateTime.parse(json['fin_recurrencia']),
   );
 
   Map<String, dynamic> toJson() => {

@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:cashly/core/models/gastos.dart';
 import 'package:cashly/core/services/gastos_service.dart';
 import 'package:cashly/core/widgets/header.dart';
@@ -21,7 +23,6 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   void initState() {
-    // TODO: implement initState
     super.initState();
     gastosFuture = _gastosService.fetchGastos();
   }
@@ -155,7 +156,10 @@ class GastosPieChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     List<Map<String, dynamic>> data = [];
+    double gastoTotal = 0;
     for (var gasto in gastos) {
+      gastoTotal += gasto.gastoMonto;
+
       String categoriaNom =
           (gasto.categoriaNom?.isEmpty ?? true) ? "Otros" : gasto.categoriaNom!;
 
@@ -165,9 +169,9 @@ class GastosPieChart extends StatelessWidget {
       );
 
       if (existente.isNotEmpty) {
-        existente['value'] += gasto.gastoMonto;
+        existente['amount'] += gasto.gastoMonto;
       } else {
-        data.add({'label': categoriaNom, 'value': gasto.gastoMonto});
+        data.add({'label': categoriaNom, 'amount': gasto.gastoMonto});
       }
     }
 
@@ -221,7 +225,7 @@ class GastosPieChart extends StatelessWidget {
                         final item = gasto.value;
                         return PieChartSectionData(
                           color: sectionColors[index],
-                          value: item['value'],
+                          value: item['amount'] * 100 / gastoTotal,
                           showTitle: false,
                           radius: 40,
                         );
@@ -258,7 +262,7 @@ class GastosPieChart extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            "${item['value'].toInt()}% (\$${item['amount']})",
+                            "${item['amount'] * 100 / gastoTotal}% (\$${item['amount']})",
                             style: const TextStyle(color: Colors.black45),
                           ),
                         ],

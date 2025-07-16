@@ -37,8 +37,8 @@ class GastosService {
   }
 
   Future<List<Gastos>> fetchGastos({int? month, int? year, int? presId}) async {
-    // final token = await _getToken();
-    final token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTc1MjY3NjEyNiwiZXhwIjoxNzUyNjc5NzI2fQ.JCBUoBdKNuM099bEWTOHfemWOvx5XPat1PhHb_vnWbg";
+    final token = await _getToken();
+    // final token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTc1MjY3NjEyNiwiZXhwIjoxNzUyNjc5NzI2fQ.JCBUoBdKNuM099bEWTOHfemWOvx5XPat1PhHb_vnWbg";
     final query = <String, String>{};
     if (month != null) query['month'] = month.toString();
     if (year != null) query['year'] = year.toString();
@@ -54,12 +54,14 @@ class GastosService {
       },
     );
     if (resp.statusCode == 200) {
-      final data = jsonDecode(resp.body);
+      final List<dynamic> data = jsonDecode(resp.body);
       final List<Gastos> listData =
           data.map((g) => Gastos.fromJson(g)).toList();
+      print(data);
+      print('LIST DATA: $listData');
       return listData;
     } else {
-      throw Exception('Error al cargar los gastos: ${resp.statusCode}');
+      throw Exception('Error al cargar los gastos: ${resp.statusCode}, ${resp.body}');
     }
   }
 
