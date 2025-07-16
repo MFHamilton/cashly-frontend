@@ -39,10 +39,10 @@ class SavingGoalCard extends StatelessWidget {
                   ),
                 ),
                 Row(
-                  children: const [
-                    Icon(Icons.edit, color: Colors.green),
+                  children: [
+                    Icon(Icons.edit, color: Theme.of(context).colorScheme.primary),
                     SizedBox(width: 12),
-                    Icon(Icons.delete, color: Colors.green),
+                    Icon(Icons.delete, color: Theme.of(context).colorScheme.primary),
                   ],
                 ),
               ],
@@ -72,8 +72,8 @@ class SavingGoalCard extends StatelessWidget {
               child: LinearProgressIndicator(
                 value: percent,
                 minHeight: 14,
-                backgroundColor: Colors.green[100],
-                valueColor: AlwaysStoppedAnimation<Color>(Colors.green[600]!),
+                backgroundColor: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+                valueColor: AlwaysStoppedAnimation<Color>(Theme.of(context).colorScheme.secondary),
               ),
             ),
 

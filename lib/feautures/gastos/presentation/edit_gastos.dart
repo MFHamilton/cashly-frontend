@@ -1,4 +1,18 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
+
+import '../../../core/constants/app_color.dart';
+import '../../../core/models/categoria.dart';
+import '../../../core/services/category_service.dart';
+import '../../../core/services/ingresos_service.dart';
+import '../../../core/widgets/category.dart' as CategoryInput;
+import '../../../core/widgets/custom_button.dart';
+import '../../../core/widgets/form_input.dart';
+import '../../../core/widgets/frecuency.dart' as FrecuencyWidget;
+import '../../../core/widgets/header.dart';
+import '../../../core/widgets/menu.dart';
+import 'package:cashly/core/widgets/duration.dart' as Duration;
 
 class EditGastos extends StatefulWidget {
   const EditGastos({super.key});
