@@ -21,10 +21,9 @@ class DashboardCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8), // Bordes redondeados
+        borderRadius: BorderRadius.circular(3), // Bordes redondeados
       ),
-      color: Colors.grey[300],
-      elevation: 4,
+      color: Theme.of(context).colorScheme.primaryContainer,
       margin: EdgeInsets.all(8),
       child: Padding(
         padding: EdgeInsets.all(12),
@@ -34,12 +33,12 @@ class DashboardCard extends StatelessWidget {
             Row(
               children: [
                 Icon(titleIcon, color: AppColors.secondary),
-                SizedBox(width: 12),
+                SizedBox(width: 5),
                 Flexible(
                   child: Text(
                     cardTitle,
-                    style: MyTextTheme.lightTextTheme.titleLarge?.copyWith(
-                      color: AppColors.textPrimary,
+                    style: MyTextTheme.lightTextTheme.bodyLarge?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
                     ),
                     overflow: TextOverflow.ellipsis,
                     maxLines: 1,
@@ -48,33 +47,29 @@ class DashboardCard extends StatelessWidget {
               ],
             ),
             // Content row
-            Row(
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Flexible(
-                  child: Text(
-                    "RD\$ ${amount.toStringAsFixed(2)}",
-                    style: MyTextTheme.lightTextTheme.displaySmall?.copyWith(
-                      color: AppColors.primary,
-                      fontSize: 25,
-                    ),
-                    overflow: TextOverflow.ellipsis,
-                    maxLines: 1,
-                    softWrap: false,
+                Text(
+                  "RD\$ ${amount.toStringAsFixed(2)}",
+                  style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                    color: AppColors.primary,
+
                   ),
+                  overflow: TextOverflow.ellipsis,
+                  maxLines: 1,
+                  softWrap: false,
                 ),
-              ],
-            ),
-            // Bottom row
-            Row(
-              children: [
+
                 Text(
                   bottomContent,
                   style: MyTextTheme.lightTextTheme.labelSmall?.copyWith(
-                    color: AppColors.textPrimary,
+                    color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
                   ),
                 ),
               ],
             ),
+
           ],
         ),
       ),
