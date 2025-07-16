@@ -11,20 +11,28 @@ class GastosService {
     return await storage.read(key: 'jwt',);
   }
 
-  Future<List<dynamic>> getGastos() async {
+  Future<List<dynamic>> getGastos({int? month, int? year, int? presId}) async {
     final token = await _getToken();
-    final response = await http.get(
-      Uri.parse(_endpoint),
+
+    final query = <String, String>{};
+    if (month  != null) query['month']  = month.toString();
+    if (year   != null) query['year']   = year.toString();
+    if (presId != null) query['pres_id']= presId.toString();
+
+
+    final uri = Uri.parse(_endpoint).replace(queryParameters: query);
+
+    final resp = await http.get(
+      uri,
       headers: {
         'Content-Type': 'application/json',
         'Authorization': 'Bearer $token',
       },
     );
-
-    if (response.statusCode == 200) {
-      return json.decode(response.body);
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body);
     } else {
-      throw Exception('Error al cargar los gastos');
+      throw Exception('Error al cargar los gastos: ${resp.statusCode}');
     }
   }
 
