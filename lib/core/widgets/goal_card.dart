@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:percent_indicator/circular_percent_indicator.dart';
 
+import '../constants/app_color.dart';
+
 class GoalCard extends StatelessWidget {
   const GoalCard({
     super.key,
@@ -21,7 +23,8 @@ class GoalCard extends StatelessWidget {
 
     return Card(
       elevation: 2,
-      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+      color: Theme.of(context).colorScheme.primaryContainer,
       child: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -33,13 +36,13 @@ class GoalCard extends StatelessWidget {
               children: [
                 Row(
                   children: [
-                    const Icon(Icons.attach_money, color: Colors.green),
+                    const Icon(Icons.attach_money, color: AppColors.primary),
                     const SizedBox(width: 8),
                     Text(
                       "Mis metas",
-                      style: Theme.of(context).textTheme.bodyMedium?.copyWith(
-                        color: Colors.green[800],
-                        fontWeight: FontWeight.bold,
+                      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        color: AppColors.primary,
+                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
@@ -71,8 +74,8 @@ class GoalCard extends StatelessWidget {
                 "RD\$${NumberFormat("#,##0.00", "en_US").format(amount)}",
                 style:
                     amount < 1000000
-                        ? Theme.of(context).textTheme.displayLarge
-                        : Theme.of(context).textTheme.displayMedium,
+                        ? Theme.of(context).textTheme.headlineLarge
+                        : Theme.of(context).textTheme.headlineMedium,
               ),
             ),
             const SizedBox(height: 16),
@@ -97,8 +100,8 @@ class GoalCard extends StatelessWidget {
                     Text("Completado", style: TextStyle(fontSize: 12)),
                   ],
                 ),
-                backgroundColor: Colors.green[100]!,
-                progressColor: Colors.green[600],
+                backgroundColor: Theme.of(context).colorScheme.secondary.withOpacity(0.2),
+                progressColor: Theme.of(context).colorScheme.secondary,
                 circularStrokeCap: CircularStrokeCap.round,
               ),
             ),
