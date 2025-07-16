@@ -120,7 +120,7 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.background,
+      backgroundColor: Theme.of(context).colorScheme.background,
       drawer: const MenuLateralScreen(),
       appBar: Header(),
       body: Form(
@@ -142,7 +142,7 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                     children: [
                       Text(
                         'Agregar Gasto',
-                        style: Theme.of(context).textTheme.headlineMedium
+                        style: Theme.of(context).textTheme.titleLarge
                       ),
                       Text(
                         'Registra una nueva fuente de gasto',
