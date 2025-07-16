@@ -158,7 +158,7 @@ class _GastosScreenState extends State<GastosScreen>{
                 const SizedBox(width: 8),
                 Text(
                   'Gastos',
-                  style: Theme.of(context).textTheme.headlineMedium,
+                  style: Theme.of(context).textTheme.headlineSmall,
                 ),
                 const Spacer(),
                 IconButton(

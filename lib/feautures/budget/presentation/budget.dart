@@ -10,6 +10,7 @@ import '../../../core/widgets/header.dart';
 import '../../../core/widgets/menu.dart';
 import '../../../feautures/budget/presentation/add_budget.dart';
 import '../../../core/services/firebase_api.dart';
+import '../../home/presentation/home_screen.dart';
 
 class BudgetScreen extends StatefulWidget {
   const BudgetScreen({super.key});
@@ -81,15 +82,21 @@ class _BudgetScreenState extends State<BudgetScreen> {
           children: [
             // Titulo de la pantalla
             Container(
-              width: 110,
+              width: double.infinity,
               padding: EdgeInsets.fromLTRB(8, 0, 0, 8),
               child: Row(
                 children: [
-                  Icon(Icons.arrow_back_ios),
-                  SizedBox(width: 4),
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF28523A)),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const HomeScreen()),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+
                   Text(
-                    "Presupesto",
-                    style: MyTextTheme.lightTextTheme.bodyLarge,
+                    "Presupuesto",
+                    style: Theme.of(context).textTheme.headlineSmall,
                   ),
                 ],
               ),

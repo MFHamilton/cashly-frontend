@@ -146,7 +146,10 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                       ),
                       Text(
                         'Registra una nueva fuente de gasto',
-                        style: MyTextTheme.lightTextTheme.labelLarge,
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
+
+                        ),
                       ),
                     ],
                   ),
@@ -173,7 +176,7 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                 return (n == null) ? 'Monto inválido' : null;
               },
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 10),
             FutureBuilder<List<Categoria>>(
               future: categoryListFuture,
               builder: (context, snapshot) {
@@ -191,7 +194,7 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
                 }
               },
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 10),
             const SizedBox(height: 8),
             FrecuencyWidget.Frecuency(
               onSelect: (index) {
@@ -201,14 +204,14 @@ class _AgregarGastoScreenState extends State<AgregarGastoScreen> {
               },
               selectedIndex: selectedFrecuencyIndex,
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 10),
             Container(
               child: Duration.Duration(
                 dateStartController: _startDateController,
                 dateEndController: _endDateController,
               ),
             ),
-            const SizedBox(height: 24),
+            const SizedBox(height: 15),
             CustomButton(
               text: 'Guardar Gasto',
               onPressed: _onRegistrar,
