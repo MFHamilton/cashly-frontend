@@ -1,4 +1,5 @@
 import 'package:cashly/core/models/presupuestos.dart';
+import 'package:cashly/core/services/goal_service.dart';
 import 'package:cashly/feautures/goals/data/models/goal.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
@@ -18,7 +19,9 @@ class ReportScreen extends StatefulWidget {
 
 class _ReportScreenState extends State<ReportScreen> {
   late Future<List<Gastos>> gastosFuture;
-  final List<GoalModel> metas = [
+  late Future<List<GoalModel>> goalsFuture;
+
+  final List<GoalModel> goalsList = [
     GoalModel(
       metaEsActivo: true,
       metaId: 1,
@@ -55,6 +58,7 @@ class _ReportScreenState extends State<ReportScreen> {
   void initState() {
     super.initState();
     gastosFuture = _gastosService.fetchGastos();
+    goalsFuture = GoalService.fetchGoals();
   }
 
   @override
@@ -101,7 +105,22 @@ class _ReportScreenState extends State<ReportScreen> {
             // TODO: reportes
             VistaReporte(),
             // TODO: progreso de metas
-            GoalProgressCard(),
+            FutureBuilder<List<GoalModel>>(
+              future: goalsFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text("Error: ${snapshot.error}");
+                } else if (snapshot.hasData) {
+                  final data = snapshot.data!;
+                  return GoalProgressCard(goalsList: data);
+                } else {
+                  return Text("Sin datos");
+                }
+              },
+            ),
+            // GoalProgressCard(goalsList: goalsList),
           ],
         ),
       ),
@@ -489,25 +508,14 @@ class VistaReporte extends StatelessWidget {
   }
 }
 
-class Goal {
-  final String name;
-  final double progress; // entre 0.0 y 1.0
-
-  Goal(this.name, this.progress);
-}
-
 class GoalProgressCard extends StatelessWidget {
-  final List<Goal> goals = [
-    Goal('Fondo de Emergencia', 0.64),
-    Goal('Vacaciones', 0.89),
-    Goal('Tarjeta', 1.0),
-    Goal('Casa Nueva', 0.80),
-  ];
+  final List<GoalModel> goalsList;
 
-  GoalProgressCard({super.key});
+  const GoalProgressCard({super.key, required this.goalsList});
 
   @override
   Widget build(BuildContext context) {
+    List<GoalModel> goals = goalsList.where((g) => g.fechaFin == null || g.fechaFin!.month >= DateTime.now().month).toList();
     return Card(
       color: Colors.white,
       elevation: 4,
@@ -532,13 +540,13 @@ class GoalProgressCard extends StatelessWidget {
 }
 
 class GoalProgress extends StatelessWidget {
-  final Goal goal;
+  final GoalModel goal;
 
   const GoalProgress({super.key, required this.goal});
 
   @override
   Widget build(BuildContext context) {
-    final percentage = (goal.progress * 100).round();
+    final percentage = ((goal.metaMontoUlt ?? 0) / goal.metaMontoInicial * 100).round();
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -547,13 +555,13 @@ class GoalProgress extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Text(goal.name, style: const TextStyle(color: Colors.grey)),
+              Text(goal.metaNombre, style: const TextStyle(color: Colors.grey)),
               Text('$percentage%', style: const TextStyle(color: Colors.grey)),
             ],
           ),
           const SizedBox(height: 4),
           LinearProgressIndicator(
-            value: goal.progress,
+            value: percentage / 100 ,
             minHeight: 6,
             borderRadius: BorderRadius.circular(8),
             backgroundColor: Colors.grey[300],
