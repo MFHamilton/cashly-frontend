@@ -194,15 +194,19 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
             Notifications(
 
             ),
+
+            /*
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
               child: CustomButton(
                 text: "Guardar Presupuesto",
                 style: 'primary',
-                onPressed: addBudget,
+                //onPressed: _navigateAddBudget,
 
               ),
             ),
+
+             */
 
             const SizedBox(height: 24),
 

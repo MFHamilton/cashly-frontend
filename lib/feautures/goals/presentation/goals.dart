@@ -11,6 +11,7 @@ import '../../../feautures/goals/data/models/goal.dart' show GoalModel;
 import '../../../feautures/goals/data/models/goal_detail.dart'
     show GoalDetailModel;
 import '../../../feautures/goals/presentation/add_goal.dart' show AddGoalScreen;
+import '../../home/presentation/home_screen.dart';
 
 class GoalsScreen extends StatefulWidget {
   const GoalsScreen({super.key});
@@ -58,13 +59,17 @@ class _GoalsScreenState extends State<GoalsScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Container(
-              width: 80,
+              width: double.infinity,
               padding: EdgeInsets.fromLTRB(8, 0, 0, 8),
               child: Row(
                 children: [
-                  Icon(Icons.arrow_back_ios),
+                  IconButton(icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF28523A)),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const HomeScreen()),
+                    ),
+                  ),
                   SizedBox(width: 4),
-                  Text("Metas", style: MyTextTheme.lightTextTheme.bodyLarge),
+                  Text("Metas", style: Theme.of(context).textTheme.titleLarge),
                 ],
               ),
             ),

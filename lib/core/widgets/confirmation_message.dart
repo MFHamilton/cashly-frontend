@@ -41,7 +41,7 @@ class ConfirmationMessage extends StatelessWidget {
                 color: Theme.of(context).colorScheme.secondary,
               ),
               Text(
-                '¡$controllerName guardado con éxito!',
+                '¡$controllerName guardado con éxitoo!',
                 style: Theme.of(context).textTheme.headlineSmall?.copyWith(
                     color: Theme.of(context).colorScheme.secondary
                 ),

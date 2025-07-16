@@ -159,7 +159,8 @@ class _RegisterPageState extends State<RegisterPage> {
                   const SizedBox(height: 16),
                   // Fecha de Nacimiento y País
                   Row(children: [
-                    Expanded(child: Column(
+                    Expanded(
+                        child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('Fecha de Nacimiento', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white)),
@@ -169,16 +170,30 @@ class _RegisterPageState extends State<RegisterPage> {
                           child: Container(
                             height: 48,
                             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 14),
-                            decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4)),
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(4),
+                            ),
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(_fechaNacimiento == null ? 'Selecciona fecha' : fmt.format(_fechaNacimiento!), style: TextStyle(color: _fechaNacimiento == null ? Colors.grey : Colors.black)),
+                                Expanded(
+                                  child: Text(
+                                    _fechaNacimiento == null ? 'Selecciona fecha' : fmt.format(_fechaNacimiento!),
+                                    style: TextStyle(
+                                      color: _fechaNacimiento == null ? Colors.grey : Colors.black,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                    maxLines: 1,
+                                  ),
+                                ),
+                                const SizedBox(width: 8),
                                 const Icon(Icons.calendar_today, size: 18),
                               ],
                             ),
                           ),
                         ),
+
                       ],
                     )),
                     const SizedBox(width: 16),
@@ -186,7 +201,7 @@ class _RegisterPageState extends State<RegisterPage> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text('País', style: Theme.of(context).textTheme.bodyMedium?.copyWith(color: Colors.white)),
-                        const SizedBox(height: 8),
+                        SizedBox(height: 8),
                         Container(
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           decoration: BoxDecoration(color: Colors.white, borderRadius: BorderRadius.circular(4)),
@@ -254,22 +269,7 @@ class _RegisterPageState extends State<RegisterPage> {
                     ),
                   ),
 
-                  const SizedBox(height: 24),
-                  // Divider con “ó”
-                  Row(children: const [
-                    Expanded(child: Divider(color: Colors.white, thickness: 1)),
-                    Padding(padding: EdgeInsets.symmetric(horizontal: 8), child: Text('ó', style: TextStyle(color: Colors.white))),
-                    Expanded(child: Divider(color: Colors.white, thickness: 1)),
-                  ]),
 
-                  const SizedBox(height: 15),
-                  // Botón Google
-                  SignInButton(
-                    Buttons.google,
-                    text: 'Regístrate con Google',
-                    onPressed: (){},
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(3)),
-                  ),
                 ],
               ),
             ),
