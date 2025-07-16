@@ -127,7 +127,7 @@ class _AddIngresoScreenState extends State<AddIngresoScreen> {
                       ),
                       Text(
                         'Registra una nueva fuente de ingreso',
-                        style: MyTextTheme.lightTextTheme.labelLarge,
+                        style: Theme.of(context).textTheme.labelLarge,
                       ),
                     ],
                   ),
