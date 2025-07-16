@@ -45,7 +45,7 @@ class _HomeScreenState extends State<HomeScreen> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             //Header(),
-            // TODO: probar el endpoint dashboard
+            // probar el endpoint dashboard
             FutureBuilder<HomeScreenDashboardModel>(
               future: dashboardFuture,
               builder: (context, snapshot) {

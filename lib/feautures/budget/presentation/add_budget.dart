@@ -128,23 +128,17 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
                   return Text("Error: ${snapshot.error}");
                 } else if (snapshot.hasData) {
                   categoryList = snapshot.data!;
-                  return CategoryInput.Category(
+                  return Text("");
+                  /*return CategoryInput.Category(
                     categorias: categoryList,
                     selectedCategoriaNotifier: selectedCategoria,
-                  );
+                  );*/
                 } else {
                   return const Text("Sin datos");
                 }
               },
             ),
-            Frecuency(
-              onSelect: (index) {
-                setState(() {
-                  selectedFrecuencyIndex = index;
-                });
-              },
-              selectedIndex: selectedFrecuencyIndex,
-            ),
+
             Duration.Duration(
               dateStartController: startDateController,
               dateEndController: endDateController,
