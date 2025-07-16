@@ -115,7 +115,7 @@ class _CategoryState extends State<Category> {
                           textAlign: TextAlign.center,
                           style: Theme.of(context)
                               .textTheme
-                              .titleMedium
+                              .titleSmall
                               ?.copyWith(
                             color: Theme.of(context).colorScheme.primary,
                           ),
