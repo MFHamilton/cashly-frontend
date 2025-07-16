@@ -191,28 +191,45 @@ class ExportButtons extends StatelessWidget {
 }
 
 class GastosPieChart extends StatelessWidget {
-  const GastosPieChart({super.key, required this.gastos});
+  GastosPieChart({super.key, required this.gastos});
 
   final Map<String, Color> sectionColors = {
-    "Comida": Color(0xFFDCE7E2),
-    "Vivienda": Color(0xFF007F3F),
-    "Transporte": Color(0xFF00D084),
-    "Salud": Color(0xFFE1ECE9),
+    "Comida": Color(0xFFD9F2E6), // Verde muy claro pastel
+    "Vivienda": Color(0xFF00A86B), // Verde jade
+    "Transporte": Color(0xFF00C28C), // Verde menta
+    "Salud": Color(0xFFB2E5D1), // Verde agua claro
+    "Compras": Color(0xFF66BB6A), // Verde pasto
+    "Electricidad": Color(0xFF81C784), // Verde lima suave
+    "Educación": Color(0xFF388E3C), // Verde bosque
+    "Otros": Color(0xFFB9DEC6), // Verde grisáceo claro
   };
 
   final List<Gastos> gastos;
 
   @override
   Widget build(BuildContext context) {
+    List<String> categorias = [
+      "Comida",
+      "Vivienda",
+      "Transporte",
+      "Salud",
+      "Compras",
+      "Electricidad",
+      "Educación",
+    ];
+
     List<Map<String, dynamic>> data = [];
     double gastoTotal = 0;
+
     for (var gasto in gastos) {
       gastoTotal += gasto.gastoMonto;
+      String categoriaNom = gasto.categoriaNom?.isEmpty ?? true ? "Otros" : gasto.categoriaNom!;
 
-      String categoriaNom =
-          (gasto.categoriaNom?.isEmpty ?? true) ? "Otros" : gasto.categoriaNom!;
+      if (categoriaNom != "Otros" && !categorias.contains(categoriaNom)) {
+        categoriaNom = "Otros";
+      }
 
-      Map<String, dynamic>? existente = data.firstWhere(
+      final existente = data.firstWhere(
         (item) => item['label'] == categoriaNom,
         orElse: () => {},
       );
@@ -261,7 +278,7 @@ class GastosPieChart extends StatelessWidget {
             ),
             const SizedBox(height: 24),
 
-            // Gráfico
+            // Gráfico circular
             SizedBox(
               height: 160,
               child: PieChart(
@@ -269,12 +286,14 @@ class GastosPieChart extends StatelessWidget {
                   centerSpaceRadius: 50,
                   sectionsSpace: 2,
                   sections:
-                      data.asMap().entries.map((gasto) {
-                        int index = gasto.key;
-                        final item = gasto.value;
+                      data.map((item) {
+                        final categoria = item['label'] as String;
+                        final porcentaje = item['amount'] * 100 / gastoTotal;
+                        final color =
+                            sectionColors[categoria] ?? sectionColors["Otros"]!;
                         return PieChartSectionData(
-                          color: sectionColors[index],
-                          value: item['amount'] * 100 / gastoTotal,
+                          color: color,
+                          value: porcentaje,
                           showTitle: false,
                           radius: 40,
                         );
@@ -288,9 +307,11 @@ class GastosPieChart extends StatelessWidget {
             // Leyenda
             Column(
               children:
-                  data.asMap().entries.map((entry) {
-                    int index = entry.key;
-                    final item = entry.value;
+                  data.map((item) {
+                    final categoria = item['label'] as String;
+                    final porcentaje = item['amount'] * 100 / gastoTotal;
+                    final color =
+                        sectionColors[categoria] ?? sectionColors["Otros"]!;
                     return Padding(
                       padding: const EdgeInsets.symmetric(vertical: 4),
                       child: Row(
@@ -299,19 +320,19 @@ class GastosPieChart extends StatelessWidget {
                             width: 10,
                             height: 10,
                             decoration: BoxDecoration(
-                              color: sectionColors[index],
+                              color: color,
                               shape: BoxShape.circle,
                             ),
                           ),
                           const SizedBox(width: 8),
                           Expanded(
                             child: Text(
-                              item['label'],
+                              categoria,
                               style: const TextStyle(color: Colors.black54),
                             ),
                           ),
                           Text(
-                            "${item['amount'] * 100 / gastoTotal}% (\$${item['amount']})",
+                            "${porcentaje.toStringAsFixed(1)}% (\$${item['amount']})",
                             style: const TextStyle(color: Colors.black45),
                           ),
                         ],
