@@ -19,25 +19,45 @@ class CardItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Card(
-      margin: EdgeInsets.symmetric(vertical: 6),
+      margin: const EdgeInsets.symmetric(vertical: 6),
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
-      child: ListTile(
-        leading: Icon(Icons.arrow_upward, color: Color(0xFFB5D4B1)),
-        title: Text(title, style: TextStyle(fontWeight: FontWeight.w600)),
-        subtitle: Text(subtitle, style: Theme.of(context).textTheme.titleSmall),
-        trailing: Row(
-          mainAxisSize: MainAxisSize.min,
+      color: Theme.of(context).colorScheme.primaryContainer,
+      child: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+        child: Row(
           children: [
+            const Icon(Icons.arrow_upward, color: Color(0xFFB5D4B1)),
+            const SizedBox(width: 12),
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(title,
+                      style: const TextStyle(fontWeight: FontWeight.w600)),
+                  const SizedBox(height: 2),
+                  Text(subtitle,
+                      style: Theme.of(context).textTheme.titleSmall),
+                ],
+              ),
+            ),
             Text(amount,
-                style: Theme.of(context).textTheme.titleMedium?.copyWith()),
-            SizedBox(width: 8),
+                style: Theme.of(context).textTheme.titleMedium),
+            const SizedBox(width: 8),
             IconButton(
-              icon: Icon(Icons.edit, color: Theme.of(context).colorScheme.secondary),
+              icon: const Icon(Icons.edit, size: 20),
               onPressed: onEdit,
+              padding: EdgeInsets.zero,
+              constraints: const BoxConstraints(),
+              splashRadius: 20,
+              color: Theme.of(context).colorScheme.secondary,
             ),
             IconButton(
-              icon: Icon(Icons.delete, color: Theme.of(context).colorScheme.secondary),
+              icon: const Icon(Icons.delete, size: 20),
               onPressed: onDelete,
+              padding: const EdgeInsets.only(left: 4),
+              constraints: const BoxConstraints(),
+              splashRadius: 20,
+              color: Theme.of(context).colorScheme.secondary,
             ),
           ],
         ),

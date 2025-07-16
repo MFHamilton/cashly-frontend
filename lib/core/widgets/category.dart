@@ -25,7 +25,7 @@ class _CategoryState extends State<Category> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(18),
+      padding: const EdgeInsets.all(10),
       margin: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         color: Theme.of(context).colorScheme.primaryContainer,
@@ -34,15 +34,37 @@ class _CategoryState extends State<Category> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Categorías',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-              color: Theme.of(context).colorScheme.primary,
-            ),
+          Row(
+            children: [
+              Icon(Icons.category, color: Theme.of(context).colorScheme.primary),
+              SizedBox(width: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Categorías',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+
+                 Text(
+                    'Selecciona una categoría',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: Theme.of(context).colorScheme.primary.withOpacity(0.7)
+                    ),
+                  ),
+                ]
+              ),
+            ],
           ),
-          Text(
-            'Selecciona una categoría',
-            style: Theme.of(context).textTheme.titleSmall,
+
+
+          SizedBox(width: 8),
+
+          Padding(
+            padding: const EdgeInsets.only(top: 8.0),
+
           ),
           GridView.count(
             crossAxisCount: 3,
@@ -79,11 +101,14 @@ class _CategoryState extends State<Category> {
                       width: 1.5,
                     ),
                     boxShadow: const [
+                      /*
                       BoxShadow(
                         color: Colors.black12,
                         blurRadius: 2,
                         offset: Offset(0, 2),
                       ),
+
+                       */
                     ],
                   ),
                   child: Column(
@@ -97,7 +122,7 @@ class _CategoryState extends State<Category> {
                       Text(
                         categoria.categoriaNom,
                         textAlign: TextAlign.center,
-                        style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
                           color: Theme.of(context).colorScheme.primary,
                         ),
                       ),

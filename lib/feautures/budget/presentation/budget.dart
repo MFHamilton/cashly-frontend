@@ -1,5 +1,19 @@
+import 'package:cashly/core/constants/app_color.dart';
+import 'package:cashly/core/models/categoria.dart';
+import 'package:cashly/core/models/presupuestos.dart';
+import 'package:cashly/core/services/category_service.dart';
 import 'package:cashly/core/services/budget_service.dart';
+import 'package:cashly/core/widgets/budget_card.dart';
+import 'package:cashly/core/widgets/custom_button.dart';
+import 'package:cashly/core/widgets/general_budget_card.dart';
+import 'package:cashly/core/widgets/header.dart';
+import 'package:cashly/core/widgets/menu.dart';
+import 'package:cashly/feautures/budget/presentation/add_budget.dart';
 import 'package:flutter/material.dart';
+
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
+
 
 import '../../../core/models/presupuestos.dart';
 import '../../../core/themes/text_scheme.dart';
@@ -9,6 +23,8 @@ import '../../../core/widgets/general_budget_card.dart';
 import '../../../core/widgets/header.dart';
 import '../../../core/widgets/menu.dart';
 import '../../../feautures/budget/presentation/add_budget.dart';
+import '../../../core/services/firebase_api.dart';
+import '../../home/presentation/home_screen.dart';
 
 class BudgetScreen extends StatefulWidget {
   const BudgetScreen({super.key});
@@ -18,31 +34,82 @@ class BudgetScreen extends StatefulWidget {
 }
 
 class _BudgetScreenState extends State<BudgetScreen> {
-  late Future<List<Presupuestos>> budgetFuture;
-  late Future<double> amountFuture;
+  final _presService = PresupuestoService();
+  bool _loading = true;
+  double _totalDetail = 0;
+  List<Presupuestos> _presupuestos = [];
+  List<Categoria> _categorias = [];
 
-  void loadBudget() {
-    budgetFuture = BudgetService.fetchBudget();
-    amountFuture = BudgetService.fetchBudgetAmount();
-  }
-
-  Future<void> navigateAddBudget() async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => AddBudgetScreen()),
-    );
-
-    if (result == true) {
-      setState(() {
-        loadBudget();
-      });
-    }
-  }
+  final String mesAnio = toBeginningOfSentenceCase(
+    DateFormat('MMMM yyyy', 'es_ES').format(DateTime.now()),
+  )!;
 
   @override
   void initState() {
     super.initState();
-    loadBudget();
+    _loadBudgetData();
+  }
+
+  Future<void> _loadBudgetData() async {
+    setState(() => _loading = true);
+    try {
+      // Carga categorías para asignar nombre
+      _categorias = await CategoryService.fetchCategories();
+
+      // Carga detalle
+      final detailJson = await _presService.getPresupuestosDetail();
+      _totalDetail = (detailJson['amount'] as num).toDouble();
+
+      // Carga lista de presupuestos
+      final listJson = await _presService.getPresupuestos();
+      _presupuestos = listJson.map<Presupuestos>((json) {
+        // Busca nombre de categoría
+        final cat = _categorias.firstWhere(
+              (c) => c.categoriaId == json['categoria_id'],
+          orElse: () => Categoria(
+            categoriaId: 0,
+            categoriaNom: 'Sin categoría',
+            categoriaDescrip: '',
+            iconRef: '',
+            ownerId: null,
+          ),
+        );
+        return Presupuestos(
+          presId: json['pres_id'] as int,
+          usuarioId: json['usuario_id'] as int,
+          presNombre: json['pres_nombre'] as String,
+          categoriaId: json['categoria_id'] as int?,
+          categoriaNom: cat.categoriaNom,
+          presMontoInicial: double.parse(json['pres_monto_inicial'].toString()),
+          presMontoUlt: double.parse(json['pres_monto_ult'].toString()),
+          esActivo: json['es_activo'] as bool,
+          fechaCreacion: DateTime.parse(json['fecha_creacion'] as String),
+          fechaUltAct: DateTime.parse(json['fecha_ult_act'] as String),
+          inicioRecurrencia: json['inicio_recurrencia'] != null
+              ? DateTime.parse(json['inicio_recurrencia'] as String)
+              : null,
+          finRecurrencia: json['fin_recurrencia'] != null
+              ? DateTime.parse(json['fin_recurrencia'] as String)
+              : null,
+        );
+      }).toList();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al cargar presupuestos: $e')),
+      );
+    } finally {
+      setState(() => _loading = false);
+    }
+  }
+
+  Future<void> _navigateAddBudget() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const AddBudgetScreen()),
+    );
+    if (result == true) {
+      _loadBudgetData();
+    }
   }
 
   @override
@@ -54,60 +121,59 @@ class _BudgetScreenState extends State<BudgetScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Titulo de la pantalla
+            // Título manual
             Container(
-              width: 110,
+
+              width: double.infinity,
               padding: EdgeInsets.fromLTRB(8, 0, 0, 8),
               child: Row(
                 children: [
-                  Icon(Icons.arrow_back_ios),
-                  SizedBox(width: 4),
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF28523A)),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const HomeScreen()),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+
                   Text(
-                    "Presupesto",
-                    style: MyTextTheme.lightTextTheme.bodyLarge,
+                    "Presupuesto",
+                    style: Theme.of(context).textTheme.headlineSmall,
+
                   ),
                 ],
               ),
             ),
-            // Card con el presupesto total del mes
-            FutureBuilder<double>(
-              future: amountFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Text("Error: ${snapshot.error}");
-                } else if (snapshot.hasData) {
-                  final data = snapshot.data!;
-                  return GeneralBudgetCard(amount: data);
-                } else {
-                  return Text("Sin datos");
-                }
-              },
-            ),
-            // listado de presupuestos
-            FutureBuilder<List<Presupuestos>>(
-              future: budgetFuture,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(child: CircularProgressIndicator());
-                } else if (snapshot.hasError) {
-                  return Text("Error: ${snapshot.error}");
-                } else if (snapshot.hasData) {
-                  final data = snapshot.data!;
-                  return ListaBudgetCards(lista: data);
-                } else {
-                  return Text("Sin datos");
-                }
-              },
-            ),
-            // boton para ir a la pantalla de agregar presupuesto
+
+            // GeneralBudgetCard con monto real
             Padding(
-              padding: EdgeInsets.fromLTRB(11, 0, 11, 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: GeneralBudgetCard(amount: _totalDetail),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Lista de presupuestos o indicador de carga
+            _loading
+                ? const Center(child: CircularProgressIndicator())
+                : _presupuestos.isEmpty
+                ? const Center(child: Text("No hay presupuestos registrados."))
+                : ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: _presupuestos.length,
+              itemBuilder: (context, index) {
+                return BudgetCard(presupuesto: _presupuestos[index]);
+              },
+            ),
+
+            // Botón para agregar presupuesto
+            Padding(
+              padding: const EdgeInsets.fromLTRB(11, 16, 11, 16),
               child: CustomButton(
                 text: "+ Agregar Presupuesto",
                 style: 'primary',
-                onPressed: navigateAddBudget,
+                onPressed: _navigateAddBudget,
               ),
             ),
           ],
@@ -116,3 +182,4 @@ class _BudgetScreenState extends State<BudgetScreen> {
     );
   }
 }
+

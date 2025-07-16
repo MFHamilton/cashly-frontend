@@ -1,74 +1,124 @@
+// lib/core/services/presupuesto_service.dart
+
 import 'dart:convert';
-
-import 'package:cashly/core/models/presupuestos.dart';
-import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:http/http.dart' as http;
-
+import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import '../constants/url.dart';
 
-class BudgetService {
-  static const FlutterSecureStorage _storage = FlutterSecureStorage();
+class PresupuestoService {
+  final String _endpoint = '$baseUrl/presupuesto';
+  final _storage = const FlutterSecureStorage();
 
-  static Future<List<Presupuestos>> fetchBudget() async {
-    final token = await _storage.read(key: "jwt");
+  Future<String?> _getToken() async {
+    return await _storage.read(key: 'jwt');
+  }
 
-    final response = await http.get(
-      Uri.parse('$baseUrl/presupuesto'),
-      headers: {
-        'Content-Type': 'application/json',
-        "Authorization": "Bearer $token",
-      },
-    );
+  /// Obtiene la lista de presupuestos del usuario
+  Future<List<dynamic>> getPresupuestos() async {
+    final token = await _getToken();
+    final uri = Uri.parse(_endpoint);
 
-    if (response.statusCode == 201) {
-      final List<dynamic> data = jsonDecode(response.body);
-      final List<Presupuestos> dataList =
-          data
-              .map((e) => Presupuestos.fromJson(e as Map<String, dynamic>))
-              .toList();
-      return dataList;
+    final resp = await http.get(uri, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    print('GET $uri → ${resp.statusCode}');
+    print('Body: ${resp.body}');
+
+    if (resp.statusCode == 201 || resp.statusCode == 200) {
+      return json.decode(resp.body);
     } else {
-      throw Exception('Error al cargar datos de presupuestos');
+      throw Exception('Error al cargar los presupuestos (${resp.statusCode})');
     }
   }
 
-  static Future<double> fetchBudgetAmount() async {
-    final token = await _storage.read(key: "jwt");
+  /// Obtiene el detalle agregado (p.ej. total) de presupuestos
+  Future<Map<String, dynamic>> getPresupuestosDetail() async {
+    final token = await _getToken();
+    final uri = Uri.parse('$_endpoint/detail');
 
-    final response = await http.get(
-      Uri.parse('$baseUrl/presupuesto/detail'),
-      headers: {
-        'Content-Type': 'application/json',
-        "Authorization": "Bearer $token",
-      },
-    );
+    final resp = await http.get(uri, headers: {
+      'Content-Type': 'application/json',
+      'Authorization': 'Bearer $token',
+    });
+    print('GET $uri → ${resp.statusCode}');
+    print('Body: ${resp.body}');
 
-    if (response.statusCode == 200) {
-      final data = jsonDecode(response.body);
-      return double.parse(data["amount"].toString());
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body);
     } else {
-      throw Exception('Error al cargar datos de presupuestos');
+      throw Exception('Error al cargar detalle de presupuestos (${resp.statusCode})');
     }
   }
 
-  static Future<void> postBudget(Presupuestos budget) async {
-    final token = await _storage.read(key: "jwt");
+  /// Crea un nuevo presupuesto
+  Future<Map<String, dynamic>> createPresupuesto(Map<String, dynamic> data) async {
+    final token = await _getToken();
+    final uri = Uri.parse(_endpoint);
 
-    print("body del request: ${jsonEncode(budget.toJson())}");
-    final response = await http.post(
-      Uri.parse('$baseUrl/presupuesto'),
+    final resp = await http.post(
+      uri,
       headers: {
-        "Authorization": "Bearer $token",
-        "Content-Type": "application/json",
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
       },
-      body: jsonEncode(budget.toJson()),
+      body: json.encode(data),
     );
+    print('POST $uri');
+    print('Body enviado: ${json.encode(data)}');
+    print('→ ${resp.statusCode}: ${resp.body}');
 
-    if (response.statusCode != 201) {
-      throw Exception(
-        "No se creo el presupuesto correctamente, Error: ${response.body}",
-      );
+    if (resp.statusCode == 201) {
+      return json.decode(resp.body);
+    } else {
+      throw Exception('Error al crear presupuesto (${resp.statusCode})');
     }
-    print(response.statusCode);
+  }
+
+  /// Actualiza un presupuesto existente (envía pres_id en el body)
+  Future<Map<String, dynamic>> updatePresupuesto(Map<String, dynamic> data) async {
+    final token = await _getToken();
+    final uri = Uri.parse(_endpoint);
+
+    final resp = await http.put(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: json.encode(data),
+    );
+    print('PUT $uri');
+    print('Body enviado: ${json.encode(data)}');
+    print('→ ${resp.statusCode}: ${resp.body}');
+
+    if (resp.statusCode == 200) {
+      return json.decode(resp.body);
+    } else {
+      throw Exception('Error al actualizar presupuesto (${resp.statusCode})');
+    }
+  }
+
+  /// Elimina un presupuesto (envía pres_id en el body)
+  Future<void> deletePresupuesto(int presId) async {
+    final token = await _getToken();
+    final uri = Uri.parse(_endpoint);
+
+    final resp = await http.delete(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+      body: json.encode({'pres_id': presId}),
+    );
+    print('DELETE $uri');
+    print('Body enviado: ${json.encode({'pres_id': presId})}');
+    print('→ ${resp.statusCode}: ${resp.body}');
+
+    if (resp.statusCode != 200) {
+      throw Exception('Error al eliminar presupuesto (${resp.statusCode})');
+    }
   }
 }
+

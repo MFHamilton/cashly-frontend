@@ -1,4 +1,5 @@
 import 'package:cashly/core/widgets/menu.dart';
+import 'package:cashly/feautures/home/presentation/home_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -35,17 +36,26 @@ class Header extends StatelessWidget  implements PreferredSizeWidget {
                 color: Theme.of(context).colorScheme.primary,
               ),
 
-              SvgPicture.asset(
-                'assets/svg/logoHeader01.svg',
-                width: 80,
+              GestureDetector(
+                onTap: (){
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => HomeScreen()),
+                  );
+                },
+                child: SvgPicture.asset(
+                  'assets/svg/logoHeader01.svg',
+                  width: 80,
+                ),
+
               ),
+
+
 
               IconButton(
                 icon: const Icon(Icons.account_circle_outlined, size: 28,),
                 onPressed: () {
-                  ScaffoldMessenger.of(context).showSnackBar(
-                    const SnackBar(content: Text("Perfil presionado")),
-                  );
+
                 },
                 color: Theme.of(context).colorScheme.primary,
               ),

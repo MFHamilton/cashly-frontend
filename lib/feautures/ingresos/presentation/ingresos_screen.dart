@@ -1,32 +1,30 @@
 import 'package:cashly/core/constants/app_color.dart';
 import 'package:cashly/core/services/category_service.dart';
-import 'package:cashly/core/services/gastos_service.dart';       // ← nuevo
+import 'package:cashly/core/services/ingresos_service.dart';
 import 'package:cashly/core/widgets/delete_message.dart';
 import 'package:cashly/core/widgets/header.dart';
 import 'package:cashly/core/widgets/menu.dart';
-import 'package:cashly/feautures/gastos/presentation/add_gasto_screen.dart';
-import 'package:cashly/feautures/home/presentation/home_screen.dart';
+import 'package:cashly/feautures/ingresos/presentation/add_ingreso_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/cardItem.dart';
 import 'package:cashly/core/models/categoria.dart';
 
-
-class GastosScreen extends StatefulWidget {
-  const GastosScreen({Key? key}) : super(key: key);
+class IngresosScreen extends StatefulWidget {
+  const IngresosScreen({Key? key}) : super(key: key);
 
   @override
-  State<GastosScreen> createState() => _GastosScreenState();
+  State<IngresosScreen> createState() => _IngresosScreenState();
 }
 
-class _GastosScreenState extends State<GastosScreen>{
-  final categoryListFuture = CategoryService.fetchCategories();
-  final _service = GastosService();// servicio
-  bool _loading = true;                     // estado de carga
-  List<dynamic> _gastos = [];
-  List<dynamic> _categorias =  [];
+class _IngresosScreenState extends State<IngresosScreen> {
+  final _service = IngresoService();
+  bool _loading = true;
+  List<dynamic> _ingresos = [];
+  List<Categoria> _categorias = [];
 
   final Map<int, String> periodos = {
     1: 'Semanal',
@@ -37,83 +35,75 @@ class _GastosScreenState extends State<GastosScreen>{
     6: 'Anual',
   };
 
-  // gastos traídos
+  late Future<List<Categoria>> categoryListFuture;
 
   final String mesAnio = toBeginningOfSentenceCase(
-      DateFormat('MMMM yyyy', 'es_ES').format(DateTime.now())
+    DateFormat('MMMM yyyy', 'es_ES').format(DateTime.now()),
   )!;
 
   @override
   void initState() {
     super.initState();
-    _fetchGastos();
+    categoryListFuture = CategoryService.fetchCategories();
+    _fetchIngresos();
   }
 
-  Future<void> _fetchGastos() async {
+  Future<void> _fetchIngresos() async {
     setState(() => _loading = true);
     try {
       _categorias = await CategoryService.fetchCategories();
       final now = DateTime.now();
-      _gastos = await _service.getGastos(
+      _ingresos = await _service.getIngresos(
         month: now.month,
         year: now.year,
       );
     } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(SnackBar(content: Text(e.toString())));
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al cargar los ingresos: $e')),
+      );
     } finally {
       setState(() => _loading = false);
     }
   }
 
-  double get totalMes => _gastos.fold(0.0, (sum, g) {
-    final raw = g['gasto_monto'];
-    // si viene como número lo tomamos directo, si viene como String lo parseamos
+  double get totalMes => _ingresos.fold(0.0, (sum, i) {
+    final raw = i['ingreso_monto'];
     final monto = raw is num
         ? raw.toDouble()
         : double.tryParse(raw.toString()) ?? 0.0;
     return sum + monto;
   });
 
-  void _onAgregarGasto() async {
+  void _onAgregarIngreso() async {
     await Navigator.of(context).push(
-        MaterialPageRoute(builder: (_) => const AgregarGastoScreen())
+      MaterialPageRoute(builder: (_) => const AddIngresoScreen()),
     );
-    _fetchGastos();
+    _fetchIngresos();
   }
 
-  void _onEditGasto(String gastoId) {
-
+  void _onEditIngreso(String ingresoId) {
+    // TODO: implementar edición
   }
 
-  void _onDeleteGasto(String gastoId) async {
-    final gasto = _gastos.firstWhere(
-          (g) => g['gasto_id'].toString() == gastoId,
-      orElse: () => null,
-    );
-
-    if (gasto == null) return;
-
-    final String gastoNombre = gasto['gasto_nombre'] ?? 'Este gasto';
-
+  void _onDeleteIngreso(String ingresoId, String ingresoNombre) async {
     final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => Dialog(
         child: DeleteMessage(
-          controllerName: gastoNombre,
-          targetRoute: const GastosScreen(), // Solo se usa para cerrar
+          controllerName: ingresoNombre,
+          targetRoute: const IngresosScreen(),
         ),
       ),
     );
 
     if (confirmed == true) {
       try {
-        await _service.deleteGasto(int.parse(gastoId));
-        await _fetchGastos(); // Recarga la lista
+        await _service.deleteIngreso(int.parse(ingresoId));
+        await _fetchIngresos();
         ScaffoldMessenger.of(context).showSnackBar(
           SnackBar(
             content: Text(
-              "$gastoNombre eliminado",
+              "$ingresoNombre eliminado",
               style: Theme.of(context)
                   .textTheme
                   .labelLarge
@@ -133,7 +123,6 @@ class _GastosScreenState extends State<GastosScreen>{
     }
   }
 
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -142,24 +131,18 @@ class _GastosScreenState extends State<GastosScreen>{
       appBar: Header(),
       body: Column(
         children: [
-          // — "AppBar manual" debajo del Header —
+          // AppBar manual
           Container(
             height: kToolbarHeight,
-            color: Colors.transparent,
-            padding: const EdgeInsets.symmetric(horizontal: 8.0),
+            padding: const EdgeInsets.symmetric(horizontal: 8),
             child: Row(
               children: [
                 IconButton(
                   icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF28523A)),
-                  onPressed: () => Navigator.of(context).push(
-                    MaterialPageRoute(builder: (_) => const HomeScreen()),
-                  ),
+                  onPressed: () => Navigator.of(context).pop(),
                 ),
                 const SizedBox(width: 8),
-                Text(
-                  'Gastos',
-                  style: Theme.of(context).textTheme.headlineSmall,
-                ),
+                Text('Ingresos', style: Theme.of(context).textTheme.headlineSmall),
                 const Spacer(),
                 IconButton(
                   icon: SvgPicture.asset(
@@ -174,7 +157,7 @@ class _GastosScreenState extends State<GastosScreen>{
             ),
           ),
 
-          // Tarjeta de Gastos Totales
+          // Tarjeta de Ingresos Totales
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
             child: Container(
@@ -189,11 +172,10 @@ class _GastosScreenState extends State<GastosScreen>{
                 children: [
                   Row(
                     children: [
-                      Icon(Icons.attach_money,
-                          color: Theme.of(context).colorScheme.primary),
+                      Icon(Icons.attach_money, color: Theme.of(context).colorScheme.primary),
                       const SizedBox(width: 8),
                       Text(
-                        'Gastos Totales',
+                        'Ingresos Totales',
                         style: TextStyle(
                           color: Theme.of(context).colorScheme.primary,
                           fontWeight: FontWeight.w600,
@@ -201,8 +183,7 @@ class _GastosScreenState extends State<GastosScreen>{
                       ),
                       const Spacer(),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 4),
+                        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
                         decoration: BoxDecoration(
                           color: Theme.of(context).colorScheme.secondary,
                           borderRadius: BorderRadius.circular(16),
@@ -215,63 +196,71 @@ class _GastosScreenState extends State<GastosScreen>{
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Text(
-                    'RD\$${totalMes.toStringAsFixed(2)}',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: EdgeInsets.only(left: 32),
+                    child: Text(
+                      'RD\$${totalMes.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+
+
+                    )
+                  ),
+
+                  Padding(
+                      padding: EdgeInsets.only(left: 32),
+                    child: Text(
+                      'Este mes',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
+                      ),
                     ),
                   ),
-                  Text(
-                    'Este mes',
-                    style: TextStyle(
-                      color: Theme.of(context)
-                          .colorScheme
-                          .primary
-                          .withOpacity(0.7),
-                    ),
-                  ),
+
+
+
+
                 ],
               ),
             ),
           ),
 
-
+          // Estadística pequeña
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
               children: [
                 _SmallStatCard(
                   label: 'Activos',
-                  value: '${_gastos.length}',
+                  value: '${_ingresos.length}',
                   iconColor: const Color(0xFFB5D4B1),
                 ),
-                const SizedBox(width: 12),
-
               ],
             ),
           ),
 
-          // Lista de gastos recientes (dinámica)
+          // Lista de ingresos recientes
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
               child: _loading
                   ? const Center(child: CircularProgressIndicator())
-                  : _gastos.isEmpty
-                  ? const Center(child: Text('No hay gastos este mes'))
+                  : _ingresos.isEmpty
+                  ? const Center(child: Text('No hay ingresos este mes'))
                   : ListView.builder(
-                itemCount: _gastos.length,
+                itemCount: _ingresos.length,
                 itemBuilder: (_, i) {
-                  final g = _gastos[i];
-                  final raw = g['gasto_monto'];
+                  final ing = _ingresos[i];
+                  final raw = ing['ingreso_monto'];
                   final monto = raw is num
                       ? raw.toDouble()
                       : double.tryParse(raw.toString()) ?? 0.0;
 
                   final categoriaNombre = _categorias.firstWhere(
-                        (cat) => cat.categoriaId == g['categoria_id'],
+                        (cat) => cat.categoriaId == ing['categoria_id'],
                     orElse: () => Categoria(
                       categoriaId: 0,
                       categoriaNom: 'Sin categoría',
@@ -281,36 +270,38 @@ class _GastosScreenState extends State<GastosScreen>{
                     ),
                   ).categoriaNom;
 
-                  final periodoId = g['periodo_id'];
-                  final periodoNombre = periodos[periodoId];
-
+                  final periodoNombre = periodos[ing['periodo_id']];
                   final descripcion = periodoNombre != null
                       ? '$categoriaNombre • $periodoNombre'
                       : categoriaNombre;
+
                   return CardItem(
-                    title: g['gasto_nombre'] as String,
+                    title: ing['ingreso_nombre'] as String,
                     subtitle: descripcion,
                     amount: 'RD\$${monto.toStringAsFixed(2)}',
-                    onEdit: () => _onEditGasto((g['gasto_id']).toString()),
-                    onDelete: () => _onDeleteGasto((g['gasto_id']).toString()),
+                    onEdit: () => _onEditIngreso(
+                      (ing['ingreso_id']).toString(),
+                    ),
+                    onDelete: () => _onDeleteIngreso(
+                      (ing['ingreso_id']).toString(),
+                      ing['ingreso_nombre'] as String,
+                    ),
                   );
                 },
-
-
               ),
             ),
           ),
 
-          // Botón Agregar Gasto
+          // Botón Agregar Ingreso
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: CustomButton(
-              text: '+  Agregar Gasto',
+              text: '+  Agregar Ingreso',
               style: 'primary',
-              onPressed: _onAgregarGasto,
+              onPressed: _onAgregarIngreso,
             ),
           ),
-          const SizedBox(height: 25),
+          const SizedBox(height: 15),
         ],
       ),
     );
@@ -347,14 +338,20 @@ class _SmallStatCard extends StatelessWidget {
             Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Text(label,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontSize: 12)),
-                Text(value,
-                    style: TextStyle(
-                        color: Theme.of(context).colorScheme.primary,
-                        fontWeight: FontWeight.bold)),
+                Text(
+                  label,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontSize: 12,
+                  ),
+                ),
+                Text(
+                  value,
+                  style: TextStyle(
+                    color: Theme.of(context).colorScheme.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ],
             ),
           ],
@@ -363,6 +360,3 @@ class _SmallStatCard extends StatelessWidget {
     );
   }
 }
-
-
-

@@ -9,5 +9,6 @@ class AppTheme{
     colorScheme: AppColorScheme.light,
     textTheme: MyTextTheme.lightTextTheme,
     elevatedButtonTheme: AppButtonTheme.primaryElevatedButtonTheme,
+
   );
 }

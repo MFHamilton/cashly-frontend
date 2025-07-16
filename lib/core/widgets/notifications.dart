@@ -21,8 +21,8 @@ class _NotificationsState extends State<Notifications> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(18),
-      margin: EdgeInsets.all(30),
+      padding: EdgeInsets.all(10),
+      margin: EdgeInsets.all(10),
       decoration: BoxDecoration(
           color: Theme.of(context).colorScheme.primaryContainer,
           borderRadius: BorderRadius.circular(3)
@@ -31,11 +31,28 @@ class _NotificationsState extends State<Notifications> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            'Alerta',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
-                color: Theme.of(context).colorScheme.primary
-            ),
+          Row(
+            children: [
+              Icon(Icons.notification_add, color: Theme.of(context).colorScheme.primary,),
+              SizedBox(width: 8),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    'Alerta',
+                    style: Theme.of(context).textTheme.titleMedium?.copyWith(
+                      color: Theme.of(context).colorScheme.primary,
+                    ),
+                  ),
+                  Text(
+                    'Active las notificaciones',
+                    style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: Theme.of(context).colorScheme.primary.withOpacity(0.7)
+                    ),
+                  ),
+                ],
+              ),
+            ],
           ),
 
           //SizedBox(height: 20,),
@@ -46,9 +63,7 @@ class _NotificationsState extends State<Notifications> {
             decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(3),
-                border: Border.all(
-                    color: Theme.of(context).colorScheme.secondary
-                )
+
             ),
 
             child: Row(
@@ -59,6 +74,7 @@ class _NotificationsState extends State<Notifications> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
+
                       Padding(
                         padding: EdgeInsets.only(top: 5),
                       ),
@@ -69,7 +85,7 @@ class _NotificationsState extends State<Notifications> {
                         ),
                       ),
                       Text(
-                        'Recibe notificaciones de ',
+                        'Recibe notificaciones de tu presupuesto',
                         style: Theme.of(context).textTheme.labelSmall?.copyWith(
                             color: Theme.of(context).colorScheme.onPrimaryContainer
                         ),
@@ -104,9 +120,7 @@ class _NotificationsState extends State<Notifications> {
             decoration: BoxDecoration(
                 color: Theme.of(context).colorScheme.surface,
                 borderRadius: BorderRadius.circular(3),
-                border: Border.all(
-                  color: Theme.of(context).colorScheme.secondary
-                )
+
             ),
             
             child: DropdownMenu(
