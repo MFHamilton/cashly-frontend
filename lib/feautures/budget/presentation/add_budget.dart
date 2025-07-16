@@ -2,6 +2,7 @@ import 'package:cashly/core/models/presupuestos.dart';
 import 'package:cashly/core/services/category_service.dart';
 import 'package:cashly/core/widgets/header.dart';
 import 'package:cashly/core/widgets/menu.dart';
+import 'package:cashly/core/widgets/notifications.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/models/categoria.dart';
@@ -148,6 +149,10 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
             Duration.Duration(
               dateStartController: startDateController,
               dateEndController: endDateController,
+            ),
+
+            Notifications(
+
             ),
             Padding(
               padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),

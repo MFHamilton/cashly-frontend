@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       title: 'Material App',
      theme: AppTheme.lightTheme,
       navigatorKey: navigatorKey,
-      home: HomeScreen(),
+      home: IntroPage(),
 
       routes: {
         TestingPage.route: (context) => TestingPage(),
