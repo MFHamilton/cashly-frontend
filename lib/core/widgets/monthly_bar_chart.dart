@@ -1,3 +1,4 @@
+import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
@@ -13,13 +14,24 @@ class MonthlyBarChart extends StatelessWidget {
   Widget build(BuildContext context) {
     const barColor = AppColors.primary;
 
+    // 1) Calcula el valor máximo de todos los montos
+    final rawMax = data.isNotEmpty
+        ? data.map((e) => e.amount).reduce(max)
+        : 0.0;
+
+    // 2) Añade un colchón del 20% para que la barra no toque el tope
+    final maxY = rawMax * 1.2;
+
+    // En caso de que tu rawMax sea cero (no datos), fiaj un mínimo razonable
+    final chartMaxY = maxY > 0 ? maxY : 1.0;
+
     return SizedBox(
       height: 250,
       child: Stack(
         children: [
           BarChart(
             BarChartData(
-              maxY: 120,
+              maxY: chartMaxY,
               minY: 0,
               alignment: BarChartAlignment.spaceAround,
               gridData: FlGridData(show: false),
@@ -38,27 +50,28 @@ class MonthlyBarChart extends StatelessWidget {
                 bottomTitles: AxisTitles(
                   sideTitles: SideTitles(
                     showTitles: true,
+                    reservedSize: 30,
                     getTitlesWidget: (value, meta) {
+                      final idx = value.toInt();
+                      if (idx < 0 || idx >= data.length) return const SizedBox();
                       return Padding(
                         padding: const EdgeInsets.only(top: 8.0),
                         child: Text(
-                          data[value.toInt()].formattedDay,
+                          data[idx].formattedDay,
                           style: const TextStyle(fontSize: 10),
                         ),
                       );
                     },
-                    reservedSize: 30,
                   ),
                 ),
               ),
               barGroups: List.generate(data.length, (index) {
-                final item = data[index];
-                final value = item.amount;
+                final val = data[index].amount;
                 return BarChartGroupData(
                   x: index,
                   barRods: [
                     BarChartRodData(
-                      toY: value,
+                      toY: val,
                       color: barColor,
                       width: 16,
                       borderRadius: const BorderRadius.only(
@@ -74,14 +87,14 @@ class MonthlyBarChart extends StatelessWidget {
             swapAnimationDuration: const Duration(milliseconds: 500),
             swapAnimationCurve: Curves.easeOut,
           ),
-          // Añadir valores sobre las barras con Positioned widgets
+
+          // Valores sobre cada barra
           Positioned.fill(
             child: Padding(
               padding: const EdgeInsets.only(bottom: 30),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children:
-                data.map((item) {
+                children: data.map((item) {
                   return Expanded(
                     child: Align(
                       alignment: Alignment.topCenter,
