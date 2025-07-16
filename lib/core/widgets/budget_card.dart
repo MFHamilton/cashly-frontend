@@ -34,7 +34,7 @@ class BudgetCard extends StatelessWidget {
           ),
           child: Icon(icon, color: Theme.of(context).colorScheme.secondary),
         ),
-        SizedBox(height: 4),
+        const SizedBox(height: 4),
         Text(label, style: const TextStyle(color: Colors.grey)),
         Text(
           value,
@@ -46,21 +46,34 @@ class BudgetCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final restante = presupuesto.presMontoInicial - presupuesto.presMontoUlt;
-    final porcentajeGastado =
-        presupuesto.presMontoUlt / presupuesto.presMontoInicial;
-    final diasTotales =
-        presupuesto.finRecurrencia
-            ?.difference(presupuesto.inicioRecurrencia!)
-            .inDays;
-    final diasRestantes =
-        presupuesto.finRecurrencia?.difference(DateTime.now()).inDays;
-    final promedioDiario =
-        presupuesto.presMontoUlt /
-            ((DateTime.now().difference(presupuesto.inicioRecurrencia!).inDays) +
-                1);
+    // — PARSEO SEGURO DE MONTOS —
+    final double montoInicial = double.tryParse(
+        presupuesto.presMontoInicial.toString()) ??
+        0.0;
+    final double montoGastado =
+        double.tryParse(presupuesto.presMontoUlt.toString()) ?? 0.0;
+    final double restante = montoInicial - montoGastado;
+    final double porcentajeGastado = montoInicial > 0
+        ? (montoGastado / montoInicial).clamp(0.0, 1.0)
+        : 0.0;
 
-    final currency = NumberFormat.currency(symbol: "\$", decimalDigits: 0);
+    // — FECHAS NULL-SAFE —
+    final DateTime? inicio = presupuesto.inicioRecurrencia;
+    final DateTime? fin = presupuesto.finRecurrencia;
+
+    final int? diasTotales = (inicio != null && fin != null)
+        ? fin.difference(inicio).inDays
+        : null;
+    final int? diasRestantes =
+    fin != null ? fin.difference(DateTime.now()).inDays : null;
+
+    final double? promedioDiario = (inicio != null)
+        ? montoGastado /
+        (DateTime.now().difference(inicio).inDays + 1)
+        : null;
+
+    final currency =
+    NumberFormat.currency(symbol: "\$", decimalDigits: 0);
 
     return Container(
       padding: const EdgeInsets.all(16),
@@ -73,7 +86,7 @@ class BudgetCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          // Título y acciones
+          // TÍTULO Y ACCIONES (igual)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -92,7 +105,7 @@ class BudgetCard extends StatelessWidget {
                       ),
                       Text(
                         presupuesto.categoriaNom ?? "Categoría",
-                        style: TextStyle(color: Colors.grey),
+                        style: const TextStyle(color: Colors.grey),
                       ),
                     ],
                   ),
@@ -107,7 +120,7 @@ class BudgetCard extends StatelessWidget {
                       color: Theme.of(context).colorScheme.secondary,
                     ),
                   ),
-                  SizedBox(width: 8),
+                  const SizedBox(width: 8),
                   Icon(
                     Icons.delete,
                     color: Theme.of(context).colorScheme.secondary,
@@ -116,8 +129,10 @@ class BudgetCard extends StatelessWidget {
               ),
             ],
           ),
+
           const SizedBox(height: 16),
-          // Monto resumen
+
+          // MONTO RESUMEN (igual)
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
@@ -125,13 +140,13 @@ class BudgetCard extends StatelessWidget {
                 context,
                 Icons.attach_money,
                 "Límite",
-                currency.format(presupuesto.presMontoInicial),
+                currency.format(montoInicial),
               ),
               _buildMontoResumen(
                 context,
                 Icons.money_off,
                 "Gastado",
-                currency.format(presupuesto.presMontoUlt),
+                currency.format(montoGastado),
               ),
               _buildMontoResumen(
                 context,
@@ -141,29 +156,37 @@ class BudgetCard extends StatelessWidget {
               ),
             ],
           ),
+
           const SizedBox(height: 16),
           const Text(
             "Progreso del periodo",
             style: TextStyle(color: Colors.grey),
           ),
           const SizedBox(height: 8),
+
+          // BARRA DE PROGRESO (igual)
           ClipRRect(
             borderRadius: BorderRadius.circular(10),
             child: LinearProgressIndicator(
               minHeight: 12,
-              value: porcentajeGastado.clamp(0.0, 1.0),
+              value: porcentajeGastado,
               backgroundColor: Colors.grey.shade300,
-              valueColor: AlwaysStoppedAnimation<Color>(Colors.green),
+              valueColor:
+              const AlwaysStoppedAnimation<Color>(Colors.green),
             ),
           ),
+
           const SizedBox(height: 16),
+
+          // PROMEDIO/DÍA Y DÍAS RESTANTES
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
+              // Promedio/día
               Column(
                 children: [
                   Text(
-                    "\$${promedioDiario.toStringAsFixed(1)}",
+                    "\$${promedioDiario != null ? promedioDiario.toStringAsFixed(1) : '–'}",
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -175,11 +198,14 @@ class BudgetCard extends StatelessWidget {
                   ),
                 ],
               ),
+
               Container(height: 28, width: 1, color: Colors.grey.shade300),
+
+              // Días Restantes
               Column(
                 children: [
                   Text(
-                    diasRestantes.toString(),
+                    diasRestantes != null ? diasRestantes.toString() : '–',
                     style: const TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 16,
@@ -195,29 +221,6 @@ class BudgetCard extends StatelessWidget {
           ),
         ],
       ),
-    );
-  }
-}
-
-class ListaBudgetCards extends StatelessWidget {
-  final List<Presupuestos> lista;
-
-  const ListaBudgetCards({super.key, required this.lista});
-
-  @override
-  Widget build(BuildContext context) {
-    if (lista.isEmpty) {
-      return const Center(child: Text("No hay presupuestos registrados."));
-    }
-
-    return ListView.builder(
-      shrinkWrap: true,
-      physics:
-      const NeverScrollableScrollPhysics(), // permite usar dentro de scrolls
-      itemCount: lista.length,
-      itemBuilder: (context, index) {
-        return BudgetCard(presupuesto: lista[index]);
-      },
     );
   }
 }
