@@ -193,12 +193,12 @@ class ExportButtons extends StatelessWidget {
 class GastosPieChart extends StatelessWidget {
   const GastosPieChart({super.key, required this.gastos});
 
-  final List<Color> sectionColors = const [
-    Color(0xFFDCE7E2), // Comida
-    Color(0xFF007F3F), // Servicios
-    Color(0xFF00D084), // Transporte
-    Color(0xFFE1ECE9), // Entretenimiento
-  ];
+  final Map<String, Color> sectionColors = {
+    "Comida": Color(0xFFDCE7E2),
+    "Vivienda": Color(0xFF007F3F),
+    "Transporte": Color(0xFF00D084),
+    "Salud": Color(0xFFE1ECE9),
+  };
 
   final List<Gastos> gastos;
 
@@ -334,7 +334,6 @@ class VistaReporte extends StatefulWidget {
 }
 
 class _VistaReporteState extends State<VistaReporte> {
-  // Mock data para los selectores
   final List<String> tipos = ['Ingresos', 'Gastos'];
   final List<String> categorias = [
     'Todas',
@@ -359,7 +358,6 @@ class _VistaReporteState extends State<VistaReporte> {
   ];
   final List<String> anios = ['2023', '2024', '2025'];
 
-  // Valores seleccionados
   String selectedTipo = 'Ingresos';
   String selectedCategoria = 'Todas';
   String selectedMes = 'Julio';
@@ -381,31 +379,40 @@ class _VistaReporteState extends State<VistaReporte> {
             "Previsualiza tu reporte antes de descargarlo",
             style: TextStyle(color: Colors.black54),
           ),
-          const SizedBox(height: 16),
+          const SizedBox(height: 12),
 
-          // Filtros como dropdowns
           Wrap(
-            spacing: 12,
-            runSpacing: 12,
+            spacing: 8,
+            runSpacing: 8,
             children: [
-              _buildDropdown("Tipo", selectedTipo, tipos, (value) {
-                setState(() => selectedTipo = value);
-              }),
-              _buildDropdown("Categoría", selectedCategoria, categorias, (
-                value,
-              ) {
-                setState(() => selectedCategoria = value);
-              }),
-              _buildDropdown("Mes", selectedMes, meses, (value) {
-                setState(() => selectedMes = value);
-              }),
-              _buildDropdown("Año", selectedAnio, anios, (value) {
-                setState(() => selectedAnio = value);
-              }),
+              _buildDropdown(
+                "Tipo",
+                selectedTipo,
+                tipos,
+                (value) => setState(() => selectedTipo = value),
+              ),
+              _buildDropdown(
+                "Categoría",
+                selectedCategoria,
+                categorias,
+                (value) => setState(() => selectedCategoria = value),
+              ),
+              _buildDropdown(
+                "Mes",
+                selectedMes,
+                meses,
+                (value) => setState(() => selectedMes = value),
+              ),
+              _buildDropdown(
+                "Año",
+                selectedAnio,
+                anios,
+                (value) => setState(() => selectedAnio = value),
+              ),
             ],
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: 20),
 
           // Reporte simulado
           Container(
@@ -433,8 +440,6 @@ class _VistaReporteState extends State<VistaReporte> {
                 SizedBox(height: 16),
                 Text("Detalle", style: TextStyle(fontWeight: FontWeight.bold)),
                 SizedBox(height: 8),
-
-                // Tabla simple
                 Row(
                   children: [
                     Expanded(
@@ -468,9 +473,8 @@ class _VistaReporteState extends State<VistaReporte> {
             ),
           ),
 
-          const SizedBox(height: 24),
+          const SizedBox(height: 20),
 
-          // Botones de exportación
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -494,7 +498,6 @@ class _VistaReporteState extends State<VistaReporte> {
     );
   }
 
-  // Dropdown builder
   Widget _buildDropdown(
     String label,
     String selectedValue,
@@ -502,14 +505,14 @@ class _VistaReporteState extends State<VistaReporte> {
     ValueChanged<String> onChanged,
   ) {
     return SizedBox(
-      width: 80, // 👈 Más pequeño para que quepan más
+      width: 88,
       child: InputDecorator(
         decoration: InputDecoration(
           labelText: label,
-          labelStyle: const TextStyle(fontSize: 11),
+          labelStyle: const TextStyle(fontSize: 10),
           contentPadding: const EdgeInsets.symmetric(
-            horizontal: 8,
-            vertical: 6,
+            horizontal: 6,
+            vertical: 0.1,
           ),
           border: OutlineInputBorder(borderRadius: BorderRadius.circular(6)),
           isDense: true,
@@ -518,9 +521,9 @@ class _VistaReporteState extends State<VistaReporte> {
           child: DropdownButton<String>(
             value: selectedValue,
             isExpanded: true,
-            icon: const Icon(Icons.arrow_drop_down, size: 18),
-            iconSize: 18,
-            dropdownColor: Colors.white,
+            icon: const Icon(Icons.arrow_drop_down, size: 16),
+            iconSize: 16,
+            style: const TextStyle(fontSize: 12, color: Colors.black),
             onChanged: (String? newValue) {
               if (newValue != null) onChanged(newValue);
             },
@@ -528,7 +531,10 @@ class _VistaReporteState extends State<VistaReporte> {
                 items.map<DropdownMenuItem<String>>((String value) {
                   return DropdownMenuItem<String>(
                     value: value,
-                    child: Text(value, style: const TextStyle(fontSize: 12)),
+                    child: Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 2),
+                      child: Text(value, style: const TextStyle(fontSize: 12)),
+                    ),
                   );
                 }).toList(),
           ),
@@ -537,7 +543,6 @@ class _VistaReporteState extends State<VistaReporte> {
     );
   }
 
-  // Botón de exportar estilo
   ButtonStyle _buttonStyle() {
     return OutlinedButton.styleFrom(
       backgroundColor: Colors.white,
