@@ -36,7 +36,7 @@ class _CategoryState extends State<Category> {
         children: [
           Text(
             'Categorías',
-            style: Theme.of(context).textTheme.headlineSmall?.copyWith(
+            style: Theme.of(context).textTheme.titleMedium?.copyWith(
               color: Theme.of(context).colorScheme.primary,
             ),
           ),

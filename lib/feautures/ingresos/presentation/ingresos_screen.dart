@@ -196,20 +196,33 @@ class _IngresosScreenState extends State<IngresosScreen> {
                     ],
                   ),
                   const SizedBox(height: 12),
-                  Text(
-                    'RD\$${totalMes.toStringAsFixed(2)}',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary,
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
+                  Padding(
+                    padding: EdgeInsets.only(left: 32),
+                    child: Text(
+                      'RD\$${totalMes.toStringAsFixed(2)}',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary,
+                        fontSize: 28,
+                        fontWeight: FontWeight.bold,
+                      ),
+
+
+                    )
+                  ),
+
+                  Padding(
+                      padding: EdgeInsets.only(left: 32),
+                    child: Text(
+                      'Este mes',
+                      style: TextStyle(
+                        color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
+                      ),
                     ),
                   ),
-                  Text(
-                    'Este mes',
-                    style: TextStyle(
-                      color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
-                    ),
-                  ),
+
+
+
+
                 ],
               ),
             ),
