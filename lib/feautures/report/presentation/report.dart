@@ -1,3 +1,5 @@
+import 'package:cashly/core/models/gastos.dart';
+import 'package:cashly/core/services/gastos_service.dart';
 import 'package:cashly/core/widgets/header.dart';
 import 'package:cashly/core/widgets/menu.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -5,8 +7,24 @@ import 'package:flutter/material.dart';
 
 import '../../../core/themes/text_scheme.dart';
 
-class ReportScreen extends StatelessWidget {
+class ReportScreen extends StatefulWidget {
   const ReportScreen({super.key});
+
+  @override
+  State<ReportScreen> createState() => _ReportScreenState();
+}
+
+class _ReportScreenState extends State<ReportScreen> {
+  late Future<List<Gastos>> gastosFuture;
+
+  GastosService _gastosService = GastosService();
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    gastosFuture = _gastosService.fetchGastos();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -32,11 +50,23 @@ class ReportScreen extends StatelessWidget {
                 ],
               ),
             ),
-
-            ExportButtons(),
-
+            // ExportButtons(),
             // TODO: distribucion de gastos
-            GastosPieChart(),
+            FutureBuilder<List<Gastos>>(
+              future: gastosFuture,
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Text("Error: ${snapshot.error}");
+                } else if (snapshot.hasData) {
+                  final data = snapshot.data!;
+                  return GastosPieChart(gastos: data);
+                } else {
+                  return Text("Sin datos");
+                }
+              },
+            ),
             // TODO: reportes
             VistaReporte(),
             // TODO: progreso de metas
@@ -111,7 +141,7 @@ class ExportButtons extends StatelessWidget {
 }
 
 class GastosPieChart extends StatelessWidget {
-  const GastosPieChart({super.key});
+  const GastosPieChart({super.key, required this.gastos});
 
   final List<Color> sectionColors = const [
     Color(0xFFDCE7E2), // Comida
@@ -120,15 +150,27 @@ class GastosPieChart extends StatelessWidget {
     Color(0xFFE1ECE9), // Entretenimiento
   ];
 
-  final List<Map<String, dynamic>> data = const [
-    {'label': 'Comida', 'value': 38.0, 'amount': 3200},
-    {'label': 'Servicios', 'value': 29.0, 'amount': 2500},
-    {'label': 'Transporte', 'value': 21.0, 'amount': 1800},
-    {'label': 'Entretenimiento', 'value': 12.0, 'amount': 1000},
-  ];
+  final List<Gastos> gastos;
 
   @override
   Widget build(BuildContext context) {
+    List<Map<String, dynamic>> data = [];
+    for (var gasto in gastos) {
+      String categoriaNom =
+          (gasto.categoriaNom?.isEmpty ?? true) ? "Otros" : gasto.categoriaNom!;
+
+      Map<String, dynamic>? existente = data.firstWhere(
+        (item) => item['label'] == categoriaNom,
+        orElse: () => {},
+      );
+
+      if (existente.isNotEmpty) {
+        existente['value'] += gasto.gastoMonto;
+      } else {
+        data.add({'label': categoriaNom, 'value': gasto.gastoMonto});
+      }
+    }
+
     return Card(
       color: Colors.white,
       elevation: 2,
@@ -174,9 +216,9 @@ class GastosPieChart extends StatelessWidget {
                   centerSpaceRadius: 50,
                   sectionsSpace: 2,
                   sections:
-                      data.asMap().entries.map((entry) {
-                        int index = entry.key;
-                        final item = entry.value;
+                      data.asMap().entries.map((gasto) {
+                        int index = gasto.key;
+                        final item = gasto.value;
                         return PieChartSectionData(
                           color: sectionColors[index],
                           value: item['value'],
@@ -272,7 +314,10 @@ class VistaReporte extends StatelessWidget {
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(6),
                             ),
-                            padding: const EdgeInsets.symmetric(vertical: 12, horizontal: 8),
+                            padding: const EdgeInsets.symmetric(
+                              vertical: 12,
+                              horizontal: 8,
+                            ),
                           ),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

@@ -9,17 +9,16 @@ class GastosService {
   final storage = FlutterSecureStorage();
 
   Future<String?> _getToken() async {
-    return await storage.read(key: 'jwt',);
+    return await storage.read(key: 'jwt');
   }
 
   Future<List<dynamic>> getGastos({int? month, int? year, int? presId}) async {
     final token = await _getToken();
 
     final query = <String, String>{};
-    if (month  != null) query['month']  = month.toString();
-    if (year   != null) query['year']   = year.toString();
-    if (presId != null) query['pres_id']= presId.toString();
-
+    if (month != null) query['month'] = month.toString();
+    if (year != null) query['year'] = year.toString();
+    if (presId != null) query['pres_id'] = presId.toString();
 
     final uri = Uri.parse(_endpoint).replace(queryParameters: query);
 
@@ -32,6 +31,33 @@ class GastosService {
     );
     if (resp.statusCode == 200) {
       return json.decode(resp.body);
+    } else {
+      throw Exception('Error al cargar los gastos: ${resp.statusCode}');
+    }
+  }
+
+  Future<List<Gastos>> fetchGastos({int? month, int? year, int? presId}) async {
+    // final token = await _getToken();
+    final token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjIsImlhdCI6MTc1MjY3NjEyNiwiZXhwIjoxNzUyNjc5NzI2fQ.JCBUoBdKNuM099bEWTOHfemWOvx5XPat1PhHb_vnWbg";
+    final query = <String, String>{};
+    if (month != null) query['month'] = month.toString();
+    if (year != null) query['year'] = year.toString();
+    if (presId != null) query['pres_id'] = presId.toString();
+
+    final uri = Uri.parse(_endpoint).replace(queryParameters: query);
+
+    final resp = await http.get(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer $token',
+      },
+    );
+    if (resp.statusCode == 200) {
+      final data = jsonDecode(resp.body);
+      final List<Gastos> listData =
+          data.map((g) => Gastos.fromJson(g)).toList();
+      return listData;
     } else {
       throw Exception('Error al cargar los gastos: ${resp.statusCode}');
     }
@@ -92,7 +118,11 @@ class GastosService {
     }
   }
 
-  Future<List<double>> fetchGastosMontoMensual(int month, int year, int presId) async {
+  Future<List<double>> fetchGastosMontoMensual(
+    int month,
+    int year,
+    int presId,
+  ) async {
     final token = await _getToken();
 
     final response = await http.get(
@@ -106,7 +136,7 @@ class GastosService {
     if (response.statusCode == 200) {
       final List<dynamic> data = jsonDecode(response.body);
       final List<double> dataList =
-      data.map((e) => Gastos.fromJson(e).gastoMonto).toList();
+          data.map((e) => Gastos.fromJson(e).gastoMonto).toList();
       return dataList;
     } else {
       throw Exception('Error al cargar datos de presupuestos');
