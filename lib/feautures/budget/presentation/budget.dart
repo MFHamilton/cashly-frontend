@@ -1,5 +1,19 @@
-import 'package:firebase_messaging/firebase_messaging.dart';
+import 'package:cashly/core/constants/app_color.dart';
+import 'package:cashly/core/models/categoria.dart';
+import 'package:cashly/core/models/presupuestos.dart';
+import 'package:cashly/core/services/category_service.dart';
+import 'package:cashly/core/services/budget_service.dart';
+import 'package:cashly/core/widgets/budget_card.dart';
+import 'package:cashly/core/widgets/custom_button.dart';
+import 'package:cashly/core/widgets/general_budget_card.dart';
+import 'package:cashly/core/widgets/header.dart';
+import 'package:cashly/core/widgets/menu.dart';
+import 'package:cashly/feautures/budget/presentation/add_budget.dart';
 import 'package:flutter/material.dart';
+
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:intl/intl.dart';
+
 
 import '../../../core/models/presupuestos.dart';
 import '../../../core/themes/text_scheme.dart';
@@ -14,65 +28,92 @@ import '../../home/presentation/home_screen.dart';
 
 class BudgetScreen extends StatefulWidget {
   const BudgetScreen({super.key});
-  //static const route = '/budget';
-
 
   @override
   State<BudgetScreen> createState() => _BudgetScreenState();
 }
 
 class _BudgetScreenState extends State<BudgetScreen> {
+  final _presService = PresupuestoService();
+  bool _loading = true;
+  double _totalDetail = 0;
+  List<Presupuestos> _presupuestos = [];
+  List<Categoria> _categorias = [];
 
-  // TODO: load data from backend
-  final List<Presupuestos> presupuestos = [
-    Presupuestos(
-      presId: 1,
-      usuarioId: 2,
-      categoriaId: 0,
-      categoriaNom: "Hogar",
-      presNombre: "Gastos Casa",
-      presMontoInicial: 3000,
-      presMontoUlt: 1000,
-      esActivo: true,
-      fechaCreacion: DateTime(2025, 2, 12),
-      fechaUltAct: DateTime.now(),
-      inicioRecurrencia: DateTime(2025, 2, 12),
-      finRecurrencia: DateTime(2025, 8, 14),
-    ),
-    Presupuestos(
-      presId: 1,
-      usuarioId: 2,
-      categoriaId: 2,
-      categoriaNom: "Comida",
-      presNombre: "Gastos Comida",
-      presMontoInicial: 2000,
-      presMontoUlt: 550,
-      esActivo: true,
-      fechaCreacion: DateTime(2025, 2, 12),
-      fechaUltAct: DateTime.now(),
-      inicioRecurrencia: DateTime(2025, 2, 12),
-      finRecurrencia: DateTime(2025, 8, 14),
-    ),
-  ];
+  final String mesAnio = toBeginningOfSentenceCase(
+    DateFormat('MMMM yyyy', 'es_ES').format(DateTime.now()),
+  )!;
 
-  Future<void> navigateAddBudget() async {
-    final result = await Navigator.push(
-      context,
-      MaterialPageRoute(builder: (context) => AddBudgetScreen()),
-    );
+  @override
+  void initState() {
+    super.initState();
+    _loadBudgetData();
+  }
 
-    if (result == true) {
-      setState(() {
-        loadBudget();
-      });
+  Future<void> _loadBudgetData() async {
+    setState(() => _loading = true);
+    try {
+      // Carga categorías para asignar nombre
+      _categorias = await CategoryService.fetchCategories();
+
+      // Carga detalle
+      final detailJson = await _presService.getPresupuestosDetail();
+      _totalDetail = (detailJson['amount'] as num).toDouble();
+
+      // Carga lista de presupuestos
+      final listJson = await _presService.getPresupuestos();
+      _presupuestos = listJson.map<Presupuestos>((json) {
+        // Busca nombre de categoría
+        final cat = _categorias.firstWhere(
+              (c) => c.categoriaId == json['categoria_id'],
+          orElse: () => Categoria(
+            categoriaId: 0,
+            categoriaNom: 'Sin categoría',
+            categoriaDescrip: '',
+            iconRef: '',
+            ownerId: null,
+          ),
+        );
+        return Presupuestos(
+          presId: json['pres_id'] as int,
+          usuarioId: json['usuario_id'] as int,
+          presNombre: json['pres_nombre'] as String,
+          categoriaId: json['categoria_id'] as int?,
+          categoriaNom: cat.categoriaNom,
+          presMontoInicial: double.parse(json['pres_monto_inicial'].toString()),
+          presMontoUlt: double.parse(json['pres_monto_ult'].toString()),
+          esActivo: json['es_activo'] as bool,
+          fechaCreacion: DateTime.parse(json['fecha_creacion'] as String),
+          fechaUltAct: DateTime.parse(json['fecha_ult_act'] as String),
+          inicioRecurrencia: json['inicio_recurrencia'] != null
+              ? DateTime.parse(json['inicio_recurrencia'] as String)
+              : null,
+          finRecurrencia: json['fin_recurrencia'] != null
+              ? DateTime.parse(json['fin_recurrencia'] as String)
+              : null,
+        );
+      }).toList();
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error al cargar presupuestos: $e')),
+      );
+    } finally {
+      setState(() => _loading = false);
     }
   }
 
-  void loadBudget() {}
+  Future<void> _navigateAddBudget() async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (_) => const AddBudgetScreen()),
+    );
+    if (result == true) {
+      _loadBudgetData();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    //final message = ModalRoute.of(context)!.settings.arguments as RemoteMessage;
     return Scaffold(
       drawer: const MenuLateralScreen(),
       appBar: Header(),
@@ -80,8 +121,9 @@ class _BudgetScreenState extends State<BudgetScreen> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            // Titulo de la pantalla
+            // Título manual
             Container(
+
               width: double.infinity,
               padding: EdgeInsets.fromLTRB(8, 0, 0, 8),
               child: Row(
@@ -97,29 +139,41 @@ class _BudgetScreenState extends State<BudgetScreen> {
                   Text(
                     "Presupuesto",
                     style: Theme.of(context).textTheme.headlineSmall,
+
                   ),
                 ],
               ),
             ),
 
-            /*
-            Text('${message.notification?.title}'),
-            Text('${message.notification?.body}'),
-            Text('${message.data}'),
-            */
-
-
-            // Card con el presupesto total del mes
-            GeneralBudgetCard(amount: 5000),
-            // listado de presupuestos
-            ListaBudgetCards(lista: presupuestos),
-            // boton para ir a la pantalla de agregar presupuesto
+            // GeneralBudgetCard con monto real
             Padding(
-              padding: EdgeInsets.fromLTRB(11, 0, 11, 16),
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              child: GeneralBudgetCard(amount: _totalDetail),
+            ),
+
+            const SizedBox(height: 16),
+
+            // Lista de presupuestos o indicador de carga
+            _loading
+                ? const Center(child: CircularProgressIndicator())
+                : _presupuestos.isEmpty
+                ? const Center(child: Text("No hay presupuestos registrados."))
+                : ListView.builder(
+              shrinkWrap: true,
+              physics: const NeverScrollableScrollPhysics(),
+              itemCount: _presupuestos.length,
+              itemBuilder: (context, index) {
+                return BudgetCard(presupuesto: _presupuestos[index]);
+              },
+            ),
+
+            // Botón para agregar presupuesto
+            Padding(
+              padding: const EdgeInsets.fromLTRB(11, 16, 11, 16),
               child: CustomButton(
                 text: "+ Agregar Presupuesto",
                 style: 'primary',
-                onPressed: navigateAddBudget,
+                onPressed: _navigateAddBudget,
               ),
             ),
           ],
@@ -128,3 +182,4 @@ class _BudgetScreenState extends State<BudgetScreen> {
     );
   }
 }
+
