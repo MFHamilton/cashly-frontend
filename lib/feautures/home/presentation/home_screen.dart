@@ -72,6 +72,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
             // TODO: alertas
             // Gráfica de comparativa mensual
+            SizedBox(height: 20),
             Text(
               "Comparativa Mensual",
               style: MyTextTheme.lightTextTheme.titleLarge,

@@ -52,13 +52,40 @@ class Header extends StatelessWidget  implements PreferredSizeWidget {
 
 
 
-              IconButton(
-                icon: const Icon(Icons.account_circle_outlined, size: 28,),
-                onPressed: () {
-
-                },
+              PopupMenuButton<int>(
+                icon: const Icon(Icons.settings_outlined, size: 28),
                 color: Theme.of(context).colorScheme.primary,
-              ),
+
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(3),
+                ),
+                onSelected: (int result) {
+                  // Aquí puedes manejar la opción seleccionada
+                  print("Seleccionaste la opción $result");
+                },
+                itemBuilder: (BuildContext context) => <PopupMenuEntry<int>>[
+                  PopupMenuItem<int>(
+                    value: 1,
+                    child: Text(
+                        'Perfil',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: Theme.of(context).colorScheme.surface,
+                      ),
+                    ),
+                  ),
+                  PopupMenuItem<int>(
+                    value: 2,
+                    child: Text(
+                      'Cerrar Sesión',
+                      style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                        color: Theme.of(context).colorScheme.surface,
+                      ),
+                    ),
+                  ),
+
+                ],
+              )
+
             ],
           ),
         ),
