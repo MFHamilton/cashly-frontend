@@ -5,6 +5,7 @@ import 'package:cashly/feautures/ingresos/presentation/ingresos_screen.dart';
 import 'package:flutter/material.dart';
 
 import '../../feautures/home/presentation/home_screen.dart';
+import '../../feautures/report/presentation/report.dart';
 
 class MenuLateralScreen extends StatefulWidget {
   const MenuLateralScreen({super.key});
@@ -65,7 +66,7 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
           _buildMenuItem(
             title: "Reportes",
             subItems: ["Reportes"],
-            navigateto: [BudgetScreen(),],
+            navigateto: [ReportScreen(),],
           ),
         ],
       ),

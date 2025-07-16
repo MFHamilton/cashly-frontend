@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 
+import '../../feautures/ingresos/presentation/edit_ingresos.dart';
+
 class CardItem extends StatelessWidget {
   final String title;
   final String subtitle;
   final String amount;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
+  //final Widget onTap;
 
   const CardItem({
     super.key,
@@ -14,6 +17,7 @@ class CardItem extends StatelessWidget {
     required this.amount,
     required this.onEdit,
     required this.onDelete,
+    //required this.onTap,
   });
 
   @override
@@ -44,8 +48,8 @@ class CardItem extends StatelessWidget {
                 style: Theme.of(context).textTheme.titleMedium),
             const SizedBox(width: 8),
             IconButton(
-              icon: const Icon(Icons.edit, size: 20),
-              onPressed: onEdit,
+              icon: Icon(Icons.edit, size: 20),
+              onPressed: (){},
               padding: EdgeInsets.zero,
               constraints: const BoxConstraints(),
               splashRadius: 20,

@@ -99,11 +99,9 @@ class _EditIngresosState extends State<EditIngresos> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+    return AlertDialog(
       backgroundColor: AppColors.background,
-      drawer: const MenuLateralScreen(),
-      appBar: Header(),
-      body: Form(
+      content: Form(
         key: _formKey,
         child: ListView(
           padding: const EdgeInsets.all(10),
