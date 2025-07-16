@@ -104,7 +104,7 @@ class _ReportScreenState extends State<ReportScreen> {
             ),
             // TODO: reportes
             VistaReporte(),
-            // TODO: progreso de metas
+            // progreso de metas
             FutureBuilder<List<GoalModel>>(
               future: goalsFuture,
               builder: (context, snapshot) {
@@ -326,13 +326,47 @@ class GastosPieChart extends StatelessWidget {
   }
 }
 
-class VistaReporte extends StatelessWidget {
+class VistaReporte extends StatefulWidget {
   const VistaReporte({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final filtros = ["Ingresos", "Categoría", "Mes", "Año"];
+  State<VistaReporte> createState() => _VistaReporteState();
+}
 
+class _VistaReporteState extends State<VistaReporte> {
+  // Mock data para los selectores
+  final List<String> tipos = ['Ingresos', 'Gastos'];
+  final List<String> categorias = [
+    'Todas',
+    'Comida',
+    'Transporte',
+    'Servicios',
+    'Otros',
+  ];
+  final List<String> meses = [
+    'Enero',
+    'Febrero',
+    'Marzo',
+    'Abril',
+    'Mayo',
+    'Junio',
+    'Julio',
+    'Agosto',
+    'Septiembre',
+    'Octubre',
+    'Noviembre',
+    'Diciembre',
+  ];
+  final List<String> anios = ['2023', '2024', '2025'];
+
+  // Valores seleccionados
+  String selectedTipo = 'Ingresos';
+  String selectedCategoria = 'Todas';
+  String selectedMes = 'Julio';
+  String selectedAnio = '2025';
+
+  @override
+  Widget build(BuildContext context) {
     return SingleChildScrollView(
       padding: const EdgeInsets.all(16),
       child: Column(
@@ -349,45 +383,31 @@ class VistaReporte extends StatelessWidget {
           ),
           const SizedBox(height: 16),
 
-          // Filtros
+          // Filtros como dropdowns
           Wrap(
             spacing: 12,
             runSpacing: 12,
-            children:
-                filtros
-                    .map(
-                      (e) => SizedBox(
-                        width: 120,
-                        child: OutlinedButton(
-                          onPressed: () {},
-                          style: OutlinedButton.styleFrom(
-                            backgroundColor: Colors.white,
-                            foregroundColor: Colors.green,
-                            side: const BorderSide(color: Colors.green),
-                            shape: RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(6),
-                            ),
-                            padding: const EdgeInsets.symmetric(
-                              vertical: 12,
-                              horizontal: 8,
-                            ),
-                          ),
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: [
-                              Text(e, style: const TextStyle(fontSize: 13)),
-                              const Icon(Icons.arrow_drop_down, size: 20),
-                            ],
-                          ),
-                        ),
-                      ),
-                    )
-                    .toList(),
+            children: [
+              _buildDropdown("Tipo", selectedTipo, tipos, (value) {
+                setState(() => selectedTipo = value);
+              }),
+              _buildDropdown("Categoría", selectedCategoria, categorias, (
+                value,
+              ) {
+                setState(() => selectedCategoria = value);
+              }),
+              _buildDropdown("Mes", selectedMes, meses, (value) {
+                setState(() => selectedMes = value);
+              }),
+              _buildDropdown("Año", selectedAnio, anios, (value) {
+                setState(() => selectedAnio = value);
+              }),
+            ],
           ),
 
           const SizedBox(height: 24),
 
-          // Reporte
+          // Reporte simulado
           Container(
             padding: const EdgeInsets.all(16),
             decoration: BoxDecoration(
@@ -399,30 +419,24 @@ class VistaReporte extends StatelessWidget {
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
+              children: const [
+                Text(
                   "Ingresos Totales - Trabajo - Julio 2025",
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
                 ),
-                const SizedBox(height: 8),
-                const Text(
-                  "Resumen",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 4),
-                const Text("Total de ingresos:  DOP\$15,000"),
-                const Text("Transacciones registradas: 2"),
-                const Text("Frecuencia: Quincenal"),
-                const SizedBox(height: 16),
-                const Text(
-                  "Detalle",
-                  style: TextStyle(fontWeight: FontWeight.bold),
-                ),
-                const SizedBox(height: 8),
+                SizedBox(height: 8),
+                Text("Resumen", style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(height: 4),
+                Text("Total de ingresos:  DOP\$15,000"),
+                Text("Transacciones registradas: 2"),
+                Text("Frecuencia: Quincenal"),
+                SizedBox(height: 16),
+                Text("Detalle", style: TextStyle(fontWeight: FontWeight.bold)),
+                SizedBox(height: 8),
 
                 // Tabla simple
                 Row(
-                  children: const [
+                  children: [
                     Expanded(
                       child: Text(
                         "Fecha",
@@ -437,17 +451,17 @@ class VistaReporte extends StatelessWidget {
                     ),
                   ],
                 ),
-                const SizedBox(height: 4),
-                const Row(
+                SizedBox(height: 4),
+                Row(
                   children: [
                     Expanded(child: Text("02/07/2025")),
                     Expanded(child: Text("5,000")),
                   ],
                 ),
-                const Row(
+                Row(
                   children: [
-                    Expanded(child: Text("02/07/2025")),
-                    Expanded(child: Text("5,000")),
+                    Expanded(child: Text("16/07/2025")),
+                    Expanded(child: Text("10,000")),
                   ],
                 ),
               ],
@@ -456,7 +470,7 @@ class VistaReporte extends StatelessWidget {
 
           const SizedBox(height: 24),
 
-          // Botones de exportar
+          // Botones de exportación
           Row(
             mainAxisAlignment: MainAxisAlignment.end,
             children: [
@@ -464,46 +478,74 @@ class VistaReporte extends StatelessWidget {
                 onPressed: () {},
                 icon: const Icon(Icons.file_copy_outlined, size: 16),
                 label: const Text("Exportar Excel"),
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.green,
-                  side: const BorderSide(color: Colors.green),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 10,
-                    horizontal: 16,
-                  ),
-                  textStyle: const TextStyle(fontSize: 13),
-                ),
+                style: _buttonStyle(),
               ),
               const SizedBox(width: 12),
               OutlinedButton.icon(
                 onPressed: () {},
                 icon: const Icon(Icons.download, size: 14),
-                label: const Text(
-                  "Descargar PDF",
-                  style: TextStyle(fontSize: 12),
-                ),
-                style: OutlinedButton.styleFrom(
-                  backgroundColor: Colors.white,
-                  foregroundColor: Colors.green,
-                  side: const BorderSide(color: Colors.green),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(6),
-                  ),
-                  padding: const EdgeInsets.symmetric(
-                    vertical: 8,
-                    horizontal: 12,
-                  ),
-                  textStyle: const TextStyle(fontSize: 12),
-                ),
+                label: const Text("Descargar PDF"),
+                style: _buttonStyle(),
               ),
             ],
           ),
         ],
       ),
+    );
+  }
+
+  // Dropdown builder
+  Widget _buildDropdown(
+    String label,
+    String selectedValue,
+    List<String> items,
+    ValueChanged<String> onChanged,
+  ) {
+    return SizedBox(
+      width: 80, // 👈 Más pequeño para que quepan más
+      child: InputDecorator(
+        decoration: InputDecoration(
+          labelText: label,
+          labelStyle: const TextStyle(fontSize: 11),
+          contentPadding: const EdgeInsets.symmetric(
+            horizontal: 8,
+            vertical: 6,
+          ),
+          border: OutlineInputBorder(borderRadius: BorderRadius.circular(6)),
+          isDense: true,
+        ),
+        child: DropdownButtonHideUnderline(
+          child: DropdownButton<String>(
+            value: selectedValue,
+            isExpanded: true,
+            icon: const Icon(Icons.arrow_drop_down, size: 18),
+            iconSize: 18,
+            dropdownColor: Colors.white,
+            onChanged: (String? newValue) {
+              if (newValue != null) onChanged(newValue);
+            },
+            items:
+                items.map<DropdownMenuItem<String>>((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value, style: const TextStyle(fontSize: 12)),
+                  );
+                }).toList(),
+          ),
+        ),
+      ),
+    );
+  }
+
+  // Botón de exportar estilo
+  ButtonStyle _buttonStyle() {
+    return OutlinedButton.styleFrom(
+      backgroundColor: Colors.white,
+      foregroundColor: Colors.green,
+      side: const BorderSide(color: Colors.green),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(6)),
+      padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 16),
+      textStyle: const TextStyle(fontSize: 13),
     );
   }
 }
@@ -515,7 +557,14 @@ class GoalProgressCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    List<GoalModel> goals = goalsList.where((g) => g.fechaFin == null || g.fechaFin!.month >= DateTime.now().month).toList();
+    List<GoalModel> goals =
+        goalsList
+            .where(
+              (g) =>
+                  g.fechaFin == null ||
+                  g.fechaFin!.month >= DateTime.now().month,
+            )
+            .toList();
     return Card(
       color: Colors.white,
       elevation: 4,
@@ -546,7 +595,8 @@ class GoalProgress extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final percentage = ((goal.metaMontoUlt ?? 0) / goal.metaMontoInicial * 100).round();
+    final percentage =
+        ((goal.metaMontoUlt ?? 0) / goal.metaMontoInicial * 100).round();
 
     return Padding(
       padding: const EdgeInsets.symmetric(vertical: 8.0),
@@ -561,7 +611,7 @@ class GoalProgress extends StatelessWidget {
           ),
           const SizedBox(height: 4),
           LinearProgressIndicator(
-            value: percentage / 100 ,
+            value: percentage / 100,
             minHeight: 6,
             borderRadius: BorderRadius.circular(8),
             backgroundColor: Colors.grey[300],
