@@ -33,12 +33,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
      theme: AppTheme.lightTheme,
-      navigatorKey: navigatorKey,
+      //navigatorKey: navigatorKey,
       home: IntroPage(),
 
-      routes: {
-        TestingPage.route: (context) => TestingPage(),
-      },
+
 
     );
   }

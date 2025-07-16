@@ -5,6 +5,7 @@ class CustomInputField extends StatelessWidget {
   final String hintText;
   final bool obscureText;
   final Widget? suffixIcon;
+  final bool? readOnly;
 
   const CustomInputField({
     super.key,
@@ -12,6 +13,7 @@ class CustomInputField extends StatelessWidget {
     this.hintText = '',
     this.obscureText = false,
     this.suffixIcon,
+    this.readOnly,
   });
 
   @override
@@ -19,6 +21,7 @@ class CustomInputField extends StatelessWidget {
     return TextFormField(
       controller: controller,
       obscureText: obscureText,
+      readOnly: readOnly ?? false,
 
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
@@ -30,6 +33,7 @@ class CustomInputField extends StatelessWidget {
           borderSide: BorderSide.none, // Sin borde visible
         ),
         suffixIcon: suffixIcon,
+
       ),
       style: Theme.of(context).textTheme.bodySmall,
     );

@@ -1,5 +1,6 @@
 import 'package:cashly/core/widgets/menu.dart';
 import 'package:cashly/feautures/home/presentation/home_screen.dart';
+import 'package:cashly/feautures/settings/profile.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -65,12 +66,12 @@ class Header extends StatelessWidget  implements PreferredSizeWidget {
                 onSelected: (int result) async {
                   if (result == 1) {
                     // Ir al perfil
-                    /*
+
                     Navigator.of(context).push(
-                      MaterialPageRoute(builder: (_) => PerfilPage()),
+                      MaterialPageRoute(builder: (_) => Profile()),
                     );
 
-                     */
+
                   } else if (result == 2) {
                     // Cerrar sesión
                     await AuthService().logout(); // 👈 este método deberías tenerlo definido
