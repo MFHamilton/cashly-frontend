@@ -1,3 +1,5 @@
+import 'dart:core';
+
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/app_color.dart';
@@ -7,6 +9,7 @@ import '../../../core/services/ingresos_service.dart';
 import '../../../core/widgets/category.dart' as CategoryInput;
 import '../../../core/widgets/custom_button.dart';
 import '../../../core/widgets/duration.dart' as Duration;
+
 import '../../../core/widgets/form_input.dart';
 import '../../../core/widgets/frecuency.dart' as FrecuencyWidget;
 import '../../../core/widgets/header.dart';

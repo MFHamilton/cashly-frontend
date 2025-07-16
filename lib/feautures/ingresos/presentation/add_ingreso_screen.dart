@@ -216,20 +216,7 @@ class _AddIngresoScreenState extends State<AddIngresoScreen> {
               // Botón Guardar
               child: CustomButton(
                 text: 'Guardar Ingreso',
-                onPressed: (){
-                  _onGuardar;
-                  SnackBar(
-                    content: Text(
-                      "Ingreso creado con exito",
-                      style: Theme.of(context).textTheme.labelLarge?.copyWith(
-                          color: Theme.of(context).colorScheme.surface
-                      ),
-                    ),
-
-                    backgroundColor: Theme.of(context).colorScheme.secondary,
-
-                  );
-                },
+                onPressed: _onGuardar,
                 style: 'primary',
               ),
 
