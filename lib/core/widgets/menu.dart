@@ -1,6 +1,7 @@
 import 'package:cashly/feautures/budget/presentation/budget.dart';
 import 'package:cashly/feautures/gastos/presentation/gastos_screen.dart';
 import 'package:cashly/feautures/goals/presentation/goals.dart';
+import 'package:cashly/feautures/ingresos/presentation/ingresos_screen.dart';
 import 'package:flutter/material.dart';
 
 class MenuLateralScreen extends StatefulWidget {
@@ -36,6 +37,7 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
           _buildMenuItem(
             title: "Ingresos",
             subItems: ["Mis ingresos","Reporte de ingresos"],
+            navigateto: [IngresosScreen()]
           ),
           _buildMenuItem(
             title: "Gastos",
