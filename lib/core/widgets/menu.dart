@@ -4,6 +4,8 @@ import 'package:cashly/feautures/goals/presentation/goals.dart';
 import 'package:cashly/feautures/ingresos/presentation/ingresos_screen.dart';
 import 'package:flutter/material.dart';
 
+import '../../feautures/home/presentation/home_screen.dart';
+
 class MenuLateralScreen extends StatefulWidget {
   const MenuLateralScreen({super.key});
 
@@ -35,24 +37,34 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
           SizedBox(height: 20),
 
           _buildMenuItem(
+              title: "Inicio",
+              subItems: ["Inicio"],
+              navigateto: [HomeScreen()]
+          ),
+          _buildMenuItem(
             title: "Ingresos",
-            subItems: ["Mis ingresos","Reporte de ingresos"],
+            subItems: ["Mis ingresos"],
             navigateto: [IngresosScreen()]
           ),
           _buildMenuItem(
             title: "Gastos",
-            subItems: ["Mis gastos","Reporte de gastos"],
+            subItems: ["Mis gastos"],
             navigateto: [GastosScreen(),]
 
           ),
           _buildMenuItem(
             title: "Metas",
-            subItems: ["Mis Metas","Reporte de Metas"],
+            subItems: ["Mis Metas"],
             navigateto: [GoalsScreen(),],
           ),
           _buildMenuItem(
             title: "Presupuestos",
-            subItems: ["Mis presupuestos","Reporte de Presupuestos"],
+           subItems: ["Mis presupuestos"],
+            navigateto: [BudgetScreen(),],
+          ),
+          _buildMenuItem(
+            title: "Reportes",
+            subItems: ["Reportes"],
             navigateto: [BudgetScreen(),],
           ),
         ],
@@ -98,10 +110,7 @@ class _MenuLateralScreenState extends State<MenuLateralScreen> {
                  MaterialPageRoute(builder: (context) => navigateto[index]),
                );
               }
-              // TODO: Quitar este mensaje cuando el programa este listo
-              ScaffoldMessenger.of(context).showSnackBar(
-                SnackBar(content: Text("Seleccionaste: $index")),
-              );
+
             },
           );
         }).toList(),

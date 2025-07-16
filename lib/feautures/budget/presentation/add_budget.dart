@@ -11,6 +11,20 @@ import 'package:cashly/core/widgets/frecuency.dart';
 import 'package:cashly/core/widgets/header.dart';
 import 'package:cashly/core/widgets/menu.dart';
 
+import 'package:cashly/core/widgets/notifications.dart';
+import 'package:flutter/material.dart';
+
+import '../../../core/constants/app_color.dart';
+import '../../../core/models/categoria.dart';
+import '../../../core/themes/text_scheme.dart';
+import '../../../core/widgets/custom_button.dart';
+import '../../../core/widgets/form_input.dart';
+import '../../../core/widgets/category.dart' as CategoryInput;
+import '../../../core/widgets/duration.dart' as Duration;
+import '../../../core/widgets/frecuency.dart';
+import '../../../core/services/budget_service.dart';
+
+
 class AddBudgetScreen extends StatefulWidget {
   const AddBudgetScreen({super.key});
 
@@ -87,20 +101,37 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
         child: ListView(
           padding: const EdgeInsets.all(10),
           children: [
-            // Encabezado
-            Padding(
-              padding: const EdgeInsets.fromLTRB(0, 16, 0, 16),
+
+            // Titulo de la pantalla
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
+
               child: Row(
                 children: [
                   IconButton(
                     icon: const Icon(Icons.arrow_back_ios, color: AppColors.textPrimary),
                     onPressed: () => Navigator.of(context).pop(),
                   ),
-                  const SizedBox(width: 4),
-                  Text(
-                    'Agregar Presupuesto',
-                    style: Theme.of(context).textTheme.headlineMedium,
+                  const SizedBox(width: 2),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        "Agregar presupuesto",
+                        style: Theme.of(context).textTheme.titleLarge,
+                      ),
+
+                      Text(
+                        'Registra un nuevo presupuesto',
+                        style: Theme.of(context).textTheme.titleSmall?.copyWith(
+                          color: Theme.of(context).colorScheme.primary.withOpacity(0.7),
+
+                        ),
+                      ),
+                    ],
                   ),
+
                 ],
               ),
             ),
@@ -155,18 +186,21 @@ class _AddBudgetScreenState extends State<AddBudgetScreen> {
               selectedIndex: selectedFrecuencyIndex,
             ),
 
-            const SizedBox(height: 24),
-
-            // Duración
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: AppColors.background,
-                borderRadius: BorderRadius.circular(8),
-              ),
-              child: Duration.Duration(
-                dateStartController: _startCtrl,
+            Duration.Duration(
+             dateStartController: _startCtrl,
                 dateEndController: _endCtrl,
+            ),
+
+            Notifications(
+
+            ),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(16, 16, 16, 8),
+              child: CustomButton(
+                text: "Guardar Presupuesto",
+                style: 'primary',
+                onPressed: addBudget,
+
               ),
             ),
 

@@ -10,8 +10,21 @@ import 'package:cashly/core/widgets/header.dart';
 import 'package:cashly/core/widgets/menu.dart';
 import 'package:cashly/feautures/budget/presentation/add_budget.dart';
 import 'package:flutter/material.dart';
+
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+
+
+import '../../../core/models/presupuestos.dart';
+import '../../../core/themes/text_scheme.dart';
+import '../../../core/widgets/budget_card.dart';
+import '../../../core/widgets/custom_button.dart';
+import '../../../core/widgets/general_budget_card.dart';
+import '../../../core/widgets/header.dart';
+import '../../../core/widgets/menu.dart';
+import '../../../feautures/budget/presentation/add_budget.dart';
+import '../../../core/services/firebase_api.dart';
+import '../../home/presentation/home_screen.dart';
 
 class BudgetScreen extends StatefulWidget {
   const BudgetScreen({super.key});
@@ -110,14 +123,23 @@ class _BudgetScreenState extends State<BudgetScreen> {
           children: [
             // Título manual
             Container(
-              padding: const EdgeInsets.fromLTRB(8, 0, 0, 8),
+
+              width: double.infinity,
+              padding: EdgeInsets.fromLTRB(8, 0, 0, 8),
               child: Row(
                 children: [
-                  const Icon(Icons.arrow_back_ios),
-                  const SizedBox(width: 4),
+                  IconButton(
+                    icon: const Icon(Icons.arrow_back_ios, color: Color(0xFF28523A)),
+                    onPressed: () => Navigator.of(context).push(
+                      MaterialPageRoute(builder: (_) => const HomeScreen()),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
+
                   Text(
                     "Presupuesto",
-                    style: Theme.of(context).textTheme.bodyLarge,
+                    style: Theme.of(context).textTheme.headlineSmall,
+
                   ),
                 ],
               ),
