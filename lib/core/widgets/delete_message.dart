@@ -58,10 +58,7 @@ class DeleteMessage extends StatelessWidget {
                       text: 'Aceptar',
                       style: 'primary',
                       onPressed: () {
-                        Navigator.pushReplacement(
-                          context,
-                          MaterialPageRoute(builder: (_) => targetRoute),
-                        );
+                        Navigator.of(context).pop(true);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
                             content: Text(
@@ -88,7 +85,7 @@ class DeleteMessage extends StatelessWidget {
                       text: 'Cancelar',
                       style: 'secondary',
                       onPressed: () {
-                        Navigator.of(context).pop();
+                        Navigator.of(context).pop(false);
                       },
                     ),
                   ),
