@@ -29,9 +29,6 @@ class _TestingPageState extends State<TestingPage> {
           ],
         )
 
-
-
-
       ),
     );
   }

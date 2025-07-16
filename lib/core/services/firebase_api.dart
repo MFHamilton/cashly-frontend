@@ -102,9 +102,6 @@ class FirebaseApi{
   }
 
 
-
-
-
   Future<void> initNotification() async {
     await _firebaseMessaging.requestPermission();
     final token = await _firebaseMessaging.getToken();
