@@ -11,6 +11,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/date_symbol_data_local.dart';
 
 import 'core/services/firebase_api.dart';
+import 'feautures/test/testingPage.dart';
 
 final navigatorKey = GlobalKey<NavigatorState>();
 
@@ -19,7 +20,7 @@ Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   await Firebase.initializeApp();
-  FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
+  //FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
   await FirebaseApi().initNotification();
 
   //await dotenv.load(); // Cargando las variables de entorno
@@ -37,13 +38,14 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Material App',
      theme: AppTheme.lightTheme,
+      navigatorKey: navigatorKey,
       home: HomeScreen(),
-      /*
+
       routes: {
-        BudgetScreen.route: (context) => BudgetScreen(),
+        TestingPage.route: (context) => TestingPage(),
       },
 
-       */
+
     );
   }
 }

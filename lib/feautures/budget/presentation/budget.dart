@@ -13,7 +13,7 @@ import '../../../core/services/firebase_api.dart';
 
 class BudgetScreen extends StatefulWidget {
   const BudgetScreen({super.key});
-  static const route = '/budget';
+  //static const route = '/budget';
 
 
   @override
@@ -99,9 +99,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
             Text('${message.notification?.title}'),
             Text('${message.notification?.body}'),
             Text('${message.data}'),
-
-             */
-
+            */
 
 
             // Card con el presupesto total del mes

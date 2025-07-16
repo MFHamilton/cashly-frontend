@@ -1,5 +1,6 @@
 
 import 'package:cashly/feautures/budget/presentation/budget.dart';
+import 'package:cashly/feautures/test/testingPage.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_messaging/firebase_messaging.dart';
 
@@ -7,7 +8,7 @@ import '../../main.dart';
 
 @pragma('vm:entry-point')
 Future<void> handleBackgroundMessage(RemoteMessage message) async {
-  await Firebase.initializeApp();
+  //await Firebase.initializeApp();
   print('🔔 Background handler');
   print('Title: ${message.notification?.title}');
   print('Body: ${message.notification?.body}');
@@ -20,12 +21,12 @@ class FirebaseApi{
   final _firebaseMessaging = FirebaseMessaging.instance;
 
 
-  /*
+
   void handleMessage(RemoteMessage? message) {
     if (message == null) return;
 
     navigatorKey.currentState?.pushNamed(
-      BudgetScreen.route,
+      TestingPage.route,
       arguments: message,
     );
 
@@ -45,7 +46,7 @@ class FirebaseApi{
 
   }
 
-   */
+
 
 
 
@@ -53,7 +54,6 @@ class FirebaseApi{
     await _firebaseMessaging.requestPermission();
     final token = await _firebaseMessaging.getToken();
     print('Token: $token');
-    FirebaseMessaging.onBackgroundMessage(handleBackgroundMessage);
-    //initPushNotifications();
+    initPushNotifications();
   }
 }
