@@ -31,4 +31,31 @@ class CategoryService {
       throw Exception('Error al cargar categorias');
     }
   }
+
+  static Future<Categoria> createCategory({
+    required String nombre,
+    String? descripcion,
+    required String iconRef,
+  }) async {
+    final token = await _storage.read(key: 'jwt');
+    final uri = Uri.parse('$baseUrl/categoria');
+    final response = await http.post(
+      uri,
+      headers: {
+        'Content-Type': 'application/json',
+        if (token != null) 'Authorization': 'Bearer $token',
+      },
+      body: jsonEncode({
+        'nombre': nombre,
+        'descripcion': descripcion,
+        'iconRef': iconRef,
+      }),
+    );
+    if (response.statusCode == 201) {
+      final Map<String, dynamic> data = jsonDecode(response.body);
+      return Categoria.fromJson(data);
+    } else {
+      throw Exception('Error creando categoría: ${response.statusCode}');
+    }
+  }
 }
