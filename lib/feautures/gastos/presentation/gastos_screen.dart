@@ -1,4 +1,5 @@
 import 'package:cashly/core/constants/app_color.dart';
+import 'package:cashly/core/services/category_service.dart';
 import 'package:cashly/core/services/gastos_service.dart';       // ← nuevo
 import 'package:cashly/core/widgets/delete_message.dart';
 import 'package:cashly/core/widgets/header.dart';
@@ -10,6 +11,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/widgets/custom_button.dart';
 import '../../../../core/widgets/cardItem.dart';
+import 'package:cashly/core/models/categoria.dart';
+
 
 class GastosScreen extends StatefulWidget {
   const GastosScreen({Key? key}) : super(key: key);
@@ -19,9 +22,22 @@ class GastosScreen extends StatefulWidget {
 }
 
 class _GastosScreenState extends State<GastosScreen>{
-  final _service = GastosService();         // servicio
+  final categoryListFuture = CategoryService.fetchCategories();
+  final _service = GastosService();// servicio
   bool _loading = true;                     // estado de carga
-  List<dynamic> _gastos = [];               // gastos traídos
+  List<dynamic> _gastos = [];
+  List<dynamic> _categorias =  [];
+
+  final Map<int, String> periodos = {
+    1: 'Semanal',
+    2: 'Quincenal',
+    3: 'Mensual',
+    4: 'Trimestral',
+    5: 'Semestral',
+    6: 'Anual',
+  };
+
+  // gastos traídos
 
   final String mesAnio = toBeginningOfSentenceCase(
       DateFormat('MMMM yyyy', 'es_ES').format(DateTime.now())
@@ -36,6 +52,7 @@ class _GastosScreenState extends State<GastosScreen>{
   Future<void> _fetchGastos() async {
     setState(() => _loading = true);
     try {
+      _categorias = await CategoryService.fetchCategories();
       final now = DateTime.now();
       _gastos = await _service.getGastos(
         month: now.month,
@@ -69,17 +86,53 @@ class _GastosScreenState extends State<GastosScreen>{
 
   }
 
-  void _onDeleteGasto(String gastoId) {
-    showDialog(
+  void _onDeleteGasto(String gastoId) async {
+    final gasto = _gastos.firstWhere(
+          (g) => g['gasto_id'].toString() == gastoId,
+      orElse: () => null,
+    );
+
+    if (gasto == null) return;
+
+    final String gastoNombre = gasto['gasto_nombre'] ?? 'Este gasto';
+
+    final bool? confirmed = await showDialog<bool>(
       context: context,
       builder: (_) => Dialog(
         child: DeleteMessage(
-          controllerName: gastoId,
-          targetRoute: const GastosScreen(),
+          controllerName: gastoNombre,
+          targetRoute: const GastosScreen(), // Solo se usa para cerrar
         ),
       ),
     );
+
+    if (confirmed == true) {
+      try {
+        await _service.deleteGasto(int.parse(gastoId));
+        await _fetchGastos(); // Recarga la lista
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(
+              "$gastoNombre eliminado",
+              style: Theme.of(context)
+                  .textTheme
+                  .labelLarge
+                  ?.copyWith(color: Theme.of(context).colorScheme.surface),
+            ),
+            backgroundColor: Theme.of(context).colorScheme.secondary,
+          ),
+        );
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text("Error al eliminar: $e"),
+            backgroundColor: Colors.red,
+          ),
+        );
+      }
+    }
   }
+
 
   @override
   Widget build(BuildContext context) {
@@ -188,13 +241,13 @@ class _GastosScreenState extends State<GastosScreen>{
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 16),
             child: Row(
-              children: const [
+              children: [
                 _SmallStatCard(
                   label: 'Activos',
-                  value: '6',
-                  iconColor: Color(0xFFB5D4B1),
+                  value: '${_gastos.length}',
+                  iconColor: const Color(0xFFB5D4B1),
                 ),
-                SizedBox(width: 12),
+                const SizedBox(width: 12),
 
               ],
             ),
@@ -217,19 +270,32 @@ class _GastosScreenState extends State<GastosScreen>{
                       ? raw.toDouble()
                       : double.tryParse(raw.toString()) ?? 0.0;
 
-                  final fecha = g['gasto_fecha'] != null
-                      ? DateFormat('d MMM', 'es_ES').format(
-                      DateTime.parse(g['gasto_fecha'] as String))
-                      : '';
+                  final categoriaNombre = _categorias.firstWhere(
+                        (cat) => cat.categoriaId == g['categoria_id'],
+                    orElse: () => Categoria(
+                      categoriaId: 0,
+                      categoriaNom: 'Sin categoría',
+                      categoriaDescrip: '',
+                      iconRef: '',
+                      ownerId: null,
+                    ),
+                  ).categoriaNom;
 
+                  final periodoId = g['periodo_id'];
+                  final periodoNombre = periodos[periodoId];
+
+                  final descripcion = periodoNombre != null
+                      ? '$categoriaNombre • $periodoNombre'
+                      : categoriaNombre;
                   return CardItem(
                     title: g['gasto_nombre'] as String,
-                    subtitle: fecha,
+                    subtitle: descripcion,
                     amount: 'RD\$${monto.toStringAsFixed(2)}',
                     onEdit: () => _onEditGasto((g['gasto_id']).toString()),
-                    onDelete: () => _onDeleteGasto((g['gasto_nombre']).toString()),
+                    onDelete: () => _onDeleteGasto((g['gasto_id']).toString()),
                   );
                 },
+
 
               ),
             ),
@@ -244,7 +310,7 @@ class _GastosScreenState extends State<GastosScreen>{
               onPressed: _onAgregarGasto,
             ),
           ),
-          const SizedBox(height: 15),
+          const SizedBox(height: 25),
         ],
       ),
     );
