@@ -41,6 +41,7 @@ class _BudgetDetailScreenState extends State<BudgetDetailScreen> {
     super.initState();
     DateTime today = DateTime.now();
     /* gastosFuture = GastosService.fetchGastosMontoMensual(today.month, today.year); */
+
   }
 
   @override

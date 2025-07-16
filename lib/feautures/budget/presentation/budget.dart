@@ -1,3 +1,4 @@
+import 'package:firebase_messaging/firebase_messaging.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/models/presupuestos.dart';
@@ -8,15 +9,19 @@ import '../../../core/widgets/general_budget_card.dart';
 import '../../../core/widgets/header.dart';
 import '../../../core/widgets/menu.dart';
 import '../../../feautures/budget/presentation/add_budget.dart';
+import '../../../core/services/firebase_api.dart';
 
 class BudgetScreen extends StatefulWidget {
   const BudgetScreen({super.key});
+  //static const route = '/budget';
+
 
   @override
   State<BudgetScreen> createState() => _BudgetScreenState();
 }
 
 class _BudgetScreenState extends State<BudgetScreen> {
+
   // TODO: load data from backend
   final List<Presupuestos> presupuestos = [
     Presupuestos(
@@ -66,6 +71,7 @@ class _BudgetScreenState extends State<BudgetScreen> {
 
   @override
   Widget build(BuildContext context) {
+    //final message = ModalRoute.of(context)!.settings.arguments as RemoteMessage;
     return Scaffold(
       drawer: const MenuLateralScreen(),
       appBar: Header(),
@@ -88,6 +94,14 @@ class _BudgetScreenState extends State<BudgetScreen> {
                 ],
               ),
             ),
+
+            /*
+            Text('${message.notification?.title}'),
+            Text('${message.notification?.body}'),
+            Text('${message.data}'),
+            */
+
+
             // Card con el presupesto total del mes
             GeneralBudgetCard(amount: 5000),
             // listado de presupuestos
